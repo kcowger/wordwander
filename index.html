@@ -306,9 +306,33 @@ function updateMapTransform(){
     if(g)g.setAttribute('transform',`translate(${mapX},${mapY}) scale(${mapScale})`);
 }
 
-function zoomMap(factor){
-    mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
+// Convert screen coords to SVG coords
+function screenToSVG(el, clientX, clientY){
+    const svg=el.querySelector('svg');
+    if(!svg)return{x:500,y:250};
+    const rect=svg.getBoundingClientRect();
+    return{
+        x:((clientX-rect.left)/rect.width)*1000,
+        y:((clientY-rect.top)/rect.height)*500
+    };
+}
+
+// Zoom toward a specific SVG point
+function zoomAtPoint(factor, svgX, svgY){
+    const newScale=Math.max(0.5,Math.min(5,mapScale*factor));
+    const r=newScale/mapScale;
+    // Adjust translation so the point under cursor stays fixed
+    mapX=svgX-(svgX-mapX)*r;
+    mapY=svgY-(svgY-mapY)*r;
+    mapScale=newScale;
     updateMapTransform();
+}
+
+// Button zoom: zoom toward center of current view
+function zoomMap(factor){
+    const cx=(500-mapX)/mapScale;
+    const cy=(250-mapY)/mapScale;
+    zoomAtPoint(factor,cx,cy);
 }
 
 function resetZoom(){
@@ -319,12 +343,12 @@ function resetZoom(){
 function initMapInteraction(){
     const el=document.getElementById('map');
 
-    // Mouse wheel zoom
+    // Mouse wheel zoom toward cursor
     el.addEventListener('wheel',e=>{
         e.preventDefault();
         const factor=e.deltaY<0?1.15:0.87;
-        mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
-        updateMapTransform();
+        const pt=screenToSVG(el,e.clientX,e.clientY);
+        zoomAtPoint(factor,pt.x,pt.y);
     },{passive:false});
 
     // Mouse drag pan
@@ -337,16 +361,14 @@ function initMapInteraction(){
         const svg=el.querySelector('svg');
         if(!svg)return;
         const rect=svg.getBoundingClientRect();
-        const scaleFactorX=1000/rect.width;
-        const scaleFactorY=500/rect.height;
-        mapX=dragMapX+(e.clientX-dragStartX)*scaleFactorX;
-        mapY=dragMapY+(e.clientY-dragStartY)*scaleFactorY;
+        mapX=dragMapX+(e.clientX-dragStartX)*(1000/rect.width);
+        mapY=dragMapY+(e.clientY-dragStartY)*(500/rect.height);
         updateMapTransform();
     });
     window.addEventListener('mouseup',()=>{isDragging=false});
 
     // Touch support
-    let lastTouchDist=0;
+    let lastTouchDist=0, lastTouchCX=0, lastTouchCY=0;
     el.addEventListener('touchstart',e=>{
         if(e.touches.length===1){
             isDragging=true;dragStartX=e.touches[0].clientX;dragStartY=e.touches[0].clientY;
@@ -355,6 +377,8 @@ function initMapInteraction(){
         if(e.touches.length===2){
             isDragging=false;
             lastTouchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+            lastTouchCX=(e.touches[0].clientX+e.touches[1].clientX)/2;
+            lastTouchCY=(e.touches[0].clientY+e.touches[1].clientY)/2;
         }
     },{passive:true});
     el.addEventListener('touchmove',e=>{
@@ -368,9 +392,10 @@ function initMapInteraction(){
         if(e.touches.length===2){
             const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
             if(lastTouchDist>0){
-                const factor=dist/lastTouchDist;
-                mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
-                updateMapTransform();
+                const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+                const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+                const pt=screenToSVG(el,cx,cy);
+                zoomAtPoint(dist/lastTouchDist,pt.x,pt.y);
             }
             lastTouchDist=dist;
         }
@@ -491,12 +516,11 @@ function parseWikitext(wt,word){
         }
     }
 
-    if(chain.length>1){
-        const f=chain[0].language.toLowerCase(),l=chain[chain.length-1].language.toLowerCase();
-        if((f.includes('english')||f==='middle english')&&(l.includes('proto')||l==='latin'||l==='ancient greek'||l==='arabic'||l==='sanskrit'))
-            chain.reverse();
-    }
+    // Wiktionary templates always list newest→oldest (en←enm←ang←gem-pro←ine-pro)
+    // Reverse so journey goes oldest→newest (origin first, English last)
+    if(chain.length>1) chain.reverse();
 
+    // Ensure English is at the end
     const ei=chain.findIndex(c=>c.language==='English');
     if(ei>=0&&ei<chain.length-1)chain.push(chain.splice(ei,1)[0]);
     if(!chain.some(c=>c.language==='English'))
