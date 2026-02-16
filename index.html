@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etyma</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--sf:#12121a;--sh:#1a1a25;--bd:#2a2a3a;--tx:#e8e8ef;--tm:#8888a0;--ac:#6c63ff;--ag:rgba(108,99,255,.3);--gd:#f0c040;--gg:rgba(240,192,64,.3)}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+.hd{padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+.logo{font-size:1.6rem;font-weight:700;color:var(--tx)}
+.tag{font-size:.72rem;color:var(--tm);letter-spacing:.15em;text-transform:uppercase}
+.ss{display:flex;flex-direction:column;align-items:center;padding:3.5rem 2rem 1.5rem}
+.sc{position:relative;width:100%;max-width:520px}
+.si{width:100%;padding:1rem 3.5rem 1rem 1.5rem;font-size:1.1rem;font-weight:300;background:var(--sf);border:1px solid var(--bd);border-radius:12px;color:var(--tx);outline:none;font-family:inherit;transition:all .3s}
+.si::placeholder{color:var(--tm);font-style:italic}
+.si:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ag)}
+.sb{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:8px;border:none;background:var(--ac);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sb:hover{background:#7b73ff}
+.sb svg{width:18px;height:18px}
+.ew{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;justify-content:center}
+.ew button{padding:.35rem .9rem;font-size:.78rem;background:var(--sf);border:1px solid var(--bd);border-radius:20px;color:var(--tm);cursor:pointer;font-family:inherit;transition:all .2s}
+.ew button:hover{border-color:var(--ac);color:var(--tx)}
+.mc{display:none;max-width:1100px;margin:0 auto;padding:2rem}
+.mc.v{display:grid;grid-template-columns:1fr;gap:1.5rem}
+.wc{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem;text-align:center}
+.wd{font-size:2.8rem;font-weight:700;margin-bottom:.4rem}
+.wm{font-size:.9rem;color:var(--tm);max-width:600px;margin:0 auto;line-height:1.6}
+.ms{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;position:relative}
+.mt{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1rem}
+.mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden}
+.mpc svg{width:100%;height:100%}
+.rb{position:absolute;top:1rem;right:1rem;padding:.4rem .8rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;background:var(--sh);border:1px solid var(--bd);border-radius:6px;color:var(--tm);cursor:pointer;font-family:inherit;z-index:2}
+.rb:hover{border-color:var(--ac);color:var(--tx)}
+.js{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem}
+.st{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1.5rem}
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--ac),var(--gd));border-radius:1px}
+.ti{position:relative;margin-bottom:1.5rem;opacity:0;transform:translateX(-10px);animation:si .5s ease forwards}
+.ti:last-child{margin-bottom:0}
+.td{position:absolute;left:-2rem;top:4px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--ac);z-index:1}
+.ti:last-child .td{border-color:var(--gd);box-shadow:0 0 8px var(--gg)}
+.ti:first-child .td{background:var(--ac);box-shadow:0 0 8px var(--ag)}
+.tla{font-weight:600;font-size:.95rem;margin-bottom:.15rem}
+.tw{font-size:1.3rem;font-style:italic;color:var(--gd);margin-bottom:.25rem}
+.tmn{font-size:.85rem;color:var(--tm);line-height:1.5}
+@keyframes si{to{opacity:1;transform:translateX(0)}}
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:768px){.bg{grid-template-columns:1fr}.hd{padding:1.2rem 1.5rem}.ss{padding:2rem 1.5rem 1rem}.wd{font-size:2rem}.mc{padding:1rem}}
+.fs,.rs{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem}
+.fi{padding:.8rem 0;border-bottom:1px solid var(--bd)}
+.fi:last-child{border-bottom:none;padding-bottom:0}
+.fi:first-child{padding-top:0}
+.fl{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ac);margin-bottom:.35rem}
+.ft{font-size:.88rem;line-height:1.6}
+.rw{display:inline-block;padding:.4rem .9rem;margin:.25rem;font-size:.85rem;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:inherit;transition:all .2s}
+.rw:hover{border-color:var(--ac);background:var(--sh)}
+.lo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,15,.85);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+.lo.v{display:flex}
+.ls{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
+.lt{font-size:.9rem;color:var(--tm)}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rl{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:dl 1.2s ease forwards}
+@keyframes dl{to{stroke-dashoffset:0}}
+.pd{animation:pu 2s ease-in-out infinite}
+@keyframes pu{0%,100%{r:4;opacity:1}50%{r:7;opacity:.6}}
+.ml{font-family:inherit;font-size:9px;fill:var(--tx);font-weight:500;text-anchor:middle;opacity:0;animation:fi .5s ease forwards}
+.mlb{fill:rgba(18,18,26,.85);rx:4;opacity:0;animation:fi .5s ease forwards}
+@keyframes fi{to{opacity:1}}
+.err{text-align:center;padding:2rem;color:var(--tm)}
+.err h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--tx)}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="hd"><div class="logo">Etyma</div><div class="tag">Word Origin Explorer</div></header>
+<section class="ss">
+<div class="sc">
+<input type="text" class="si" id="inp" placeholder="Enter a word to trace its origins..." autocomplete="off">
+<button class="sb" id="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+</div>
+<div class="ew" id="examples"></div>
+</section>
+<div class="mc" id="mc">
+<div class="wc" id="wc"></div>
+<div class="ms"><div class="mt">Migration Path</div><button class="rb" onclick="replay()">↻ Replay</button><div class="mpc" id="map"></div></div>
+<div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
+<div class="bg">
+<div class="fs"><div class="st">Etymology</div><div id="fc"></div></div>
+<div class="rs"><div class="st">Explore More</div><div id="rc"></div></div>
+</div>
+</div>
+<div class="lo" id="lo"><div class="ls"></div><div class="lt" id="lotx">Tracing origins...</div></div>
+
+<script>
+// ============================================================
+// LANGUAGE CODE → NAME MAP (same as proven in debug file)
+// ============================================================
+const CODE2NAME = {
+    'en':'English','enm':'Middle English','ang':'Old English',
+    'gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European',
+    'la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin',
+    'grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek',
+    'sa':'Sanskrit','inc-ash':'Vedic Sanskrit',
+    'peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan',
+    'ar':'Arabic','acw':'Hijazi Arabic',
+    'non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German',
+    'nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian',
+    'got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic',
+    'fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman',
+    'es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan',
+    'sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic',
+    'ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian',
+    'tr':'Turkish','ota':'Ottoman Turkish',
+    'zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese',
+    'ja':'Japanese','ko':'Korean',
+    'hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi',
+    'ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese',
+    'nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino',
+    'fi':'Finnish','hu':'Hungarian','et':'Estonian',
+    'he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian',
+    'sw':'Swahili','am':'Amharic','yo':'Yoruba',
+    'th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese',
+    'ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian',
+    'pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian',
+    'sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic',
+    'sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic',
+    'bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic',
+    'trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan',
+    'map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian',
+};
+
+// ============================================================
+// LANGUAGE → COORDINATES
+// ============================================================
+const LC = {
+    'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe'},
+    'Proto-Germanic':{lat:54,lng:12,lb:'Northern Europe'},
+    'Proto-West Germanic':{lat:52,lng:8,lb:'Western Europe'},
+    'Proto-Slavic':{lat:50,lng:30,lb:'Eastern Europe'},
+    'Proto-Celtic':{lat:48,lng:5,lb:'Central Europe'},
+    'Proto-Italic':{lat:43,lng:12,lb:'Italian Peninsula'},
+    'Proto-Semitic':{lat:30,lng:38,lb:'Levant'},
+    'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans'},
+    'Proto-Balto-Slavic':{lat:52,lng:24,lb:'Eastern Europe'},
+    'Proto-Finnic':{lat:60,lng:25,lb:'Finland'},
+    'Proto-Turkic':{lat:47,lng:88,lb:'Central Asia'},
+    'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'East Asia'},
+    'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan'},
+    'Proto-Dravidian':{lat:13,lng:78,lb:'South India'},
+    'Latin':{lat:41.9,lng:12.5,lb:'Rome'},
+    'Late Latin':{lat:41.9,lng:12.5,lb:'Rome'},
+    'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire'},
+    'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe'},
+    'New Latin':{lat:48.8,lng:2.3,lb:'Early Modern Europe'},
+    'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens'},
+    'Greek':{lat:37.97,lng:23.72,lb:'Greece'},
+    'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople'},
+    'Sanskrit':{lat:27,lng:78,lb:'Northern India'},
+    'Vedic Sanskrit':{lat:28,lng:77,lb:'Northern India'},
+    'Old Persian':{lat:30,lng:52,lb:'Persia'},
+    'Middle Persian':{lat:32.5,lng:52,lb:'Persia'},
+    'Persian':{lat:35.7,lng:51.4,lb:'Iran'},
+    'Avestan':{lat:34,lng:60,lb:'Ancient Iran'},
+    'Arabic':{lat:24.7,lng:46.7,lb:'Arabia'},
+    'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz'},
+    'Old English':{lat:51.5,lng:-1,lb:'England'},
+    'Middle English':{lat:51.5,lng:-1,lb:'England'},
+    'English':{lat:51.5,lng:-0.12,lb:'London'},
+    'Old Norse':{lat:60,lng:11,lb:'Scandinavia'},
+    'Old High German':{lat:50,lng:10,lb:'Germany'},
+    'Middle High German':{lat:50,lng:10,lb:'Germany'},
+    'German':{lat:52.5,lng:13.4,lb:'Berlin'},
+    'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam'},
+    'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands'},
+    'Old Dutch':{lat:52,lng:5,lb:'Netherlands'},
+    'Old Saxon':{lat:53,lng:9,lb:'N. Germany'},
+    'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia'},
+    'Gothic':{lat:46,lng:24,lb:'Gothic lands'},
+    'Swedish':{lat:59.3,lng:18,lb:'Stockholm'},
+    'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen'},
+    'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo'},
+    'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik'},
+    'French':{lat:48.86,lng:2.35,lb:'Paris'},
+    'Old French':{lat:48.86,lng:2.35,lb:'France'},
+    'Middle French':{lat:48.86,lng:2.35,lb:'France'},
+    'Anglo-Norman':{lat:49,lng:-0.4,lb:'Normandy'},
+    'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid'},
+    'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile'},
+    'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon'},
+    'Italian':{lat:41.9,lng:12.5,lb:'Rome'},
+    'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest'},
+    'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona'},
+    'Occitan':{lat:43.6,lng:3.9,lb:'Southern France'},
+    'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland'},
+    'Irish':{lat:53.3,lng:-6.3,lb:'Dublin'},
+    'Welsh':{lat:51.5,lng:-3.2,lb:'Wales'},
+    'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland'},
+    'Russian':{lat:55.75,lng:37.6,lb:'Moscow'},
+    'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans'},
+    'Polish':{lat:52.2,lng:21,lb:'Warsaw'},
+    'Czech':{lat:50.08,lng:14.4,lb:'Prague'},
+    'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv'},
+    'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia'},
+    'Croatian':{lat:45.8,lng:16,lb:'Zagreb'},
+    'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade'},
+    'Turkish':{lat:39.9,lng:32.9,lb:'Ankara'},
+    'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul'},
+    'Chinese':{lat:39.9,lng:116.4,lb:'Beijing'},
+    'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an"},
+    'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China'},
+    'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo'},
+    'Korean':{lat:37.55,lng:127,lb:'Seoul'},
+    'Hindi':{lat:28.6,lng:77.2,lb:'Delhi'},
+    'Urdu':{lat:33.7,lng:73,lb:'Islamabad'},
+    'Tamil':{lat:13,lng:80.3,lb:'Chennai'},
+    'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka'},
+    'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore'},
+    'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad'},
+    'Marathi':{lat:19,lng:72.8,lb:'Mumbai'},
+    'Pali':{lat:25,lng:83,lb:'Northern India'},
+    'Malay':{lat:3.1,lng:101.7,lb:'Malaysia'},
+    'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta'},
+    'Tagalog':{lat:14.6,lng:121,lb:'Manila'},
+    'Javanese':{lat:-7.8,lng:110.4,lb:'Java'},
+    'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java'},
+    'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico'},
+    'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico'},
+    'Quechua':{lat:-13.5,lng:-72,lb:'Andes'},
+    'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean'},
+    'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki'},
+    'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest'},
+    'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn'},
+    'Hebrew':{lat:31.8,lng:35.2,lb:'Israel'},
+    'Aramaic':{lat:33.5,lng:36.3,lb:'Levant'},
+    'Phoenician':{lat:34,lng:35.5,lb:'Levant'},
+    'Egyptian':{lat:26,lng:32,lb:'Egypt'},
+    'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa'},
+    'Amharic':{lat:9,lng:38.7,lb:'Ethiopia'},
+    'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa'},
+    'Thai':{lat:13.75,lng:100.5,lb:'Bangkok'},
+    'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi'},
+    'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia'},
+    'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar'},
+    'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa'},
+    'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia'},
+    'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi'},
+    'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan'},
+    'Albanian':{lat:41.3,lng:19.8,lb:'Tirana'},
+    'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius'},
+    'Latvian':{lat:56.95,lng:24.1,lb:'Riga'},
+};
+
+// ============================================================
+// MAP SVG
+// ============================================================
+const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".6"/><stop offset="100%" stop-color="#6c63ff" stop-opacity="0"/></radialGradient>
+<radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f0c040" stop-opacity=".6"/><stop offset="100%" stop-color="#f0c040" stop-opacity="0"/></radialGradient>
+<linearGradient id="rG"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".8"/><stop offset="100%" stop-color="#f0c040" stop-opacity=".8"/></linearGradient></defs>
+<g fill="#1a1a2e" stroke="#2a2a3a" stroke-width=".5">
+<path d="M80 80L120 60 170 65 200 80 230 95 255 120 250 145 260 170 240 190 220 200 200 220 180 230 160 220 140 200 120 180 100 150 90 120Z"/>
+<path d="M180 230L190 240 200 255 210 270 200 280 190 270 180 260 175 245Z"/>
+<path d="M220 280L245 290 270 310 285 340 290 370 285 400 270 420 255 440 240 445 230 430 225 400 220 370 215 340 210 310 215 290Z"/>
+<path d="M440 70L460 60 490 65 520 70 540 80 530 95 520 105 530 115 520 120 510 115 500 125 485 130 475 125 465 130 455 120 445 115 440 105 445 90Z"/>
+<path d="M445 80L450 72 455 78 452 85 447 85Z"/><path d="M438 75L442 70 445 76 441 78Z"/>
+<path d="M480 30L490 35 495 50 490 65 485 60 480 45Z"/><path d="M495 35L510 30 515 45 510 60 500 55 497 40Z"/>
+<path d="M450 150L475 140 510 145 540 155 555 175 560 200 555 230 545 260 530 290 515 310 500 320 485 310 475 290 470 260 465 230 460 200 450 170Z"/>
+<path d="M540 60L580 50 630 45 680 50 730 55 770 65 800 80 820 95 810 110 790 120 770 130 750 140 730 150 700 155 670 150 640 145 610 140 580 130 560 120 545 110 540 95Z"/>
+<path d="M540 120L560 115 575 125 585 140 575 155 555 160 540 155 535 140Z"/>
+<path d="M640 145L660 150 670 170 665 195 650 215 635 210 625 190 630 165Z"/>
+<path d="M720 155L740 150 755 160 750 175 740 185 730 180 720 170Z"/>
+<path d="M730 65L770 60 810 70 830 85 825 100 810 110 790 115 765 110 745 100 735 85Z"/>
+<path d="M840 80L850 75 855 85 850 100 843 95 840 85Z"/>
+<path d="M770 310L810 300 850 310 870 330 865 355 845 370 815 375 790 365 775 345 770 325Z"/>
+<path d="M740 225L755 220 765 225 760 232 748 232Z"/><path d="M770 225L785 222 792 228 785 234 773 232Z"/>
+<path d="M415 48L425 45 432 50 427 55 418 53Z"/></g>
+<g stroke="#151520" stroke-width=".3" fill="none"><line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="4,8"/><line x1="500" y1="0" x2="500" y2="500" stroke-dasharray="4,8"/></g>
+<g id="mR"></g><g id="mP"></g><g id="mL"></g></svg>`;
+
+// ============================================================
+// RENDERING FUNCTIONS
+// ============================================================
+function toXY(lat,lng){return{x:((lng+180)/360)*1000,y:((90-lat)/180)*500}}
+let T=[];
+function clr(){T.forEach(clearTimeout);T=[]}
+
+function drawMap(j){
+    const c=document.getElementById('map');c.innerHTML=MSVG;
+    const rG=c.querySelector('#mR'),pG=c.querySelector('#mP'),lG=c.querySelector('#mL');
+    clr();
+    j.forEach((s,i)=>{
+        if(!s.lat||!s.lng)return;
+        const p=toXY(s.lat,s.lng);
+        T.push(setTimeout(()=>{
+            if(i>0&&j[i-1].lat&&j[i-1].lng){
+                const pv=toXY(j[i-1].lat,j[i-1].lng);
+                const mx=(pv.x+p.x)/2,my=Math.min(pv.y,p.y)-25-Math.abs(pv.x-p.x)*.08;
+                const pa=document.createElementNS('http://www.w3.org/2000/svg','path');
+                pa.setAttribute('d',`M${pv.x} ${pv.y}Q${mx} ${my} ${p.x} ${p.y}`);
+                pa.setAttribute('fill','none');pa.setAttribute('stroke','url(#rG)');
+                pa.setAttribute('stroke-width','2');pa.setAttribute('opacity','.7');
+                rG.appendChild(pa);
+                pa.style.setProperty('--len',pa.getTotalLength());pa.classList.add('rl');
+            }
+            const gw=document.createElementNS('http://www.w3.org/2000/svg','circle');
+            gw.setAttribute('cx',p.x);gw.setAttribute('cy',p.y);gw.setAttribute('r','15');
+            gw.setAttribute('fill',i===j.length-1?'url(#gB)':'url(#gA)');pG.appendChild(gw);
+            const dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
+            dt.setAttribute('cx',p.x);dt.setAttribute('cy',p.y);dt.setAttribute('r','4');
+            dt.setAttribute('fill',i===j.length-1?'#f0c040':'#6c63ff');dt.classList.add('pd');pG.appendChild(dt);
+            const nm=s.language,lw=nm.length*5.5+16;
+            const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
+            bg.setAttribute('x',p.x-lw/2);bg.setAttribute('y',p.y-22);bg.setAttribute('width',lw);bg.setAttribute('height','16');
+            bg.classList.add('mlb');lG.appendChild(bg);
+            const lb=document.createElementNS('http://www.w3.org/2000/svg','text');
+            lb.setAttribute('x',p.x);lb.setAttribute('y',p.y-11);lb.textContent=nm;lb.classList.add('ml');lG.appendChild(lb);
+        },i*900));
+    });
+}
+
+function drawTL(j){
+    const el=document.getElementById('tl');el.innerHTML='';
+    j.forEach((s,i)=>{
+        const d=document.createElement('div');d.className='ti';d.style.animationDelay=`${i*.15+.2}s`;
+        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${s.word?`<div class="tw">${s.word}</div>`:''}<div class="tmn">${s.meaning||''}</div>`;
+        el.appendChild(d);
+    });
+}
+
+function drawRel(word){
+    const el=document.getElementById('rc');
+    const pool=['philosophy','democracy','salary','alcohol','robot','tsunami','jungle','chocolate','coffee','sugar','guitar','yoga','pajama','kindergarten','cow','beef','butter','shampoo','hurricane','mosquito','ketchup','sofa','algebra','zero','lemon','orange','paradise','avatar','karma','typhoon','silk','tea'];
+    el.innerHTML=pool.filter(x=>x!==word).sort(()=>Math.random()-.5).slice(0,12).map(x=>`<button class="rw" onclick="go('${x}')">${x}</button>`).join('');
+}
+
+// ============================================================
+// API FETCH (same as debug file)
+// ============================================================
+async function fetchWikitext(word){
+    const url=`https://en.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*`;
+    const r=await fetch(url);
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const j=await r.json();
+    const pages=j.query.pages;
+    const pid=Object.keys(pages)[0];
+    if(pid==='-1')throw new Error('Word not found on Wiktionary');
+    const rev=pages[pid].revisions;
+    if(!rev||!rev[0])throw new Error('No revision data');
+    if(rev[0].slots&&rev[0].slots.main)return rev[0].slots.main['*'];
+    if(rev[0]['*'])return rev[0]['*'];
+    throw new Error('Unexpected API format');
+}
+
+// ============================================================
+// WIKITEXT PARSER (same logic as debug file)
+// ============================================================
+function parseWikitext(wt, word){
+    // Find ==English== then ===Etymology===
+    const engMatch=wt.match(/==\s*English\s*==([\s\S]*?)(?=\n==[^=]|$)/i);
+    const searchIn=engMatch?engMatch[1]:wt;
+    const etymMatch=searchIn.match(/={2,4}\s*Etymology\s*(?:1\s*)?={2,4}\s*\n([\s\S]*?)(?=\n={2,4}[^=]|$)/i);
+    const etymSection=etymMatch?etymMatch[1]:'';
+
+    // Extract templates (same regex as debug)
+    const chain=[];
+    const seen=new Set();
+    const templateRe=/\{\{(inh|inherited|der|derived|bor|borrowed|m|mention)\|([^}]*)\}\}/gi;
+    let tm;
+    while((tm=templateRe.exec(etymSection))!==null){
+        const type=tm[1].toLowerCase();
+        const parts=tm[2].split('|').map(s=>s.trim());
+        let langCode,foreignWord='';
+        if(['inh','inherited','der','derived','bor','borrowed'].includes(type)){
+            langCode=parts[1];
+            foreignWord=parts[2]||'';
+        }else{
+            langCode=parts[0];
+            foreignWord=parts[1]||'';
+        }
+        if(!langCode)continue;
+        // Clean: remove named params like t=, tr=, pos=
+        foreignWord=foreignWord.replace(/\|.*/,'');
+        if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(foreignWord))foreignWord='';
+        const langName=CODE2NAME[langCode];
+        if(langName&&LC[langName]&&!seen.has(langName)){
+            seen.add(langName);
+            chain.push({language:langName,word:foreignWord,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
+        }
+    }
+
+    // Reverse if needed (Wiktionary goes newest→oldest)
+    if(chain.length>1){
+        const f=chain[0].language.toLowerCase(),l=chain[chain.length-1].language.toLowerCase();
+        if((f.includes('english')||f==='middle english')&&(l.includes('proto')||l==='latin'||l==='ancient greek'||l==='arabic'||l==='sanskrit'))
+            chain.reverse();
+    }
+
+    // Ensure English at end
+    const ei=chain.findIndex(c=>c.language==='English');
+    if(ei>=0&&ei<chain.length-1)chain.push(chain.splice(ei,1)[0]);
+    if(!chain.some(c=>c.language==='English'))
+        chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
+
+    // Clean etymology text for display
+    let cleanEtym=etymSection
+        .replace(/\{\{(inh|der|bor|inherited|derived|borrowed)\|[^|]*\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
+            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
+        .replace(/\{\{(m|mention)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
+            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
+        .replace(/\{\{(cog|cognate)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
+            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
+        .replace(/\{\{[^}]*\}\}/g,'')
+        .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
+        .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'')
+        .replace(/\s+/g,' ').trim();
+
+    // Get definition
+    const defSection=engMatch?engMatch[1]:wt;
+    let def='';
+    const dm=defSection.match(/^# ([^\n#*]+)/gm);
+    if(dm&&dm[0]){
+        def=dm[0].replace(/^# /,'')
+            .replace(/\{\{(lb|label|lbl)\|[^}]*\}\}/gi,'')
+            .replace(/\{\{(gloss|gl)\|([^}]*)\}\}/gi,'($2)')
+            .replace(/\{\{[^}]*\}\}/g,'')
+            .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
+            .replace(/<[^>]+>/g,'').trim().substring(0,200);
+    }
+    const posMatch=defSection.match(/===\s*(Noun|Verb|Adjective|Adverb|Preposition|Pronoun|Conjunction)\s*===/i);
+    if(posMatch&&def)def=`(${posMatch[1]}) ${def}`;
+
+    return{chain,cleanEtym,def};
+}
+
+// ============================================================
+// MAIN SEARCH
+// ============================================================
+window._cur=null;
+function replay(){if(window._cur){drawMap(window._cur);drawTL(window._cur)}}
+
+async function go(word){
+    if(!word||!word.trim())return;
+    word=word.trim().toLowerCase();
+    document.getElementById('inp').value=word;
+    const lo=document.getElementById('lo');
+    lo.classList.add('v');
+    document.getElementById('lotx').textContent='Fetching from Wiktionary...';
+
+    try{
+        const wt=await fetchWikitext(word);
+        const result=parseWikitext(wt,word);
+        window._cur=result.chain;
+
+        // Word card
+        document.getElementById('wc').innerHTML=
+            `<div class="wd">${word}</div>${result.def?`<div class="wm">${result.def}</div>`:''}`;
+
+        // Map + Timeline
+        drawMap(result.chain);
+        drawTL(result.chain);
+
+        // Etymology panel
+        const fc=document.getElementById('fc');
+        const facts=[];
+        if(result.chain.length>1)
+            facts.push({l:'Languages',t:`This word passed through ${result.chain.length} languages on its way to modern English.`});
+        if(result.chain[0]&&result.chain[0].language!=='English')
+            facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${result.chain[0].meaning?', in the '+result.chain[0].meaning+' region':''}.`});
+        if(result.cleanEtym)
+            facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,600)+(result.cleanEtym.length>600?'...':'')});
+        fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')
+            ||'<div class="fi"><div class="ft" style="color:var(--tm)">No detailed etymology data found.</div></div>';
+
+        drawRel(word);
+        document.getElementById('mc').classList.add('v');
+        setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
+
+    }catch(e){
+        console.error(e);
+        document.getElementById('mc').classList.add('v');
+        document.getElementById('wc').innerHTML=`<div class="err"><h3>Word not found</h3><p>${e.message}. Try another word.</p></div>`;
+        document.getElementById('map').innerHTML='';
+        document.getElementById('tl').innerHTML='';
+        document.getElementById('fc').innerHTML='';
+        drawRel(word);
+    }finally{
+        lo.classList.remove('v');
+    }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('btn').addEventListener('click',()=>go(document.getElementById('inp').value));
+document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter')go(e.target.value)});
+const ex=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle'];
+document.getElementById('examples').innerHTML=ex.map(w=>`<button onclick="go('${w}')">${w}</button>`).join('');
+document.getElementById('inp').focus();
+</script>
+</body>
+</html>
