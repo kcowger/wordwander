@@ -29,21 +29,28 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .wm{font-size:.9rem;color:var(--tm);max-width:600px;margin:0 auto;line-height:1.6}
 .ms{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;position:relative}
 .mt{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1rem}
-.mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden}
+.mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden;cursor:grab;touch-action:none}
+.mpc:active{cursor:grabbing}
 .mpc svg{width:100%;height:100%}
+.map-controls{position:absolute;bottom:1rem;right:1rem;display:flex;gap:.3rem;z-index:2}
+.map-controls button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bd);background:var(--sh);color:var(--tm);cursor:pointer;font-size:1rem;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.map-controls button:hover{border-color:var(--ac);color:var(--tx)}
 .rb{position:absolute;top:1rem;right:1rem;padding:.4rem .8rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;background:var(--sh);border:1px solid var(--bd);border-radius:6px;color:var(--tm);cursor:pointer;font-family:inherit;z-index:2}
 .rb:hover{border-color:var(--ac);color:var(--tx)}
 .js{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem}
 .st{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1.5rem}
 .tl{position:relative;padding-left:2rem}
 .tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--ac),var(--gd));border-radius:1px}
-.ti{position:relative;margin-bottom:1.5rem;opacity:0;transform:translateX(-10px);animation:si .5s ease forwards}
+.ti{position:relative;margin-bottom:1.8rem;opacity:0;transform:translateX(-10px);animation:si .5s ease forwards}
 .ti:last-child{margin-bottom:0}
 .td{position:absolute;left:-2rem;top:4px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--ac);z-index:1}
 .ti:last-child .td{border-color:var(--gd);box-shadow:0 0 8px var(--gg)}
 .ti:first-child .td{background:var(--ac);box-shadow:0 0 8px var(--ag)}
-.tla{font-weight:600;font-size:.95rem;margin-bottom:.15rem}
-.tw{font-size:1.3rem;font-style:italic;color:var(--gd);margin-bottom:.25rem}
+.tla{font-weight:600;font-size:.95rem;margin-bottom:.1rem}
+.tw{font-size:1.3rem;font-style:italic;color:var(--gd);margin-bottom:.2rem}
+.tmeta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.2rem}
+.tyear{font-size:.75rem;color:var(--ac);font-weight:500;letter-spacing:.03em}
+.tpeople{font-size:.75rem;color:var(--tm);font-style:italic}
 .tmn{font-size:.85rem;color:var(--tm);line-height:1.5}
 @keyframes si{to{opacity:1;transform:translateX(0)}}
 .bg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
@@ -85,7 +92,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 </section>
 <div class="mc" id="mc">
 <div class="wc" id="wc"></div>
-<div class="ms"><div class="mt">Migration Path</div><button class="rb" onclick="replay()">↻ Replay</button><div class="mpc" id="map"></div></div>
+<div class="ms">
+<div class="mt">Migration Path</div>
+<button class="rb" onclick="replay()">↻ Replay</button>
+<div class="map-controls">
+<button onclick="zoomMap(1.3)" title="Zoom in">+</button>
+<button onclick="zoomMap(0.7)" title="Zoom out">−</button>
+<button onclick="resetZoom()" title="Reset">⟲</button>
+</div>
+<div class="mpc" id="map"></div>
+</div>
 <div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
 <div class="bg">
 <div class="fs"><div class="st">Etymology</div><div id="fc"></div></div>
@@ -96,7 +112,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
 <script>
 // ============================================================
-// LANGUAGE CODE → NAME MAP (same as proven in debug file)
+// LANGUAGE CODE → NAME
 // ============================================================
 const CODE2NAME = {
     'en':'English','enm':'Middle English','ang':'Old English',
@@ -133,133 +149,134 @@ const CODE2NAME = {
 };
 
 // ============================================================
-// LANGUAGE → COORDINATES
+// LANGUAGE → COORDINATES + YEAR RANGES + PEOPLES
 // ============================================================
 const LC = {
-    'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe'},
-    'Proto-Germanic':{lat:54,lng:12,lb:'Northern Europe'},
-    'Proto-West Germanic':{lat:52,lng:8,lb:'Western Europe'},
-    'Proto-Slavic':{lat:50,lng:30,lb:'Eastern Europe'},
-    'Proto-Celtic':{lat:48,lng:5,lb:'Central Europe'},
-    'Proto-Italic':{lat:43,lng:12,lb:'Italian Peninsula'},
-    'Proto-Semitic':{lat:30,lng:38,lb:'Levant'},
-    'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans'},
-    'Proto-Balto-Slavic':{lat:52,lng:24,lb:'Eastern Europe'},
-    'Proto-Finnic':{lat:60,lng:25,lb:'Finland'},
-    'Proto-Turkic':{lat:47,lng:88,lb:'Central Asia'},
-    'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'East Asia'},
-    'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan'},
-    'Proto-Dravidian':{lat:13,lng:78,lb:'South India'},
-    'Latin':{lat:41.9,lng:12.5,lb:'Rome'},
-    'Late Latin':{lat:41.9,lng:12.5,lb:'Rome'},
-    'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire'},
-    'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe'},
-    'New Latin':{lat:48.8,lng:2.3,lb:'Early Modern Europe'},
-    'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens'},
-    'Greek':{lat:37.97,lng:23.72,lb:'Greece'},
-    'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople'},
-    'Sanskrit':{lat:27,lng:78,lb:'Northern India'},
-    'Vedic Sanskrit':{lat:28,lng:77,lb:'Northern India'},
-    'Old Persian':{lat:30,lng:52,lb:'Persia'},
-    'Middle Persian':{lat:32.5,lng:52,lb:'Persia'},
-    'Persian':{lat:35.7,lng:51.4,lb:'Iran'},
-    'Avestan':{lat:34,lng:60,lb:'Ancient Iran'},
-    'Arabic':{lat:24.7,lng:46.7,lb:'Arabia'},
-    'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz'},
-    'Old English':{lat:51.5,lng:-1,lb:'England'},
-    'Middle English':{lat:51.5,lng:-1,lb:'England'},
-    'English':{lat:51.5,lng:-0.12,lb:'London'},
-    'Old Norse':{lat:60,lng:11,lb:'Scandinavia'},
-    'Old High German':{lat:50,lng:10,lb:'Germany'},
-    'Middle High German':{lat:50,lng:10,lb:'Germany'},
-    'German':{lat:52.5,lng:13.4,lb:'Berlin'},
-    'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam'},
-    'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands'},
-    'Old Dutch':{lat:52,lng:5,lb:'Netherlands'},
-    'Old Saxon':{lat:53,lng:9,lb:'N. Germany'},
-    'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia'},
-    'Gothic':{lat:46,lng:24,lb:'Gothic lands'},
-    'Swedish':{lat:59.3,lng:18,lb:'Stockholm'},
-    'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen'},
-    'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo'},
-    'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik'},
-    'French':{lat:48.86,lng:2.35,lb:'Paris'},
-    'Old French':{lat:48.86,lng:2.35,lb:'France'},
-    'Middle French':{lat:48.86,lng:2.35,lb:'France'},
-    'Anglo-Norman':{lat:49,lng:-0.4,lb:'Normandy'},
-    'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid'},
-    'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile'},
-    'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon'},
-    'Italian':{lat:41.9,lng:12.5,lb:'Rome'},
-    'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest'},
-    'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona'},
-    'Occitan':{lat:43.6,lng:3.9,lb:'Southern France'},
-    'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland'},
-    'Irish':{lat:53.3,lng:-6.3,lb:'Dublin'},
-    'Welsh':{lat:51.5,lng:-3.2,lb:'Wales'},
-    'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland'},
-    'Russian':{lat:55.75,lng:37.6,lb:'Moscow'},
-    'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans'},
-    'Polish':{lat:52.2,lng:21,lb:'Warsaw'},
-    'Czech':{lat:50.08,lng:14.4,lb:'Prague'},
-    'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv'},
-    'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia'},
-    'Croatian':{lat:45.8,lng:16,lb:'Zagreb'},
-    'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade'},
-    'Turkish':{lat:39.9,lng:32.9,lb:'Ankara'},
-    'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul'},
-    'Chinese':{lat:39.9,lng:116.4,lb:'Beijing'},
-    'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an"},
-    'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China'},
-    'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo'},
-    'Korean':{lat:37.55,lng:127,lb:'Seoul'},
-    'Hindi':{lat:28.6,lng:77.2,lb:'Delhi'},
-    'Urdu':{lat:33.7,lng:73,lb:'Islamabad'},
-    'Tamil':{lat:13,lng:80.3,lb:'Chennai'},
-    'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka'},
-    'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore'},
-    'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad'},
-    'Marathi':{lat:19,lng:72.8,lb:'Mumbai'},
-    'Pali':{lat:25,lng:83,lb:'Northern India'},
-    'Malay':{lat:3.1,lng:101.7,lb:'Malaysia'},
-    'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta'},
-    'Tagalog':{lat:14.6,lng:121,lb:'Manila'},
-    'Javanese':{lat:-7.8,lng:110.4,lb:'Java'},
-    'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java'},
-    'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico'},
-    'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico'},
-    'Quechua':{lat:-13.5,lng:-72,lb:'Andes'},
-    'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean'},
-    'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki'},
-    'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest'},
-    'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn'},
-    'Hebrew':{lat:31.8,lng:35.2,lb:'Israel'},
-    'Aramaic':{lat:33.5,lng:36.3,lb:'Levant'},
-    'Phoenician':{lat:34,lng:35.5,lb:'Levant'},
-    'Egyptian':{lat:26,lng:32,lb:'Egypt'},
-    'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa'},
-    'Amharic':{lat:9,lng:38.7,lb:'Ethiopia'},
-    'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa'},
-    'Thai':{lat:13.75,lng:100.5,lb:'Bangkok'},
-    'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi'},
-    'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia'},
-    'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar'},
-    'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa'},
-    'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia'},
-    'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi'},
-    'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan'},
-    'Albanian':{lat:41.3,lng:19.8,lb:'Tirana'},
-    'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius'},
-    'Latvian':{lat:56.95,lng:24.1,lb:'Riga'},
+    'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe',yr:'~4500–2500 BCE',ppl:'Yamnaya / early Indo-European pastoralists'},
+    'Proto-Germanic':{lat:54,lng:12,lb:'Northern Europe',yr:'~500 BCE–200 CE',ppl:'Early Germanic tribes'},
+    'Proto-West Germanic':{lat:52,lng:8,lb:'Western Europe',yr:'~200–500 CE',ppl:'Western Germanic peoples'},
+    'Proto-Slavic':{lat:50,lng:30,lb:'Eastern Europe',yr:'~1500 BCE–500 CE',ppl:'Early Slavic peoples'},
+    'Proto-Celtic':{lat:48,lng:5,lb:'Central Europe',yr:'~800–300 BCE',ppl:'Hallstatt and La Tène cultures'},
+    'Proto-Italic':{lat:43,lng:12,lb:'Italian Peninsula',yr:'~1000–500 BCE',ppl:'Italic tribes'},
+    'Proto-Semitic':{lat:30,lng:38,lb:'Levant',yr:'~3750–2500 BCE',ppl:'Early Semitic peoples'},
+    'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans',yr:'~2000–1500 BCE',ppl:'Early Hellenic migrants'},
+    'Proto-Balto-Slavic':{lat:52,lng:24,lb:'Eastern Europe',yr:'~1500–1000 BCE',ppl:'Balto-Slavic communities'},
+    'Proto-Finnic':{lat:60,lng:25,lb:'Finland',yr:'~1500–1000 BCE',ppl:'Finno-Ugric peoples'},
+    'Proto-Turkic':{lat:47,lng:88,lb:'Central Asia',yr:'~500 BCE–500 CE',ppl:'Early Turkic nomads'},
+    'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'East Asia',yr:'~4000–3000 BCE',ppl:'Early Sino-Tibetan peoples'},
+    'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan',yr:'~3500–2000 BCE',ppl:'Austronesian seafarers'},
+    'Proto-Dravidian':{lat:13,lng:78,lb:'South India',yr:'~3000–1500 BCE',ppl:'Early Dravidian peoples'},
+    'Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~700 BCE–200 CE',ppl:'Romans'},
+    'Late Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~200–600 CE',ppl:'Late Roman / early Christian scholars'},
+    'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire',yr:'~200–900 CE',ppl:'Common people of the Roman provinces'},
+    'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe',yr:'~500–1500 CE',ppl:'Monks, clergy, and scholars'},
+    'New Latin':{lat:48.8,lng:2.3,lb:'Early Modern Europe',yr:'~1500–1900 CE',ppl:'Renaissance and Enlightenment scholars'},
+    'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens',yr:'~800–300 BCE',ppl:'Greeks of the city-states'},
+    'Greek':{lat:37.97,lng:23.72,lb:'Greece',yr:'modern',ppl:'Greek people'},
+    'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople',yr:'~330–1453 CE',ppl:'Byzantines'},
+    'Sanskrit':{lat:27,lng:78,lb:'Northern India',yr:'~1500 BCE–600 CE',ppl:'Vedic and Classical Indian scholars'},
+    'Vedic Sanskrit':{lat:28,lng:77,lb:'Northern India',yr:'~1500–500 BCE',ppl:'Vedic priests and poets'},
+    'Old Persian':{lat:30,lng:52,lb:'Persia',yr:'~600–300 BCE',ppl:'Achaemenid Persians'},
+    'Middle Persian':{lat:32.5,lng:52,lb:'Persia',yr:'~300 BCE–800 CE',ppl:'Sasanian Persians'},
+    'Persian':{lat:35.7,lng:51.4,lb:'Iran',yr:'~800 CE–present',ppl:'Persian-speaking peoples'},
+    'Avestan':{lat:34,lng:60,lb:'Ancient Iran',yr:'~1500–500 BCE',ppl:'Zoroastrian priests'},
+    'Arabic':{lat:24.7,lng:46.7,lb:'Arabia',yr:'~500 CE–present',ppl:'Arab peoples'},
+    'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz',yr:'~600 CE–present',ppl:'Hejazi Arabs'},
+    'Old English':{lat:51.5,lng:-1,lb:'England',yr:'~450–1100 CE',ppl:'Anglo-Saxons'},
+    'Middle English':{lat:51.5,lng:-1,lb:'England',yr:'~1100–1500 CE',ppl:'Post-Norman English'},
+    'English':{lat:51.5,lng:-0.12,lb:'London',yr:'~1500–present',ppl:'English speakers worldwide'},
+    'Old Norse':{lat:60,lng:11,lb:'Scandinavia',yr:'~700–1300 CE',ppl:'Vikings and Norse peoples'},
+    'Old High German':{lat:50,lng:10,lb:'Germany',yr:'~750–1050 CE',ppl:'Frankish and Alemannic peoples'},
+    'Middle High German':{lat:50,lng:10,lb:'Germany',yr:'~1050–1350 CE',ppl:'Medieval German nobility and poets'},
+    'German':{lat:52.5,lng:13.4,lb:'Berlin',yr:'~1350–present',ppl:'German-speaking peoples'},
+    'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam',yr:'~1500–present',ppl:'Dutch and Flemish peoples'},
+    'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands',yr:'~1150–1500 CE',ppl:'Medieval Low Countries peoples'},
+    'Old Dutch':{lat:52,lng:5,lb:'Netherlands',yr:'~450–1150 CE',ppl:'Frankish settlers in the Low Countries'},
+    'Old Saxon':{lat:53,lng:9,lb:'N. Germany',yr:'~450–1100 CE',ppl:'Continental Saxons'},
+    'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia',yr:'~700–1500 CE',ppl:'Frisians'},
+    'Gothic':{lat:46,lng:24,lb:'Gothic lands',yr:'~200–600 CE',ppl:'Visigoths and Ostrogoths'},
+    'Swedish':{lat:59.3,lng:18,lb:'Stockholm',yr:'~1500–present',ppl:'Swedes'},
+    'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen',yr:'~1500–present',ppl:'Danes'},
+    'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo',yr:'~1500–present',ppl:'Norwegians'},
+    'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik',yr:'~900–present',ppl:'Icelanders'},
+    'French':{lat:48.86,lng:2.35,lb:'Paris',yr:'~1300–present',ppl:'French people'},
+    'Old French':{lat:48.86,lng:2.35,lb:'France',yr:'~842–1300 CE',ppl:'Franks and Gallo-Romans'},
+    'Middle French':{lat:48.86,lng:2.35,lb:'France',yr:'~1300–1600 CE',ppl:'Late medieval and Renaissance French'},
+    'Anglo-Norman':{lat:49,lng:-0.4,lb:'Normandy',yr:'~1066–1300 CE',ppl:'Norman conquerors of England'},
+    'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid',yr:'~1500–present',ppl:'Spanish speakers'},
+    'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile',yr:'~900–1500 CE',ppl:'Castilians during the Reconquista'},
+    'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–present',ppl:'Portuguese people'},
+    'Italian':{lat:41.9,lng:12.5,lb:'Rome',yr:'~1300–present',ppl:'Italians'},
+    'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest',yr:'~1500–present',ppl:'Romanians'},
+    'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona',yr:'~1000–present',ppl:'Catalans'},
+    'Occitan':{lat:43.6,lng:3.9,lb:'Southern France',yr:'~900–present',ppl:'Occitan troubadours and peoples'},
+    'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland',yr:'~600–900 CE',ppl:'Early Irish monks and scholars'},
+    'Irish':{lat:53.3,lng:-6.3,lb:'Dublin',yr:'~900–present',ppl:'Irish people'},
+    'Welsh':{lat:51.5,lng:-3.2,lb:'Wales',yr:'~600–present',ppl:'Welsh people'},
+    'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland',yr:'~1000–present',ppl:'Highland Scots'},
+    'Russian':{lat:55.75,lng:37.6,lb:'Moscow',yr:'~1300–present',ppl:'Russian people'},
+    'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans',yr:'~860–1100 CE',ppl:'Slavic monks (Saints Cyril & Methodius tradition)'},
+    'Polish':{lat:52.2,lng:21,lb:'Warsaw',yr:'~1500–present',ppl:'Polish people'},
+    'Czech':{lat:50.08,lng:14.4,lb:'Prague',yr:'~1300–present',ppl:'Czech people'},
+    'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv',yr:'~1300–present',ppl:'Ukrainian people'},
+    'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia',yr:'~900–present',ppl:'Bulgarians'},
+    'Croatian':{lat:45.8,lng:16,lb:'Zagreb',yr:'~1100–present',ppl:'Croats'},
+    'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade',yr:'~1100–present',ppl:'Serbs'},
+    'Turkish':{lat:39.9,lng:32.9,lb:'Ankara',yr:'~1300–present',ppl:'Turkish people'},
+    'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul',yr:'~1300–1920 CE',ppl:'Ottoman court and scholars'},
+    'Chinese':{lat:39.9,lng:116.4,lb:'Beijing',yr:'modern',ppl:'Chinese speakers'},
+    'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an",yr:'~600–1200 CE',ppl:'Tang and Song dynasty Chinese'},
+    'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China',yr:'~1250–200 BCE',ppl:'Zhou and Shang dynasty Chinese'},
+    'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo',yr:'~700–present',ppl:'Japanese people'},
+    'Korean':{lat:37.55,lng:127,lb:'Seoul',yr:'~400–present',ppl:'Korean people'},
+    'Hindi':{lat:28.6,lng:77.2,lb:'Delhi',yr:'~1000–present',ppl:'Hindi speakers of Northern India'},
+    'Urdu':{lat:33.7,lng:73,lb:'Islamabad',yr:'~1200–present',ppl:'Mughal court and South Asian Muslims'},
+    'Tamil':{lat:13,lng:80.3,lb:'Chennai',yr:'~300 BCE–present',ppl:'Tamil people'},
+    'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka',yr:'~1000–present',ppl:'Bengali people'},
+    'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore',yr:'~1000–present',ppl:'Punjabi people'},
+    'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad',yr:'~1100–present',ppl:'Gujarati people'},
+    'Marathi':{lat:19,lng:72.8,lb:'Mumbai',yr:'~1000–present',ppl:'Marathi people'},
+    'Pali':{lat:25,lng:83,lb:'Northern India',yr:'~500 BCE–present',ppl:'Buddhist monks and scholars'},
+    'Malay':{lat:3.1,lng:101.7,lb:'Malaysia',yr:'~700–present',ppl:'Malay peoples'},
+    'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta',yr:'~1900–present',ppl:'Indonesian people'},
+    'Tagalog':{lat:14.6,lng:121,lb:'Manila',yr:'~900–present',ppl:'Tagalog people'},
+    'Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–present',ppl:'Javanese people'},
+    'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–1500 CE',ppl:'Hindu-Buddhist Javanese courts'},
+    'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico',yr:'~600–present',ppl:'Nahua peoples'},
+    'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico',yr:'~1300–1600 CE',ppl:'Aztecs'},
+    'Quechua':{lat:-13.5,lng:-72,lb:'Andes',yr:'~1000–present',ppl:'Inca and Andean peoples'},
+    'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean',yr:'~1200–1600 CE',ppl:'Taino people of the Caribbean'},
+    'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki',yr:'~1500–present',ppl:'Finnish people'},
+    'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest',yr:'~1000–present',ppl:'Magyars'},
+    'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn',yr:'~1200–present',ppl:'Estonian people'},
+    'Hebrew':{lat:31.8,lng:35.2,lb:'Israel',yr:'~1000 BCE–present',ppl:'Israelites and Jewish communities'},
+    'Aramaic':{lat:33.5,lng:36.3,lb:'Levant',yr:'~1100 BCE–present',ppl:'Aramean and Assyrian peoples'},
+    'Phoenician':{lat:34,lng:35.5,lb:'Levant',yr:'~1200–300 BCE',ppl:'Phoenician traders'},
+    'Egyptian':{lat:26,lng:32,lb:'Egypt',yr:'~3100 BCE–600 CE',ppl:'Ancient Egyptians'},
+    'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa',yr:'~1000–present',ppl:'Swahili coast peoples'},
+    'Amharic':{lat:9,lng:38.7,lb:'Ethiopia',yr:'~1200–present',ppl:'Ethiopian peoples'},
+    'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa',yr:'~1000–present',ppl:'Yoruba people'},
+    'Thai':{lat:13.75,lng:100.5,lb:'Bangkok',yr:'~1200–present',ppl:'Thai people'},
+    'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi',yr:'~900–present',ppl:'Vietnamese people'},
+    'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia',yr:'~600–present',ppl:'Khmer people'},
+    'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar',yr:'~800–present',ppl:'Burmese people'},
+    'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa',yr:'~600–present',ppl:'Tibetan people'},
+    'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia',yr:'~1200–present',ppl:'Mongol peoples'},
+    'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi',yr:'~400–present',ppl:'Georgian people'},
+    'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan',yr:'~400–present',ppl:'Armenian people'},
+    'Albanian':{lat:41.3,lng:19.8,lb:'Tirana',yr:'~1400–present',ppl:'Albanian people'},
+    'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius',yr:'~1500–present',ppl:'Lithuanians'},
+    'Latvian':{lat:56.95,lng:24.1,lb:'Riga',yr:'~1500–present',ppl:'Latvians'},
 };
 
 // ============================================================
-// MAP SVG
+// MAP SVG + ZOOM STATE
 // ============================================================
 const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
 <defs><radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".6"/><stop offset="100%" stop-color="#6c63ff" stop-opacity="0"/></radialGradient>
 <radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f0c040" stop-opacity=".6"/><stop offset="100%" stop-color="#f0c040" stop-opacity="0"/></radialGradient>
 <linearGradient id="rG"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".8"/><stop offset="100%" stop-color="#f0c040" stop-opacity=".8"/></linearGradient></defs>
+<g id="panZoomGroup">
 <g fill="#1a1a2e" stroke="#2a2a3a" stroke-width=".5">
 <path d="M80 80L120 60 170 65 200 80 230 95 255 120 250 145 260 170 240 190 220 200 200 220 180 230 160 220 140 200 120 180 100 150 90 120Z"/>
 <path d="M180 230L190 240 200 255 210 270 200 280 190 270 180 260 175 245Z"/>
@@ -278,23 +295,106 @@ const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
 <path d="M740 225L755 220 765 225 760 232 748 232Z"/><path d="M770 225L785 222 792 228 785 234 773 232Z"/>
 <path d="M415 48L425 45 432 50 427 55 418 53Z"/></g>
 <g stroke="#151520" stroke-width=".3" fill="none"><line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="4,8"/><line x1="500" y1="0" x2="500" y2="500" stroke-dasharray="4,8"/></g>
-<g id="mR"></g><g id="mP"></g><g id="mL"></g></svg>`;
+<g id="mR"></g><g id="mP"></g><g id="mL"></g>
+</g></svg>`;
+
+let mapScale=1, mapX=0, mapY=0;
+let isDragging=false, dragStartX=0, dragStartY=0, dragMapX=0, dragMapY=0;
+
+function updateMapTransform(){
+    const g=document.querySelector('#panZoomGroup');
+    if(g)g.setAttribute('transform',`translate(${mapX},${mapY}) scale(${mapScale})`);
+}
+
+function zoomMap(factor){
+    mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
+    updateMapTransform();
+}
+
+function resetZoom(){
+    mapScale=1;mapX=0;mapY=0;
+    updateMapTransform();
+}
+
+function initMapInteraction(){
+    const el=document.getElementById('map');
+
+    // Mouse wheel zoom
+    el.addEventListener('wheel',e=>{
+        e.preventDefault();
+        const factor=e.deltaY<0?1.15:0.87;
+        mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
+        updateMapTransform();
+    },{passive:false});
+
+    // Mouse drag pan
+    el.addEventListener('mousedown',e=>{
+        isDragging=true;dragStartX=e.clientX;dragStartY=e.clientY;
+        dragMapX=mapX;dragMapY=mapY;
+    });
+    window.addEventListener('mousemove',e=>{
+        if(!isDragging)return;
+        const svg=el.querySelector('svg');
+        if(!svg)return;
+        const rect=svg.getBoundingClientRect();
+        const scaleFactorX=1000/rect.width;
+        const scaleFactorY=500/rect.height;
+        mapX=dragMapX+(e.clientX-dragStartX)*scaleFactorX;
+        mapY=dragMapY+(e.clientY-dragStartY)*scaleFactorY;
+        updateMapTransform();
+    });
+    window.addEventListener('mouseup',()=>{isDragging=false});
+
+    // Touch support
+    let lastTouchDist=0;
+    el.addEventListener('touchstart',e=>{
+        if(e.touches.length===1){
+            isDragging=true;dragStartX=e.touches[0].clientX;dragStartY=e.touches[0].clientY;
+            dragMapX=mapX;dragMapY=mapY;
+        }
+        if(e.touches.length===2){
+            isDragging=false;
+            lastTouchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+        }
+    },{passive:true});
+    el.addEventListener('touchmove',e=>{
+        if(e.touches.length===1&&isDragging){
+            const svg=el.querySelector('svg');if(!svg)return;
+            const rect=svg.getBoundingClientRect();
+            mapX=dragMapX+(e.touches[0].clientX-dragStartX)*(1000/rect.width);
+            mapY=dragMapY+(e.touches[0].clientY-dragStartY)*(500/rect.height);
+            updateMapTransform();
+        }
+        if(e.touches.length===2){
+            const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+            if(lastTouchDist>0){
+                const factor=dist/lastTouchDist;
+                mapScale=Math.max(0.5,Math.min(5,mapScale*factor));
+                updateMapTransform();
+            }
+            lastTouchDist=dist;
+        }
+    },{passive:true});
+    el.addEventListener('touchend',()=>{isDragging=false;lastTouchDist=0});
+}
 
 // ============================================================
-// RENDERING FUNCTIONS
+// RENDERING
 // ============================================================
 function toXY(lat,lng){return{x:((lng+180)/360)*1000,y:((90-lat)/180)*500}}
-let T=[];
-function clr(){T.forEach(clearTimeout);T=[]}
+let TT=[];
+function clr(){TT.forEach(clearTimeout);TT=[]}
 
 function drawMap(j){
     const c=document.getElementById('map');c.innerHTML=MSVG;
+    mapScale=1;mapX=0;mapY=0;
+    initMapInteraction();
     const rG=c.querySelector('#mR'),pG=c.querySelector('#mP'),lG=c.querySelector('#mL');
     clr();
     j.forEach((s,i)=>{
         if(!s.lat||!s.lng)return;
         const p=toXY(s.lat,s.lng);
-        T.push(setTimeout(()=>{
+        TT.push(setTimeout(()=>{
             if(i>0&&j[i-1].lat&&j[i-1].lng){
                 const pv=toXY(j[i-1].lat,j[i-1].lng);
                 const mx=(pv.x+p.x)/2,my=Math.min(pv.y,p.y)-25-Math.abs(pv.x-p.x)*.08;
@@ -324,8 +424,16 @@ function drawMap(j){
 function drawTL(j){
     const el=document.getElementById('tl');el.innerHTML='';
     j.forEach((s,i)=>{
+        const info=LC[s.language]||{};
         const d=document.createElement('div');d.className='ti';d.style.animationDelay=`${i*.15+.2}s`;
-        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${s.word?`<div class="tw">${s.word}</div>`:''}<div class="tmn">${s.meaning||''}</div>`;
+        d.innerHTML=`<div class="td"></div>
+            <div class="tla">${s.language}</div>
+            ${s.word?`<div class="tw">${s.word}</div>`:''}
+            <div class="tmeta">
+                ${info.yr?`<span class="tyear">${info.yr}</span>`:''}
+                ${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}
+            </div>
+            <div class="tmn">${s.meaning||''}</div>`;
         el.appendChild(d);
     });
 }
@@ -337,7 +445,7 @@ function drawRel(word){
 }
 
 // ============================================================
-// API FETCH (same as debug file)
+// API + PARSER (proven in debug file)
 // ============================================================
 async function fetchWikitext(word){
     const url=`https://en.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*`;
@@ -354,17 +462,12 @@ async function fetchWikitext(word){
     throw new Error('Unexpected API format');
 }
 
-// ============================================================
-// WIKITEXT PARSER (same logic as debug file)
-// ============================================================
-function parseWikitext(wt, word){
-    // Find ==English== then ===Etymology===
+function parseWikitext(wt,word){
     const engMatch=wt.match(/==\s*English\s*==([\s\S]*?)(?=\n==[^=]|$)/i);
     const searchIn=engMatch?engMatch[1]:wt;
     const etymMatch=searchIn.match(/={2,4}\s*Etymology\s*(?:1\s*)?={2,4}\s*\n([\s\S]*?)(?=\n={2,4}[^=]|$)/i);
     const etymSection=etymMatch?etymMatch[1]:'';
 
-    // Extract templates (same regex as debug)
     const chain=[];
     const seen=new Set();
     const templateRe=/\{\{(inh|inherited|der|derived|bor|borrowed|m|mention)\|([^}]*)\}\}/gi;
@@ -374,14 +477,11 @@ function parseWikitext(wt, word){
         const parts=tm[2].split('|').map(s=>s.trim());
         let langCode,foreignWord='';
         if(['inh','inherited','der','derived','bor','borrowed'].includes(type)){
-            langCode=parts[1];
-            foreignWord=parts[2]||'';
+            langCode=parts[1];foreignWord=parts[2]||'';
         }else{
-            langCode=parts[0];
-            foreignWord=parts[1]||'';
+            langCode=parts[0];foreignWord=parts[1]||'';
         }
         if(!langCode)continue;
-        // Clean: remove named params like t=, tr=, pos=
         foreignWord=foreignWord.replace(/\|.*/,'');
         if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(foreignWord))foreignWord='';
         const langName=CODE2NAME[langCode];
@@ -391,20 +491,17 @@ function parseWikitext(wt, word){
         }
     }
 
-    // Reverse if needed (Wiktionary goes newest→oldest)
     if(chain.length>1){
         const f=chain[0].language.toLowerCase(),l=chain[chain.length-1].language.toLowerCase();
         if((f.includes('english')||f==='middle english')&&(l.includes('proto')||l==='latin'||l==='ancient greek'||l==='arabic'||l==='sanskrit'))
             chain.reverse();
     }
 
-    // Ensure English at end
     const ei=chain.findIndex(c=>c.language==='English');
     if(ei>=0&&ei<chain.length-1)chain.push(chain.splice(ei,1)[0]);
     if(!chain.some(c=>c.language==='English'))
         chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
 
-    // Clean etymology text for display
     let cleanEtym=etymSection
         .replace(/\{\{(inh|der|bor|inherited|derived|borrowed)\|[^|]*\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
             (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
@@ -417,7 +514,6 @@ function parseWikitext(wt, word){
         .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'')
         .replace(/\s+/g,' ').trim();
 
-    // Get definition
     const defSection=engMatch?engMatch[1]:wt;
     let def='';
     const dm=defSection.match(/^# ([^\n#*]+)/gm);
@@ -436,7 +532,7 @@ function parseWikitext(wt, word){
 }
 
 // ============================================================
-// MAIN SEARCH
+// MAIN
 // ============================================================
 window._cur=null;
 function replay(){if(window._cur){drawMap(window._cur);drawTL(window._cur)}}
@@ -454,21 +550,20 @@ async function go(word){
         const result=parseWikitext(wt,word);
         window._cur=result.chain;
 
-        // Word card
         document.getElementById('wc').innerHTML=
             `<div class="wd">${word}</div>${result.def?`<div class="wm">${result.def}</div>`:''}`;
 
-        // Map + Timeline
         drawMap(result.chain);
         drawTL(result.chain);
 
-        // Etymology panel
         const fc=document.getElementById('fc');
         const facts=[];
         if(result.chain.length>1)
             facts.push({l:'Languages',t:`This word passed through ${result.chain.length} languages on its way to modern English.`});
-        if(result.chain[0]&&result.chain[0].language!=='English')
-            facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${result.chain[0].meaning?', in the '+result.chain[0].meaning+' region':''}.`});
+        if(result.chain[0]&&result.chain[0].language!=='English'){
+            const info=LC[result.chain[0].language]||{};
+            facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${info.yr?', around '+info.yr:''}.${info.ppl?' Carried by the '+info.ppl+'.':''}`});
+        }
         if(result.cleanEtym)
             facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,600)+(result.cleanEtym.length>600?'...':'')});
         fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')
@@ -477,7 +572,6 @@ async function go(word){
         drawRel(word);
         document.getElementById('mc').classList.add('v');
         setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
-
     }catch(e){
         console.error(e);
         document.getElementById('mc').classList.add('v');
@@ -486,14 +580,10 @@ async function go(word){
         document.getElementById('tl').innerHTML='';
         document.getElementById('fc').innerHTML='';
         drawRel(word);
-    }finally{
-        lo.classList.remove('v');
-    }
+    }finally{lo.classList.remove('v')}
 }
 
-// ============================================================
 // INIT
-// ============================================================
 document.getElementById('btn').addEventListener('click',()=>go(document.getElementById('inp').value));
 document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter')go(e.target.value)});
 const ex=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle'];
