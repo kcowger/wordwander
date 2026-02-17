@@ -9,7 +9,7 @@
 :root{--bg:#0a0a0f;--sf:#12121a;--sh:#1a1a25;--bd:#2a2a3a;--tx:#e8e8ef;--tm:#8888a0;--ac:#6c63ff;--ag:rgba(108,99,255,.3);--gd:#f0c040;--gg:rgba(240,192,64,.3)}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
 .hd{padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
-.logo{font-size:1.6rem;font-weight:700;color:var(--tx)}
+.logo{font-size:1.6rem;font-weight:700}
 .tag{font-size:.72rem;color:var(--tm);letter-spacing:.15em;text-transform:uppercase}
 .ss{display:flex;flex-direction:column;align-items:center;padding:3.5rem 2rem 1.5rem}
 .sc{position:relative;width:100%;max-width:520px}
@@ -22,21 +22,37 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ew{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;justify-content:center}
 .ew button{padding:.35rem .9rem;font-size:.78rem;background:var(--sf);border:1px solid var(--bd);border-radius:20px;color:var(--tm);cursor:pointer;font-family:inherit;transition:all .2s}
 .ew button:hover{border-color:var(--ac);color:var(--tx)}
+/* Sense picker */
+.sense-picker{display:none;max-width:520px;width:100%;margin-top:1rem}
+.sense-picker.v{display:block}
+.sp-title{font-size:.8rem;color:var(--tm);margin-bottom:.5rem;text-align:center}
+.sp-options{display:flex;flex-direction:column;gap:.4rem}
+.sp-opt{padding:.7rem 1rem;background:var(--sf);border:1px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .2s;text-align:left}
+.sp-opt:hover{border-color:var(--ac);background:var(--sh)}
+.sp-opt .sp-num{font-size:.7rem;color:var(--ac);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.15rem}
+.sp-opt .sp-txt{font-size:.88rem;line-height:1.4}
 .mc{display:none;max-width:1100px;margin:0 auto;padding:2rem}
-.mc.v{display:grid;grid-template-columns:1fr;gap:1.5rem}
+.mc.v{display:grid;gap:1.5rem}
 .wc{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem;text-align:center}
 .wd{font-size:2.8rem;font-weight:700;margin-bottom:.4rem}
 .wm{font-size:.9rem;color:var(--tm);max-width:600px;margin:0 auto;line-height:1.6}
 .ms{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;position:relative}
 .mt{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1rem}
-.mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden;cursor:grab;touch-action:none}
+.mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden;cursor:grab;touch-action:none;position:relative}
 .mpc:active{cursor:grabbing}
-.mpc svg{width:100%;height:100%}
+.mpc svg{width:100%;height:100%;display:block}
 .map-controls{position:absolute;bottom:1rem;right:1rem;display:flex;gap:.3rem;z-index:2}
-.map-controls button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bd);background:var(--sh);color:var(--tm);cursor:pointer;font-size:1rem;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.map-controls button{width:32px;height:32px;border-radius:6px;border:1px solid var(--bd);background:var(--sh);color:var(--tm);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .map-controls button:hover{border-color:var(--ac);color:var(--tx)}
 .rb{position:absolute;top:1rem;right:1rem;padding:.4rem .8rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;background:var(--sh);border:1px solid var(--bd);border-radius:6px;color:var(--tm);cursor:pointer;font-family:inherit;z-index:2}
 .rb:hover{border-color:var(--ac);color:var(--tx)}
+.map-popup{position:absolute;background:var(--sf);border:1px solid var(--ac);border-radius:10px;padding:.8rem 1rem;pointer-events:none;z-index:10;min-width:180px;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}
+.map-popup.vis{opacity:1}
+.map-popup .pp-lang{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
+.map-popup .pp-word{font-style:italic;color:var(--gd);font-size:1.05rem;margin-bottom:.3rem}
+.map-popup .pp-yr{font-size:.72rem;color:var(--ac);margin-bottom:.15rem}
+.map-popup .pp-ppl{font-size:.72rem;color:var(--tm);font-style:italic;margin-bottom:.2rem}
+.map-popup .pp-place{font-size:.75rem;color:var(--tm)}
 .js{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem}
 .st{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1.5rem}
 .tl{position:relative;padding-left:2rem}
@@ -49,16 +65,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .tla{font-weight:600;font-size:.95rem;margin-bottom:.1rem}
 .tw{font-size:1.3rem;font-style:italic;color:var(--gd);margin-bottom:.2rem}
 .tmeta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.2rem}
-.tyear{font-size:.75rem;color:var(--ac);font-weight:500;letter-spacing:.03em}
+.tyear{font-size:.75rem;color:var(--ac);font-weight:500}
 .tpeople{font-size:.75rem;color:var(--tm);font-style:italic}
 .tmn{font-size:.85rem;color:var(--tm);line-height:1.5}
+.ti.branch{margin-left:1.5rem}.ti.branch .td{border-color:var(--tm);background:var(--sh);width:12px;height:12px;top:6px}
+.ti.branch .tla{color:var(--tm);font-size:.88rem}.ti.branch .tw{font-size:1.1rem;color:var(--tm)}
+.branch-label{font-size:.7rem;color:var(--ac);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;margin-left:1.5rem;opacity:0;animation:si .4s ease forwards}
 @keyframes si{to{opacity:1;transform:translateX(0)}}
 .bg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 @media(max-width:768px){.bg{grid-template-columns:1fr}.hd{padding:1.2rem 1.5rem}.ss{padding:2rem 1.5rem 1rem}.wd{font-size:2rem}.mc{padding:1rem}}
 .fs,.rs{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem}
-.fi{padding:.8rem 0;border-bottom:1px solid var(--bd)}
-.fi:last-child{border-bottom:none;padding-bottom:0}
-.fi:first-child{padding-top:0}
+.fi{padding:.8rem 0;border-bottom:1px solid var(--bd)}.fi:last-child{border-bottom:none;padding-bottom:0}.fi:first-child{padding-top:0}
 .fl{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ac);margin-bottom:.35rem}
 .ft{font-size:.88rem;line-height:1.6}
 .rw{display:inline-block;padding:.4rem .9rem;margin:.25rem;font-size:.85rem;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:inherit;transition:all .2s}
@@ -72,11 +89,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 @keyframes dl{to{stroke-dashoffset:0}}
 .pd{animation:pu 2s ease-in-out infinite}
 @keyframes pu{0%,100%{r:4;opacity:1}50%{r:7;opacity:.6}}
-.ml{font-family:inherit;font-size:9px;fill:var(--tx);font-weight:500;text-anchor:middle;opacity:0;animation:fi .5s ease forwards}
-.mlb{fill:rgba(18,18,26,.85);rx:4;opacity:0;animation:fi .5s ease forwards}
 @keyframes fi{to{opacity:1}}
-.err{text-align:center;padding:2rem;color:var(--tm)}
-.err h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--tx)}
+.err{text-align:center;padding:2rem;color:var(--tm)}.err h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--tx)}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -88,6 +102,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <input type="text" class="si" id="inp" placeholder="Enter a word to trace its origins..." autocomplete="off">
 <button class="sb" id="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
 </div>
+<div class="sense-picker" id="sensePicker">
+<div class="sp-title">This word has multiple origins. Which meaning?</div>
+<div class="sp-options" id="senseOpts"></div>
+</div>
 <div class="ew" id="examples"></div>
 </section>
 <div class="mc" id="mc">
@@ -96,11 +114,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="mt">Migration Path</div>
 <button class="rb" onclick="replay()">↻ Replay</button>
 <div class="map-controls">
-<button onclick="zoomMap(1.3)" title="Zoom in">+</button>
-<button onclick="zoomMap(0.7)" title="Zoom out">−</button>
-<button onclick="resetZoom()" title="Reset">⟲</button>
+<button onclick="zoomMap(1.3)">+</button>
+<button onclick="zoomMap(0.7)">−</button>
+<button onclick="resetZoom()">⟲</button>
 </div>
-<div class="mpc" id="map"></div>
+<div class="mpc" id="map"><div class="map-popup" id="popup"></div></div>
 </div>
 <div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
 <div class="bg">
@@ -109,358 +127,343 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 </div>
 </div>
 <div class="lo" id="lo"><div class="ls"></div><div class="lt" id="lotx">Tracing origins...</div></div>
-
 <script>
-// ============================================================
-// LANGUAGE CODE → NAME
-// ============================================================
-const CODE2NAME = {
-    'en':'English','enm':'Middle English','ang':'Old English',
-    'gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European',
-    'la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin',
-    'grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek',
-    'sa':'Sanskrit','inc-ash':'Vedic Sanskrit',
-    'peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan',
-    'ar':'Arabic','acw':'Hijazi Arabic',
-    'non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German',
-    'nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian',
-    'got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic',
-    'fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman',
-    'es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan',
-    'sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic',
-    'ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian',
-    'tr':'Turkish','ota':'Ottoman Turkish',
-    'zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese',
-    'ja':'Japanese','ko':'Korean',
-    'hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi',
-    'ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese',
-    'nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino',
-    'fi':'Finnish','hu':'Hungarian','et':'Estonian',
-    'he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian',
-    'sw':'Swahili','am':'Amharic','yo':'Yoruba',
-    'th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese',
-    'ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian',
-    'pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian',
-    'sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic',
-    'sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic',
-    'bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic',
-    'trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan',
-    'map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian',
-};
+// Language code → name
+const C2N={'en':'English','enm':'Middle English','ang':'Old English','gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European','la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin','grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek','sa':'Sanskrit','inc-ash':'Vedic Sanskrit','peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan','ar':'Arabic','acw':'Hijazi Arabic','non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German','nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian','got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic','fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman','es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan','sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic','ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian','tr':'Turkish','ota':'Ottoman Turkish','zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese','ja':'Japanese','ko':'Korean','hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi','ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese','nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino','fi':'Finnish','hu':'Hungarian','et':'Estonian','he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian','sw':'Swahili','am':'Amharic','yo':'Yoruba','th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese','ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian','pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian','sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic','sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic','bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic','trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan','map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian'};
 
-// ============================================================
-// LANGUAGE → COORDINATES + YEAR RANGES + PEOPLES
-// ============================================================
-const LC = {
-    'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe',yr:'~4500–2500 BCE',ppl:'Yamnaya / early Indo-European pastoralists'},
-    'Proto-Germanic':{lat:54,lng:12,lb:'Northern Europe',yr:'~500 BCE–200 CE',ppl:'Early Germanic tribes'},
-    'Proto-West Germanic':{lat:52,lng:8,lb:'Western Europe',yr:'~200–500 CE',ppl:'Western Germanic peoples'},
-    'Proto-Slavic':{lat:50,lng:30,lb:'Eastern Europe',yr:'~1500 BCE–500 CE',ppl:'Early Slavic peoples'},
-    'Proto-Celtic':{lat:48,lng:5,lb:'Central Europe',yr:'~800–300 BCE',ppl:'Hallstatt and La Tène cultures'},
-    'Proto-Italic':{lat:43,lng:12,lb:'Italian Peninsula',yr:'~1000–500 BCE',ppl:'Italic tribes'},
-    'Proto-Semitic':{lat:30,lng:38,lb:'Levant',yr:'~3750–2500 BCE',ppl:'Early Semitic peoples'},
-    'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans',yr:'~2000–1500 BCE',ppl:'Early Hellenic migrants'},
-    'Proto-Balto-Slavic':{lat:52,lng:24,lb:'Eastern Europe',yr:'~1500–1000 BCE',ppl:'Balto-Slavic communities'},
-    'Proto-Finnic':{lat:60,lng:25,lb:'Finland',yr:'~1500–1000 BCE',ppl:'Finno-Ugric peoples'},
-    'Proto-Turkic':{lat:47,lng:88,lb:'Central Asia',yr:'~500 BCE–500 CE',ppl:'Early Turkic nomads'},
-    'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'East Asia',yr:'~4000–3000 BCE',ppl:'Early Sino-Tibetan peoples'},
-    'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan',yr:'~3500–2000 BCE',ppl:'Austronesian seafarers'},
-    'Proto-Dravidian':{lat:13,lng:78,lb:'South India',yr:'~3000–1500 BCE',ppl:'Early Dravidian peoples'},
-    'Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~700 BCE–200 CE',ppl:'Romans'},
-    'Late Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~200–600 CE',ppl:'Late Roman / early Christian scholars'},
-    'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire',yr:'~200–900 CE',ppl:'Common people of the Roman provinces'},
-    'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe',yr:'~500–1500 CE',ppl:'Monks, clergy, and scholars'},
-    'New Latin':{lat:48.8,lng:2.3,lb:'Early Modern Europe',yr:'~1500–1900 CE',ppl:'Renaissance and Enlightenment scholars'},
-    'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens',yr:'~800–300 BCE',ppl:'Greeks of the city-states'},
-    'Greek':{lat:37.97,lng:23.72,lb:'Greece',yr:'modern',ppl:'Greek people'},
-    'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople',yr:'~330–1453 CE',ppl:'Byzantines'},
-    'Sanskrit':{lat:27,lng:78,lb:'Northern India',yr:'~1500 BCE–600 CE',ppl:'Vedic and Classical Indian scholars'},
-    'Vedic Sanskrit':{lat:28,lng:77,lb:'Northern India',yr:'~1500–500 BCE',ppl:'Vedic priests and poets'},
-    'Old Persian':{lat:30,lng:52,lb:'Persia',yr:'~600–300 BCE',ppl:'Achaemenid Persians'},
-    'Middle Persian':{lat:32.5,lng:52,lb:'Persia',yr:'~300 BCE–800 CE',ppl:'Sasanian Persians'},
-    'Persian':{lat:35.7,lng:51.4,lb:'Iran',yr:'~800 CE–present',ppl:'Persian-speaking peoples'},
-    'Avestan':{lat:34,lng:60,lb:'Ancient Iran',yr:'~1500–500 BCE',ppl:'Zoroastrian priests'},
-    'Arabic':{lat:24.7,lng:46.7,lb:'Arabia',yr:'~500 CE–present',ppl:'Arab peoples'},
-    'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz',yr:'~600 CE–present',ppl:'Hejazi Arabs'},
-    'Old English':{lat:51.5,lng:-1,lb:'England',yr:'~450–1100 CE',ppl:'Anglo-Saxons'},
-    'Middle English':{lat:51.5,lng:-1,lb:'England',yr:'~1100–1500 CE',ppl:'Post-Norman English'},
-    'English':{lat:51.5,lng:-0.12,lb:'London',yr:'~1500–present',ppl:'English speakers worldwide'},
-    'Old Norse':{lat:60,lng:11,lb:'Scandinavia',yr:'~700–1300 CE',ppl:'Vikings and Norse peoples'},
-    'Old High German':{lat:50,lng:10,lb:'Germany',yr:'~750–1050 CE',ppl:'Frankish and Alemannic peoples'},
-    'Middle High German':{lat:50,lng:10,lb:'Germany',yr:'~1050–1350 CE',ppl:'Medieval German nobility and poets'},
-    'German':{lat:52.5,lng:13.4,lb:'Berlin',yr:'~1350–present',ppl:'German-speaking peoples'},
-    'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam',yr:'~1500–present',ppl:'Dutch and Flemish peoples'},
-    'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands',yr:'~1150–1500 CE',ppl:'Medieval Low Countries peoples'},
-    'Old Dutch':{lat:52,lng:5,lb:'Netherlands',yr:'~450–1150 CE',ppl:'Frankish settlers in the Low Countries'},
-    'Old Saxon':{lat:53,lng:9,lb:'N. Germany',yr:'~450–1100 CE',ppl:'Continental Saxons'},
-    'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia',yr:'~700–1500 CE',ppl:'Frisians'},
-    'Gothic':{lat:46,lng:24,lb:'Gothic lands',yr:'~200–600 CE',ppl:'Visigoths and Ostrogoths'},
-    'Swedish':{lat:59.3,lng:18,lb:'Stockholm',yr:'~1500–present',ppl:'Swedes'},
-    'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen',yr:'~1500–present',ppl:'Danes'},
-    'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo',yr:'~1500–present',ppl:'Norwegians'},
-    'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik',yr:'~900–present',ppl:'Icelanders'},
-    'French':{lat:48.86,lng:2.35,lb:'Paris',yr:'~1300–present',ppl:'French people'},
-    'Old French':{lat:48.86,lng:2.35,lb:'France',yr:'~842–1300 CE',ppl:'Franks and Gallo-Romans'},
-    'Middle French':{lat:48.86,lng:2.35,lb:'France',yr:'~1300–1600 CE',ppl:'Late medieval and Renaissance French'},
-    'Anglo-Norman':{lat:49,lng:-0.4,lb:'Normandy',yr:'~1066–1300 CE',ppl:'Norman conquerors of England'},
-    'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid',yr:'~1500–present',ppl:'Spanish speakers'},
-    'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile',yr:'~900–1500 CE',ppl:'Castilians during the Reconquista'},
-    'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–present',ppl:'Portuguese people'},
-    'Italian':{lat:41.9,lng:12.5,lb:'Rome',yr:'~1300–present',ppl:'Italians'},
-    'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest',yr:'~1500–present',ppl:'Romanians'},
-    'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona',yr:'~1000–present',ppl:'Catalans'},
-    'Occitan':{lat:43.6,lng:3.9,lb:'Southern France',yr:'~900–present',ppl:'Occitan troubadours and peoples'},
-    'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland',yr:'~600–900 CE',ppl:'Early Irish monks and scholars'},
-    'Irish':{lat:53.3,lng:-6.3,lb:'Dublin',yr:'~900–present',ppl:'Irish people'},
-    'Welsh':{lat:51.5,lng:-3.2,lb:'Wales',yr:'~600–present',ppl:'Welsh people'},
-    'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland',yr:'~1000–present',ppl:'Highland Scots'},
-    'Russian':{lat:55.75,lng:37.6,lb:'Moscow',yr:'~1300–present',ppl:'Russian people'},
-    'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans',yr:'~860–1100 CE',ppl:'Slavic monks (Saints Cyril & Methodius tradition)'},
-    'Polish':{lat:52.2,lng:21,lb:'Warsaw',yr:'~1500–present',ppl:'Polish people'},
-    'Czech':{lat:50.08,lng:14.4,lb:'Prague',yr:'~1300–present',ppl:'Czech people'},
-    'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv',yr:'~1300–present',ppl:'Ukrainian people'},
-    'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia',yr:'~900–present',ppl:'Bulgarians'},
-    'Croatian':{lat:45.8,lng:16,lb:'Zagreb',yr:'~1100–present',ppl:'Croats'},
-    'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade',yr:'~1100–present',ppl:'Serbs'},
-    'Turkish':{lat:39.9,lng:32.9,lb:'Ankara',yr:'~1300–present',ppl:'Turkish people'},
-    'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul',yr:'~1300–1920 CE',ppl:'Ottoman court and scholars'},
-    'Chinese':{lat:39.9,lng:116.4,lb:'Beijing',yr:'modern',ppl:'Chinese speakers'},
-    'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an",yr:'~600–1200 CE',ppl:'Tang and Song dynasty Chinese'},
-    'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China',yr:'~1250–200 BCE',ppl:'Zhou and Shang dynasty Chinese'},
-    'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo',yr:'~700–present',ppl:'Japanese people'},
-    'Korean':{lat:37.55,lng:127,lb:'Seoul',yr:'~400–present',ppl:'Korean people'},
-    'Hindi':{lat:28.6,lng:77.2,lb:'Delhi',yr:'~1000–present',ppl:'Hindi speakers of Northern India'},
-    'Urdu':{lat:33.7,lng:73,lb:'Islamabad',yr:'~1200–present',ppl:'Mughal court and South Asian Muslims'},
-    'Tamil':{lat:13,lng:80.3,lb:'Chennai',yr:'~300 BCE–present',ppl:'Tamil people'},
-    'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka',yr:'~1000–present',ppl:'Bengali people'},
-    'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore',yr:'~1000–present',ppl:'Punjabi people'},
-    'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad',yr:'~1100–present',ppl:'Gujarati people'},
-    'Marathi':{lat:19,lng:72.8,lb:'Mumbai',yr:'~1000–present',ppl:'Marathi people'},
-    'Pali':{lat:25,lng:83,lb:'Northern India',yr:'~500 BCE–present',ppl:'Buddhist monks and scholars'},
-    'Malay':{lat:3.1,lng:101.7,lb:'Malaysia',yr:'~700–present',ppl:'Malay peoples'},
-    'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta',yr:'~1900–present',ppl:'Indonesian people'},
-    'Tagalog':{lat:14.6,lng:121,lb:'Manila',yr:'~900–present',ppl:'Tagalog people'},
-    'Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–present',ppl:'Javanese people'},
-    'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–1500 CE',ppl:'Hindu-Buddhist Javanese courts'},
-    'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico',yr:'~600–present',ppl:'Nahua peoples'},
-    'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico',yr:'~1300–1600 CE',ppl:'Aztecs'},
-    'Quechua':{lat:-13.5,lng:-72,lb:'Andes',yr:'~1000–present',ppl:'Inca and Andean peoples'},
-    'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean',yr:'~1200–1600 CE',ppl:'Taino people of the Caribbean'},
-    'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki',yr:'~1500–present',ppl:'Finnish people'},
-    'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest',yr:'~1000–present',ppl:'Magyars'},
-    'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn',yr:'~1200–present',ppl:'Estonian people'},
-    'Hebrew':{lat:31.8,lng:35.2,lb:'Israel',yr:'~1000 BCE–present',ppl:'Israelites and Jewish communities'},
-    'Aramaic':{lat:33.5,lng:36.3,lb:'Levant',yr:'~1100 BCE–present',ppl:'Aramean and Assyrian peoples'},
-    'Phoenician':{lat:34,lng:35.5,lb:'Levant',yr:'~1200–300 BCE',ppl:'Phoenician traders'},
-    'Egyptian':{lat:26,lng:32,lb:'Egypt',yr:'~3100 BCE–600 CE',ppl:'Ancient Egyptians'},
-    'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa',yr:'~1000–present',ppl:'Swahili coast peoples'},
-    'Amharic':{lat:9,lng:38.7,lb:'Ethiopia',yr:'~1200–present',ppl:'Ethiopian peoples'},
-    'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa',yr:'~1000–present',ppl:'Yoruba people'},
-    'Thai':{lat:13.75,lng:100.5,lb:'Bangkok',yr:'~1200–present',ppl:'Thai people'},
-    'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi',yr:'~900–present',ppl:'Vietnamese people'},
-    'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia',yr:'~600–present',ppl:'Khmer people'},
-    'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar',yr:'~800–present',ppl:'Burmese people'},
-    'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa',yr:'~600–present',ppl:'Tibetan people'},
-    'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia',yr:'~1200–present',ppl:'Mongol peoples'},
-    'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi',yr:'~400–present',ppl:'Georgian people'},
-    'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan',yr:'~400–present',ppl:'Armenian people'},
-    'Albanian':{lat:41.3,lng:19.8,lb:'Tirana',yr:'~1400–present',ppl:'Albanian people'},
-    'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius',yr:'~1500–present',ppl:'Lithuanians'},
-    'Latvian':{lat:56.95,lng:24.1,lb:'Riga',yr:'~1500–present',ppl:'Latvians'},
-};
+// Language → coords, years, peoples (English/OldEnglish/MiddleEnglish in UK not continental Europe)
+const LC={'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe',yr:'~4500–2500 BCE',ppl:'Yamnaya pastoralists'},'Proto-Germanic':{lat:54,lng:12,lb:'N. Europe',yr:'~500 BCE–200 CE',ppl:'Early Germanic tribes'},'Proto-West Germanic':{lat:52,lng:8,lb:'W. Europe',yr:'~200–500 CE',ppl:'Western Germanic peoples'},'Proto-Slavic':{lat:50,lng:30,lb:'E. Europe',yr:'~1500 BCE–500 CE',ppl:'Early Slavs'},'Proto-Celtic':{lat:48,lng:5,lb:'C. Europe',yr:'~800–300 BCE',ppl:'Hallstatt/La Tène cultures'},'Proto-Italic':{lat:43,lng:12,lb:'Italy',yr:'~1000–500 BCE',ppl:'Italic tribes'},'Proto-Semitic':{lat:30,lng:38,lb:'Levant',yr:'~3750–2500 BCE',ppl:'Early Semitic peoples'},'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans',yr:'~2000–1500 BCE',ppl:'Hellenic migrants'},'Proto-Balto-Slavic':{lat:52,lng:24,lb:'E. Europe',yr:'~1500–1000 BCE',ppl:'Balto-Slavic communities'},'Proto-Finnic':{lat:60,lng:25,lb:'Finland',yr:'~1500–1000 BCE',ppl:'Finno-Ugric peoples'},'Proto-Turkic':{lat:47,lng:88,lb:'C. Asia',yr:'~500 BCE–500 CE',ppl:'Early Turkic nomads'},'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'E. Asia',yr:'~4000–3000 BCE',ppl:'Early Sino-Tibetan peoples'},'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan',yr:'~3500–2000 BCE',ppl:'Austronesian seafarers'},'Proto-Dravidian':{lat:13,lng:78,lb:'S. India',yr:'~3000–1500 BCE',ppl:'Early Dravidians'},'Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~700 BCE–200 CE',ppl:'Romans'},'Late Latin':{lat:42.5,lng:13,lb:'Rome',yr:'~200–600 CE',ppl:'Late Roman scholars'},'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire',yr:'~200–900 CE',ppl:'Roman provincials'},'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe',yr:'~500–1500 CE',ppl:'Monks and clergy'},'New Latin':{lat:48.8,lng:2.3,lb:'Europe',yr:'~1500–1900 CE',ppl:'Enlightenment scholars'},'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens',yr:'~800–300 BCE',ppl:'Greeks of the city-states'},'Greek':{lat:37.97,lng:23.72,lb:'Greece',yr:'modern',ppl:'Greek people'},'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople',yr:'~330–1453 CE',ppl:'Byzantines'},'Sanskrit':{lat:27,lng:78,lb:'N. India',yr:'~1500 BCE–600 CE',ppl:'Vedic/Classical scholars'},'Vedic Sanskrit':{lat:28,lng:77,lb:'N. India',yr:'~1500–500 BCE',ppl:'Vedic priests'},'Old Persian':{lat:30,lng:52,lb:'Persia',yr:'~600–300 BCE',ppl:'Achaemenid Persians'},'Middle Persian':{lat:32.5,lng:52,lb:'Persia',yr:'~300 BCE–800 CE',ppl:'Sasanian Persians'},'Persian':{lat:35.7,lng:51.4,lb:'Iran',yr:'~800 CE–present',ppl:'Persian speakers'},'Avestan':{lat:34,lng:60,lb:'Ancient Iran',yr:'~1500–500 BCE',ppl:'Zoroastrian priests'},'Arabic':{lat:24.7,lng:46.7,lb:'Arabia',yr:'~500 CE–present',ppl:'Arab peoples'},'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz',yr:'~600 CE–present',ppl:'Hejazi Arabs'},'Old English':{lat:52.5,lng:-1.5,lb:'England',yr:'~450–1100 CE',ppl:'Anglo-Saxons'},'Middle English':{lat:53,lng:-1,lb:'England',yr:'~1100–1500 CE',ppl:'Post-Norman English'},'English':{lat:51.5,lng:-0.12,lb:'London',yr:'~1500–present',ppl:'English speakers worldwide'},'Old Norse':{lat:60,lng:11,lb:'Scandinavia',yr:'~700–1300 CE',ppl:'Vikings'},'Old High German':{lat:50,lng:10,lb:'Germany',yr:'~750–1050 CE',ppl:'Frankish/Alemannic peoples'},'Middle High German':{lat:50,lng:10,lb:'Germany',yr:'~1050–1350 CE',ppl:'Medieval German nobility'},'German':{lat:52.5,lng:13.4,lb:'Berlin',yr:'~1350–present',ppl:'German speakers'},'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam',yr:'~1500–present',ppl:'Dutch/Flemish'},'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands',yr:'~1150–1500 CE',ppl:'Low Countries peoples'},'Old Dutch':{lat:52,lng:5,lb:'Netherlands',yr:'~450–1150 CE',ppl:'Frankish settlers'},'Old Saxon':{lat:53,lng:9,lb:'N. Germany',yr:'~450–1100 CE',ppl:'Continental Saxons'},'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia',yr:'~700–1500 CE',ppl:'Frisians'},'Gothic':{lat:46,lng:24,lb:'Gothic lands',yr:'~200–600 CE',ppl:'Goths'},'Swedish':{lat:59.3,lng:18,lb:'Stockholm',yr:'~1500–present',ppl:'Swedes'},'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen',yr:'~1500–present',ppl:'Danes'},'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo',yr:'~1500–present',ppl:'Norwegians'},'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik',yr:'~900–present',ppl:'Icelanders'},'French':{lat:48.86,lng:2.35,lb:'Paris',yr:'~1300–present',ppl:'French people'},'Old French':{lat:48.86,lng:2.35,lb:'France',yr:'~842–1300 CE',ppl:'Franks/Gallo-Romans'},'Middle French':{lat:48.86,lng:2.35,lb:'France',yr:'~1300–1600 CE',ppl:'Late medieval French'},'Anglo-Norman':{lat:49.2,lng:-0.4,lb:'Normandy',yr:'~1066–1300 CE',ppl:'Norman conquerors'},'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid',yr:'~1500–present',ppl:'Spanish speakers'},'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile',yr:'~900–1500 CE',ppl:'Castilians'},'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–present',ppl:'Portuguese'},'Italian':{lat:41.9,lng:12.5,lb:'Rome',yr:'~1300–present',ppl:'Italians'},'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest',yr:'~1500–present',ppl:'Romanians'},'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona',yr:'~1000–present',ppl:'Catalans'},'Occitan':{lat:43.6,lng:3.9,lb:'S. France',yr:'~900–present',ppl:'Troubadours'},'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland',yr:'~600–900 CE',ppl:'Irish monks'},'Irish':{lat:53.3,lng:-6.3,lb:'Dublin',yr:'~900–present',ppl:'Irish people'},'Welsh':{lat:51.9,lng:-3.7,lb:'Wales',yr:'~600–present',ppl:'Welsh people'},'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland',yr:'~1000–present',ppl:'Highland Scots'},'Russian':{lat:55.75,lng:37.6,lb:'Moscow',yr:'~1300–present',ppl:'Russians'},'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans',yr:'~860–1100 CE',ppl:'Slavic monks'},'Polish':{lat:52.2,lng:21,lb:'Warsaw',yr:'~1500–present',ppl:'Poles'},'Czech':{lat:50.08,lng:14.4,lb:'Prague',yr:'~1300–present',ppl:'Czechs'},'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv',yr:'~1300–present',ppl:'Ukrainians'},'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia',yr:'~900–present',ppl:'Bulgarians'},'Croatian':{lat:45.8,lng:16,lb:'Zagreb',yr:'~1100–present',ppl:'Croats'},'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade',yr:'~1100–present',ppl:'Serbs'},'Turkish':{lat:39.9,lng:32.9,lb:'Ankara',yr:'~1300–present',ppl:'Turks'},'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul',yr:'~1300–1920 CE',ppl:'Ottoman scholars'},'Chinese':{lat:39.9,lng:116.4,lb:'Beijing',yr:'modern',ppl:'Chinese speakers'},'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an",yr:'~600–1200 CE',ppl:'Tang/Song dynasty'},'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China',yr:'~1250–200 BCE',ppl:'Zhou/Shang dynasty'},'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo',yr:'~700–present',ppl:'Japanese'},'Korean':{lat:37.55,lng:127,lb:'Seoul',yr:'~400–present',ppl:'Koreans'},'Hindi':{lat:28.6,lng:77.2,lb:'Delhi',yr:'~1000–present',ppl:'Hindi speakers'},'Urdu':{lat:33.7,lng:73,lb:'Islamabad',yr:'~1200–present',ppl:'Mughal court'},'Tamil':{lat:13,lng:80.3,lb:'Chennai',yr:'~300 BCE–present',ppl:'Tamils'},'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka',yr:'~1000–present',ppl:'Bengalis'},'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore',yr:'~1000–present',ppl:'Punjabis'},'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad',yr:'~1100–present',ppl:'Gujaratis'},'Marathi':{lat:19,lng:72.8,lb:'Mumbai',yr:'~1000–present',ppl:'Marathis'},'Pali':{lat:25,lng:83,lb:'N. India',yr:'~500 BCE–present',ppl:'Buddhist monks'},'Malay':{lat:3.1,lng:101.7,lb:'Malaysia',yr:'~700–present',ppl:'Malays'},'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta',yr:'~1900–present',ppl:'Indonesians'},'Tagalog':{lat:14.6,lng:121,lb:'Manila',yr:'~900–present',ppl:'Tagalogs'},'Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–present',ppl:'Javanese'},'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–1500 CE',ppl:'Hindu-Buddhist Javanese'},'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico',yr:'~600–present',ppl:'Nahua peoples'},'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico',yr:'~1300–1600 CE',ppl:'Aztecs'},'Quechua':{lat:-13.5,lng:-72,lb:'Andes',yr:'~1000–present',ppl:'Inca/Andean peoples'},'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean',yr:'~1200–1600 CE',ppl:'Taino'},'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki',yr:'~1500–present',ppl:'Finns'},'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest',yr:'~1000–present',ppl:'Magyars'},'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn',yr:'~1200–present',ppl:'Estonians'},'Hebrew':{lat:31.8,lng:35.2,lb:'Israel',yr:'~1000 BCE–present',ppl:'Israelites/Jewish communities'},'Aramaic':{lat:33.5,lng:36.3,lb:'Levant',yr:'~1100 BCE–present',ppl:'Arameans'},'Phoenician':{lat:34,lng:35.5,lb:'Levant',yr:'~1200–300 BCE',ppl:'Phoenician traders'},'Egyptian':{lat:26,lng:32,lb:'Egypt',yr:'~3100 BCE–600 CE',ppl:'Ancient Egyptians'},'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa',yr:'~1000–present',ppl:'Swahili coast'},'Amharic':{lat:9,lng:38.7,lb:'Ethiopia',yr:'~1200–present',ppl:'Ethiopians'},'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa',yr:'~1000–present',ppl:'Yoruba'},'Thai':{lat:13.75,lng:100.5,lb:'Bangkok',yr:'~1200–present',ppl:'Thais'},'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi',yr:'~900–present',ppl:'Vietnamese'},'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia',yr:'~600–present',ppl:'Khmer'},'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar',yr:'~800–present',ppl:'Burmese'},'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa',yr:'~600–present',ppl:'Tibetans'},'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia',yr:'~1200–present',ppl:'Mongols'},'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi',yr:'~400–present',ppl:'Georgians'},'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan',yr:'~400–present',ppl:'Armenians'},'Albanian':{lat:41.3,lng:19.8,lb:'Tirana',yr:'~1400–present',ppl:'Albanians'},'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius',yr:'~1500–present',ppl:'Lithuanians'},'Latvian':{lat:56.95,lng:24.1,lb:'Riga',yr:'~1500–present',ppl:'Latvians'}};
 
-// ============================================================
-// MAP SVG + ZOOM STATE
-// ============================================================
+// Map SVG with real-world coastline data
 const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-<defs><radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".6"/><stop offset="100%" stop-color="#6c63ff" stop-opacity="0"/></radialGradient>
+<defs>
+<radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".6"/><stop offset="100%" stop-color="#6c63ff" stop-opacity="0"/></radialGradient>
 <radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f0c040" stop-opacity=".6"/><stop offset="100%" stop-color="#f0c040" stop-opacity="0"/></radialGradient>
-<linearGradient id="rG"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".8"/><stop offset="100%" stop-color="#f0c040" stop-opacity=".8"/></linearGradient></defs>
+<linearGradient id="rG"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".8"/><stop offset="100%" stop-color="#f0c040" stop-opacity=".8"/></linearGradient>
+<linearGradient id="rB"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".4"/><stop offset="100%" stop-color="#886eff" stop-opacity=".4"/></linearGradient>
+</defs>
 <g id="panZoomGroup">
-<g fill="#1a1a2e" stroke="#2a2a3a" stroke-width=".5">
-<path d="M80 80L120 60 170 65 200 80 230 95 255 120 250 145 260 170 240 190 220 200 200 220 180 230 160 220 140 200 120 180 100 150 90 120Z"/>
-<path d="M180 230L190 240 200 255 210 270 200 280 190 270 180 260 175 245Z"/>
-<path d="M220 280L245 290 270 310 285 340 290 370 285 400 270 420 255 440 240 445 230 430 225 400 220 370 215 340 210 310 215 290Z"/>
-<path d="M440 70L460 60 490 65 520 70 540 80 530 95 520 105 530 115 520 120 510 115 500 125 485 130 475 125 465 130 455 120 445 115 440 105 445 90Z"/>
-<path d="M445 80L450 72 455 78 452 85 447 85Z"/><path d="M438 75L442 70 445 76 441 78Z"/>
-<path d="M480 30L490 35 495 50 490 65 485 60 480 45Z"/><path d="M495 35L510 30 515 45 510 60 500 55 497 40Z"/>
-<path d="M450 150L475 140 510 145 540 155 555 175 560 200 555 230 545 260 530 290 515 310 500 320 485 310 475 290 470 260 465 230 460 200 450 170Z"/>
-<path d="M540 60L580 50 630 45 680 50 730 55 770 65 800 80 820 95 810 110 790 120 770 130 750 140 730 150 700 155 670 150 640 145 610 140 580 130 560 120 545 110 540 95Z"/>
-<path d="M540 120L560 115 575 125 585 140 575 155 555 160 540 155 535 140Z"/>
-<path d="M640 145L660 150 670 170 665 195 650 215 635 210 625 190 630 165Z"/>
-<path d="M720 155L740 150 755 160 750 175 740 185 730 180 720 170Z"/>
-<path d="M730 65L770 60 810 70 830 85 825 100 810 110 790 115 765 110 745 100 735 85Z"/>
-<path d="M840 80L850 75 855 85 850 100 843 95 840 85Z"/>
-<path d="M770 310L810 300 850 310 870 330 865 355 845 370 815 375 790 365 775 345 770 325Z"/>
-<path d="M740 225L755 220 765 225 760 232 748 232Z"/><path d="M770 225L785 222 792 228 785 234 773 232Z"/>
-<path d="M415 48L425 45 432 50 427 55 418 53Z"/></g>
-<g stroke="#151520" stroke-width=".3" fill="none"><line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="4,8"/><line x1="500" y1="0" x2="500" y2="500" stroke-dasharray="4,8"/></g>
+<g stroke="#13131f" stroke-width=".3" fill="none" opacity=".4">
+<line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="2,8"/>
+<line x1="500" y1="0" x2="500" y2="500" stroke-dasharray="2,8"/>
+</g>
+<g fill="#16162a" stroke="#252540" stroke-width=".5">
+<path d="M594,253L605,259L609,263L608,268L610,270L609,272L610,275L612,279L610,280L605,281L602,282L598,282L595,278L594,276L589,275L587,274L585,273L582,268L582,265L583,262L585,260L585,258L585,257L585,256L584,253L589,253Z"/>
+<path d="M476,173L476,173L476,174L476,178L467,178L467,185L464,185L464,187L464,191L453,191L453,192L453,190L453,190L459,190L459,189L460,188L461,184L465,181L467,178L467,177L468,175L471,175L472,175L473,175L474,175L476,175L476,173L476,173Z"/>
+<path d="M159,114L145,105L139,96L125,85L111,83L118,58L139,55L154,55L173,58L192,62L203,59L222,62L235,61L236,50L248,60L262,59L272,61L261,67L248,75L241,87L257,94L272,102L278,98L282,87L293,77L307,83L321,82L335,97L345,105L323,110L302,120L319,116L332,121L316,129L312,119L304,124L291,126L280,129L271,134L271,131L268,122L265,121L255,116L240,115L230,114L178,114Z"/>
+<path d="M255,43L251,43L243,42L242,41L242,39L239,38L233,38L230,37L231,36L237,36L240,37L246,37L248,38L247,39L250,39L252,40L256,40L260,40L264,40L270,39L275,40L278,41L278,42L277,43L272,43L269,43L261,43L255,43Z"/>
+<path d="M346,107L344,109L342,112L344,111L346,111L345,112L347,113L349,112L351,113L351,115L353,115L353,116L354,118L353,120L351,121L350,120L350,118L349,117L346,120L344,120L346,118L344,118L341,118L335,118L335,117L337,116L335,115L338,114L341,109L342,108L345,107L346,107L346,107Z"/>
+<path d="M281,49L294,51L302,53L314,58L320,62L327,66L315,66L314,69L320,74L309,73L316,78L299,74L292,70L282,71L295,68L298,63L292,60L285,56L279,56L258,55L254,52L252,47L260,47L271,45L281,49Z"/>
+<path d="M162,43L166,44L173,44L176,45L179,46L176,47L169,49L165,51L165,52L158,53L157,52L150,50L151,49L153,47L156,45L153,44L162,43Z"/>
+<path d="M204,47L209,51L214,54L219,57L216,58L210,59L202,58L190,59L184,58L177,58L176,55L184,55L182,54L172,54L177,52L168,51L173,48L183,47L188,47L195,47L199,51L199,47L204,47Z"/>
+<path d="M233,26L235,25L238,25L237,24L243,24L247,26L252,26L256,27L258,29L262,30L258,30L253,33L248,33L242,32L239,31L239,30L241,30L236,30L233,29L231,27L233,26Z"/>
+<path d="M246,23L258,21L269,21L280,19L298,19L317,19L328,21L312,24L307,26L295,29L288,31L284,34L279,36L276,38L257,38L256,36L264,35L258,31L260,29L268,28L257,26L246,23Z"/>
+<path d="M108,56L108,82L116,85L124,84L130,88L139,95L137,98L133,96L128,89L117,88L104,83L91,81L87,84L79,86L82,80L76,83L72,88L65,92L57,96L49,97L42,98L51,95L59,92L62,88L60,87L56,87L50,87L49,83L41,82L40,78L45,74L51,74L51,71L49,71L42,71L33,68L45,65L49,65L41,61L43,59L50,55L61,53L71,54L77,54L90,55L101,55L108,56Z"/>
+<path d="M159,114L203,114L237,113L248,116L262,119L266,121L271,124L269,133L281,131L287,129L301,125L308,118L314,126L303,132L304,135L299,136L295,138L291,142L290,145L288,145L285,154L275,161L276,172L275,180L270,171L262,166L252,167L248,169L234,170L230,178L222,172L211,169L204,162L181,160L171,156L165,152L156,140L155,126L158,117Z"/>
+<path d="M743,113L738,118L729,124L725,130L721,132L711,131L705,130L698,131L692,135L689,136L683,133L676,129L667,126L655,125L652,133L646,134L646,131L640,127L643,124L648,122L642,119L635,121L631,117L630,113L635,109L651,108L662,108L670,109L669,104L669,101L682,98L697,97L704,100L714,99L722,109L732,108L736,111L743,113Z"/>
+<path d="M655,135L663,123L667,126L672,129L680,129L683,133L685,136L690,137L692,135L697,133L696,135L700,135L699,138L696,138L696,136L692,139L688,140L689,142L688,147L685,146L681,143L676,141L672,136L668,136L667,133L661,133L659,135Z"/>
+<path d="M892,257L896,259L902,261L904,262L905,264L906,265L910,267L911,268L908,269L909,271L911,272L913,275L915,275L915,276L917,277L916,277L919,279L919,279L917,280L916,279L914,279L911,278L909,276L907,275L906,272L902,271L900,272L898,273L898,275L896,276L895,275L892,275L892,266L892,257Z"/>
+<path d="M892,257L892,266L892,275L889,273L886,272L886,273L882,273L883,271L885,270L884,267L883,265L878,263L875,262L871,260L870,261L869,261L869,260L869,259L867,258L870,257L872,257L871,256L867,256L866,254L864,254L863,253L866,252L868,251L872,252L873,253L873,258L876,259L879,256L882,255L884,255L887,256L889,257L892,257Z"/>
+<path d="M827,239L826,241L828,244L827,245L831,247L827,248L826,250L826,252L824,254L824,257L823,261L822,260L819,261L818,260L816,260L815,259L811,260L810,258L808,258L806,258L806,254L804,254L803,251L803,249L803,246L805,244L805,246L807,248L809,247L811,247L812,246L814,246L816,247L818,246L820,242L821,241L822,238L825,238L827,239Z"/>
+<path d="M841,248L847,245L846,249L841,249L834,249L836,254L843,252L841,253L838,255L840,260L842,265L840,265L838,263L838,262L836,257L834,261L833,266L832,262L831,260L831,256L833,250L836,246L841,248Z"/>
+<path d="M790,253L790,255L791,257L793,257L795,259L794,262L794,266L791,266L789,264L785,262L784,260L782,258L780,256L778,252L776,249L775,247L774,245L771,243L770,241L768,239L765,236L765,235L766,235L771,235L773,238L775,240L777,241L780,244L782,244L785,246L786,248L788,250L787,252L789,253L790,253Z"/>
+<path d="M340,334L339,342L338,346L342,351L335,358L327,360L326,364L319,364L323,367L319,371L315,375L315,381L313,385L308,391L310,395L299,393L296,390L299,384L301,377L302,373L300,371L300,363L303,357L305,350L306,342L306,334L308,326L310,323L314,314L320,311L325,311L333,317L340,321L343,327L348,321L351,325L344,330Z"/>
+<path d="M307,299L309,307L314,314L309,324L306,332L306,342L302,352L301,361L300,371L302,374L299,383L296,390L300,394L306,396L298,399L291,393L291,383L293,373L295,370L297,359L298,349L302,334L304,316L306,300Z"/>
+<path d="M582,263L585,273L579,280L580,287L572,283L565,280L561,275L556,269L550,272L537,266L535,265L539,263L546,255L549,248L553,237L563,237L570,236L579,238L586,240L583,248L581,256Z"/>
+<path d="M616,255L614,252L614,242L616,239L617,238L619,238L621,236L625,236L633,228L635,225L636,224L636,222L636,219L636,218L636,218L636,218L637,218L638,218L640,218L641,217L642,217L642,217L642,219L642,220L641,221L640,224L639,228L637,231L635,235L633,238L629,242L627,244L622,247L620,249L617,253L616,254L616,255Z"/>
+<path d="M609,263L605,260L605,259L595,253L594,253L594,250L595,249L596,247L597,245L596,242L596,240L594,238L596,237L598,235L599,235L599,237L600,238L602,238L606,240L607,240L607,240L608,240L610,240L611,239L613,238L614,239L616,239L614,242L614,252L616,255L614,256L613,257L612,257L611,259L611,260L610,262L609,263Z"/>
+<path d="M568,227L565,223L564,218L561,215L563,211L566,207L569,189L603,192L605,199L602,203L601,212L596,220L594,224L592,220L591,217L588,221L582,222L578,224L574,223L569,223L568,227Z"/>
+<path d="M566,196L564,206L562,210L562,212L561,214L562,215L563,218L564,219L560,221L556,225L552,225L551,227L546,229L545,228L542,229L542,227L540,225L539,222L541,222L541,220L541,216L541,213L539,211L539,206L543,200L544,193L543,192L541,186L555,190Z"/>
+<path d="M649,45L655,43L655,41L661,40L670,38L679,38L684,37L689,36L691,37L689,38L680,40L671,41L662,44L658,46L654,49L655,51L660,54L658,54L649,53L648,52L643,51L643,50L646,49L646,48L651,45L649,45Z"/>
+<path d="M14,63L14,65L16,66L15,64L23,64L28,67L25,68L21,68L21,71L20,72L17,71L15,70L11,70L11,68L8,68L5,68L3,67L4,66L0,67L2,68L0,69L0,58L7,61L14,63Z"/>
+<path d="M636,121L632,136L611,129L606,119L604,110L590,105L588,101L577,92L578,82L579,60L614,64L603,71L621,63L640,61L667,57L685,54L702,58L708,58L712,52L739,43L781,36L817,39L821,45L860,52L915,49L961,57L1000,69L985,78L953,86L940,103L945,85L931,86L880,98L885,119L863,133L870,125L855,112L835,104L814,112L784,110L762,110L734,110L704,101L669,101L658,108L629,116Z"/>
+<path d="M542,29L543,28L547,28L551,29L560,31L553,32L551,34L549,34L548,37L544,37L538,35L541,34L537,33L531,31L529,29L537,28L538,29L542,29Z"/>
+<path d="M586,57L579,58L577,55L571,58L566,59L559,57L556,58L550,60L547,61L542,66L539,71L535,72L533,78L534,83L531,87L523,88L516,87L514,78L524,74L534,67L546,60L559,55L568,53L578,52L583,55Z"/>
+<path d="M370,20L393,18L442,20L411,22L431,23L436,25L465,23L453,27L448,29L449,36L445,39L446,44L442,46L438,48L431,49L440,54L429,52L434,55L423,60L409,62L397,67L387,70L381,76L380,83L366,81L357,73L351,66L353,60L359,56L352,58L349,53L352,52L345,51L344,45L337,40L316,39L302,36L303,34L307,31L311,27L327,24L341,22L360,21L376,23Z"/>
+<path d="M545,329L550,330L555,319L558,325L563,321L570,321L574,318L582,311L587,312L588,322L585,323L589,324L589,330L585,335L576,342L570,344L563,344L554,347L551,345L551,340L547,333Z"/>
+<path d="M175,160L185,161L199,162L208,165L214,170L221,170L225,177L229,181L229,189L233,196L240,199L248,196L251,191L259,191L257,196L255,199L252,200L247,202L248,204L244,208L241,207L233,206L225,204L217,200L208,196L207,192L206,188L199,180L195,176L190,171L186,164L181,162L182,167L186,171L188,175L192,181L196,185L194,185L188,179L184,176L181,173L181,169L176,162Z"/>
+<path d="M352,344L346,336L347,327L348,321L347,317L343,311L339,305L338,298L333,292L329,287L318,282L313,279L305,281L298,276L295,270L298,265L307,254L307,248L311,245L316,248L322,245L321,239L326,239L333,235L334,240L337,246L342,245L345,243L351,243L355,241L361,245L365,253L376,257L397,263L404,270L393,286L391,300L384,312L371,317L365,328L355,340Z"/>
+<path d="M307,280L311,280L319,277L318,282L326,286L330,287L333,291L333,295L338,298L340,303L338,306L333,304L327,308L322,311L316,311L311,310L308,303L308,296L307,292L309,286Z"/>
+<path d="M306,262L301,263L297,267L295,270L297,275L299,278L304,281L309,285L308,290L307,294L306,300L301,298L289,291L286,284L279,272L274,267L275,261L276,261L279,262L282,261L290,254L291,250L295,254L301,256L305,258L306,262Z"/>
+<path d="M314,247L306,245L306,248L306,262L302,257L294,253L288,249L281,246L284,243L285,234L285,229L289,224L294,219L301,215L299,219L298,225L299,229L307,233L312,235L313,241Z"/>
+<path d="M331,236L326,239L320,239L324,243L321,246L314,247L313,241L312,235L310,233L304,230L299,229L298,225L298,220L302,218L300,223L302,222L306,216L311,221L320,222L328,220L331,224L332,228L330,231Z"/>
+<path d="M343,245L341,245L339,246L337,246L334,245L333,242L335,239L333,237L333,235L329,233L330,231L333,230L332,228L336,228L338,231L340,232L341,236L339,237L340,241L341,242Z"/>
+<path d="M517,113L522,114L521,118L519,118L517,120L518,121L519,123L519,125L521,127L518,130L509,130L505,132L501,132L495,129L497,122L492,118L487,115L496,115L497,113L505,108L507,109L510,110L513,111L516,113Z"/>
+<path d="M291,250L291,253L290,254L287,257L284,258L282,261L282,263L280,264L279,262L278,262L277,262L276,261L277,261L277,259L278,257L278,256L277,257L275,256L276,255L275,253L276,253L277,251L278,249L278,248L279,247L281,246L284,248L284,248L285,249L287,249L288,249L289,250L291,250Z"/>
+<path d="M271,186L276,186L280,188L283,188L287,191L290,192L292,193L294,194L290,195L284,195L285,193L282,192L280,190L276,189L272,188L270,187L267,188L265,189L265,188L267,187L271,186Z"/>
+<path d="M587,312L585,312L584,312L583,311L582,311L580,310L578,310L577,308L577,307L576,307L573,304L572,302L571,301L570,299L573,300L574,300L575,300L577,298L579,296L580,296L580,295L582,293L584,293L584,294L587,294L588,295L588,295L590,296L591,296L591,300L591,302L591,304L591,305L591,306L590,307L590,309L587,312Z"/>
+<path d="M582,311L575,315L574,318L572,320L570,321L566,321L563,321L561,323L558,325L558,322L555,319L558,311L560,301L565,301L568,300L570,299L572,302L576,307L577,308L580,310Z"/>
+<path d="M555,319L553,330L550,330L548,329L545,329L542,325L541,321L540,313L539,310L536,305L533,300L534,298L537,297L539,298L553,299L564,299L569,298L570,299L567,300L564,300L558,301L555,311Z"/>
+<path d="M468,215L467,213L467,209L470,208L473,207L485,205L486,181L506,194L509,197L510,205L504,207L499,209L494,210L491,212L488,213L486,218L484,222L482,221L479,222L477,221L476,220L476,217L474,216L472,217L469,216L468,215Z"/>
+<path d="M453,192L453,191L464,191L464,187L464,185L467,185L467,178L476,178L476,174L486,181L482,181L483,193L485,205L485,205L485,207L473,207L473,208L472,207L470,208L468,207L468,207L467,209L466,209L464,207L463,205L461,205L460,204L458,204L457,205L455,204L454,205L454,204L455,202L455,200L455,197L455,196L455,194L454,193L453,192Z"/>
+<path d="M541,186L543,192L544,193L543,200L539,206L539,211L541,213L539,214L539,215L536,212L532,213L530,213L526,214L522,213L519,214L515,211L511,212L510,215L508,216L506,217L503,214L501,211L501,209L504,207L510,207L512,203L516,196L533,185L539,188Z"/>
+<path d="M507,233L508,226L509,224L510,221L510,219L510,215L511,212L515,211L519,214L522,213L526,214L530,213L532,213L536,212L539,215L540,216L540,218L537,222L536,224L534,227L533,229L531,232L528,230L526,232L524,237L520,238L516,238L514,234L510,233Z"/>
+<path d="M540,214L541,220L541,222L540,225L543,229L540,233L540,237L543,241L544,244L540,244L534,244L527,244L525,239L524,237L526,232L531,232L534,228L536,224L538,220L540,216L540,214Z"/>
+<path d="M478,222L479,222L481,221L483,221L484,222L486,222L488,223L490,222L493,227L491,233L492,236L489,236L484,236L479,238L479,236L479,234L477,233L477,231L477,229L477,227L477,227L478,224L477,222Z"/>
+<path d="M462,215L466,216L468,215L469,216L472,217L474,216L476,217L476,220L477,221L477,223L477,227L477,229L475,230L474,228L472,227L470,225L469,222L465,223L463,225L460,222L459,220L460,218L462,217L462,215Z"/>
+<path d="M485,221L485,220L486,218L485,217L488,215L488,213L489,213L490,213L491,212L492,212L494,210L494,210L497,208L499,208L499,209L501,209L501,210L501,211L503,213L503,214L506,215L506,217L505,218L504,218L503,219L503,219L500,219L499,219L498,220L497,219L492,220L492,221L492,223L490,222L489,223L488,223L487,223L486,222L485,221Z"/>
+<path d="M576,235L571,235L569,236L563,237L560,238L554,236L551,240L546,241L544,242L542,238L540,235L542,229L546,229L551,227L553,225L560,221L564,220L565,224L568,227L572,231L576,235Z"/>
+<path d="M551,240L550,243L549,248L549,250L549,252L546,255L544,260L542,262L539,263L538,263L536,263L534,263L531,261L532,258L535,257L536,257L540,256L540,252L540,247L537,246L536,244L542,245L544,244L548,240L551,240Z"/>
+<path d="M531,244L533,244L534,244L536,244L536,244L536,245L537,246L539,246L540,247L538,250L540,252L540,254L540,256L539,257L536,257L535,255L535,257L533,257L532,258L533,260L531,261L528,258L526,256L524,253L525,252L525,251L526,249L526,247L527,247L531,247L531,244Z"/>
+<path d="M585,273L589,275L593,279L593,285L592,289L582,293L579,296L574,300L570,299L567,298L561,295L566,285L567,281L568,281L572,283L576,284L580,287L582,284L579,280L580,274L585,273Z"/>
+<path d="M596,282L602,282L607,281L612,279L612,283L613,291L610,296L601,302L597,305L598,311L599,314L598,317L592,320L591,323L589,323L589,318L590,309L591,305L591,300L588,295L584,294L592,289L596,291L596,295L599,294L597,288L596,282Z"/>
+<path d="M534,267L537,266L547,270L550,272L553,271L556,269L560,270L561,275L562,281L565,280L566,283L567,286L563,297L553,299L539,298L534,298L533,294L535,288L538,283L537,279L536,275L535,269Z"/>
+<path d="M638,285L639,288L640,292L639,294L638,294L638,297L637,300L635,307L632,316L629,320L625,320L622,318L620,313L621,309L622,308L624,304L622,301L623,297L625,295L627,294L630,292L633,289L634,288L636,285L638,285Z"/>
+<path d="M476,174L476,170L485,167L490,162L496,160L495,156L497,151L504,148L515,148L521,148L523,151L521,157L525,161L527,170L527,175L528,180L530,182L524,190L509,197L506,194L486,181Z"/>
+<path d="M609,161L608,157L614,154L615,151L615,149L616,148L618,147L619,146L622,147L623,147L624,147L626,150L628,151L628,153L627,153L626,156L628,158L631,160L633,162L632,164L633,164L633,165L635,167L633,167L631,167L629,169L624,169L616,163L612,161L609,161Z"/>
+<path d="M653,187L654,185L656,183L655,181L658,183L661,184L664,186L666,187L665,190L664,191L661,193L660,195L660,197L657,198L656,200L654,201L652,203L649,204L647,202L653,194L653,187Z"/>
+<path d="M792,210L784,213L780,215L778,216L776,224L779,229L784,233L781,233L777,231L774,227L773,225L777,217L775,212L774,207L772,201L773,195L778,193L781,196L784,200L787,199L791,204L792,210Z"/>
+<path d="M798,211L796,210L795,211L792,210L793,209L793,207L791,204L791,202L789,199L787,199L786,200L784,200L784,200L781,201L781,199L781,196L779,196L779,194L778,193L779,192L781,190L781,191L783,191L782,188L784,188L785,190L787,192L790,192L791,195L789,195L789,196L792,198L794,201L796,204L798,206L799,208L798,211Z"/>
+<path d="M778,193L773,195L772,201L774,207L775,212L777,217L773,220L774,214L771,205L765,206L763,202L760,195L756,190L759,188L759,183L763,180L768,174L771,173L773,173L774,178L774,183L776,189L781,189L778,193Z"/>
+<path d="M790,221L795,220L799,216L798,211L798,206L794,201L789,196L791,195L787,192L784,188L788,187L793,185L796,187L797,189L796,193L794,197L798,204L802,208L803,218L798,221L792,226L792,222Z"/>
+<path d="M863,132L863,133L861,133L860,136L858,138L855,139L854,141L855,142L856,143L853,144L851,145L849,145L848,145L847,145L847,143L848,142L848,140L845,139L851,136L854,135L856,133L861,131Z"/>
+<path d="M744,113L756,109L763,111L773,110L778,107L784,110L794,110L801,113L810,113L819,111L823,114L823,117L830,117L830,120L822,123L812,125L810,128L807,131L795,133L787,134L776,132L766,130L760,125L752,123L747,116Z"/>
+<path d="M770,171L770,175L764,178L761,184L759,187L756,184L753,185L757,181L750,180L746,177L745,181L746,184L747,190L742,192L733,199L728,204L723,206L723,214L720,221L717,225L713,225L709,217L707,209L702,197L698,192L693,188L691,182L695,179L696,172L704,167L709,160L705,155L714,154L719,157L718,159L725,166L725,171L735,174L742,177L745,174L747,174L751,175L756,174L759,170L767,168L770,171Z"/>
+<path d="M745,173L745,174L745,176L745,177L742,177L739,176L737,176L735,174L731,174L728,172L725,171L722,170L724,167L725,166L726,165L729,166L731,168L733,169L734,170L736,170L738,172L742,172L745,173Z"/>
+<path d="M716,151L706,153L707,159L707,164L699,172L695,176L697,182L687,183L679,180L672,177L674,174L670,169L677,168L681,168L686,163L690,162L692,160L694,156L698,154L698,150L706,148L711,148Z"/>
+<path d="M685,146L689,147L693,146L695,144L698,145L700,148L704,146L709,147L703,148L699,151L698,155L695,157L693,161L688,162L684,165L679,168L674,169L671,163L668,158L669,154L675,152L679,149L683,145Z"/>
+<path d="M688,147L689,142L688,140L692,139L696,136L696,138L696,139L693,140L699,141L705,143L708,143L708,146L704,146L701,147L698,147L698,145L697,143L695,145L693,146L691,146L688,147Z"/>
+<path d="M697,133L698,131L700,131L704,132L705,130L706,130L710,131L711,131L716,131L720,131L721,132L723,132L723,133L718,134L717,136L714,136L713,138L710,137L708,138L705,139L705,140L705,140L699,141L696,140L693,140L693,139L696,139L697,138L699,138L703,136L700,135L698,136L696,135L698,133L697,133Z"/>
+<path d="M646,134L650,132L654,135L659,135L661,133L667,133L668,136L672,136L676,141L681,143L685,146L683,145L680,147L678,150L675,152L670,151L668,149L662,146L657,144L654,145L650,147L650,142L648,139L647,136L652,136L649,133L647,136Z"/>
+<path d="M635,167L632,164L628,158L628,153L624,147L623,144L625,141L629,142L634,141L636,144L641,148L650,147L656,145L662,146L670,149L668,156L669,161L672,165L672,170L676,174L671,180L659,179L655,175L646,173L639,166L635,167Z"/>
+<path d="M599,159L599,159L600,159L600,158L600,156L602,155L601,154L600,154L600,152L600,150L601,150L602,149L602,148L603,148L606,147L607,148L610,148L613,147L614,147L618,147L616,148L615,149L615,151L614,154L608,157L602,160L599,159Z"/>
+<path d="M531,87L534,83L533,78L535,72L539,71L542,66L547,61L550,60L556,58L561,59L565,66L562,67L559,71L550,76L550,82L550,86L546,92L541,94L536,96L533,90Z"/>
+<path d="M578,94L582,95L586,96L585,98L588,100L590,101L590,102L587,103L588,105L586,105L585,107L581,107L579,107L576,107L570,106L567,107L565,105L566,104L565,101L568,100L572,98L574,96L578,94Z"/>
+<path d="M588,105L594,105L597,108L604,110L611,113L608,117L602,120L597,123L593,122L585,121L580,124L580,122L583,121L582,120L580,116L574,116L569,117L563,117L563,114L566,110L568,106L578,107L584,107L588,105Z"/>
+<path d="M565,100L566,103L564,104L565,107L566,110L563,113L563,114L558,113L555,113L553,113L551,111L549,110L546,111L545,109L542,108L541,105L539,103L539,101L545,99L552,98L555,99L563,99L565,100Z"/>
+<path d="M578,124L581,124L582,125L580,125L578,128L572,128L567,128L564,128L562,127L562,126L560,126L558,124L556,122L560,119L563,117L566,117L569,117L572,117L574,116L576,117L578,120L578,122Z"/>
+<path d="M539,101L539,103L541,105L542,108L540,108L537,109L534,110L535,112L538,114L536,116L536,118L534,117L529,118L527,118L524,117L521,118L522,114L517,113L517,111L517,106L519,105L519,101L522,101L524,100L524,97L528,97L530,99L533,99L538,100Z"/>
+<path d="M564,135L568,134L573,135L574,135L572,137L569,136L568,139L565,139L563,138L565,141L565,143L567,145L565,146L564,149L560,148L559,144L556,141L557,139L558,137L560,136L563,136L564,135Z"/>
+<path d="M624,147L622,147L618,147L613,147L607,148L603,148L602,149L600,150L600,148L596,148L590,150L585,148L583,150L577,148L573,144L573,140L580,138L587,136L593,133L603,135L610,136L615,135L621,136L621,138L624,140L623,144L624,147Z"/>
+<path d="M479,147L480,145L480,143L479,140L480,138L481,136L481,134L479,134L477,133L475,134L474,130L481,129L488,129L495,129L501,132L505,132L508,134L502,136L500,139L500,142L498,145L494,148L488,148L485,150L483,149L479,147Z"/>
+<path d="M991,361L990,363L989,365L987,366L986,365L985,365L987,362L986,361L983,360L983,359L985,358L985,356L985,354L984,352L984,351L983,350L981,348L980,346L981,346L982,347L984,348L985,350L987,353L987,351L988,352L989,354L991,355L993,355L994,354L996,355L995,357L994,359L992,359L992,360L992,361L991,361Z"/>
+<path d="M971,371L974,370L975,368L977,366L978,365L978,364L980,362L981,364L981,365L983,364L984,365L984,366L983,367L981,369L980,370L981,372L979,372L976,373L976,375L974,378L972,379L970,380L968,380L966,379L963,378L963,377L964,375L968,373L969,372L971,371Z"/>
+<path d="M850,339L839,344L829,347L820,343L820,335L817,326L817,323L816,315L821,310L830,306L838,302L844,297L848,291L853,288L861,288L868,284L873,283L880,284L876,291L885,297L892,296L893,286L896,280L899,287L904,293L907,303L916,312L922,318L926,331L921,342L917,353L906,358L897,357L888,350L880,348L879,345L873,341L853,340Z"/>
+<path d="M723,132L729,124L741,115L751,118L760,125L771,131L790,134L807,131L811,125L824,121L830,117L821,116L831,109L836,102L852,106L863,115L874,118L864,125L861,131L852,134L839,141L838,136L826,142L836,145L835,150L837,160L839,167L832,178L817,188L807,193L800,190L793,185L782,188L779,190L774,183L774,174L768,170L757,173L749,172L738,172L729,166L718,159L716,151L708,144L705,140L714,136Z"/>
+<path d="M529,120L534,119L538,122L534,124L535,128L542,133L544,135L551,138L549,138L548,140L545,144L544,142L543,139L539,137L534,134L528,128L523,127L521,127L520,124L520,123L524,122L528,121Z"/>
+<path d="M491,102L492,100L490,98L486,97L486,95L484,94L484,89L488,87L489,90L495,90L491,95L494,95L499,99L501,103L504,105L504,108L498,109L492,109L487,110L484,111L491,107L486,107L488,105L487,101Z"/>
+<path d="M460,65L459,67L462,69L459,71L451,73L448,74L445,73L437,72L440,71L433,70L438,69L438,68L432,68L434,66L439,66L443,67L447,66L451,67L455,65L460,65Z"/>
+<path d="M827,239L825,238L822,238L821,241L820,242L818,246L816,247L814,246L812,246L811,247L809,247L807,248L805,246L805,244L807,245L809,245L809,243L811,242L814,241L816,239L817,237L818,239L819,238L820,238L821,236L821,235L823,233L824,231L825,231L827,232L827,233L829,234L831,235L831,236L829,236L829,238L827,239Z"/>
+<path d="M579,58L583,62L584,67L585,72L588,75L584,78L578,82L573,82L564,84L559,81L558,76L562,73L571,69L566,67L565,61L557,58L562,59L569,59L573,56L581,56Z"/>
+<path d="M601,210L601,209L602,205L602,203L603,202L605,202L607,200L608,203L609,206L611,207L614,210L616,211L617,213L618,214L620,215L619,215L618,215L617,214L616,213L614,212L614,211L611,210L609,210L609,209L607,210L605,208L604,211L601,210Z"/>
+<path d="M894,141L892,144L892,147L891,149L891,150L890,152L886,154L881,154L877,157L875,156L875,154L870,155L867,156L864,156L867,158L865,163L863,164L862,163L862,160L861,159L859,158L862,157L864,155L866,153L868,152L874,151L877,151L880,146L882,148L886,145L887,144L889,140L889,137L890,136L893,135L894,139L894,141Z"/>
+<path d="M338,306L339,308L339,311L342,312L343,311L345,312L346,313L346,315L346,317L347,317L348,316L349,317L349,318L349,320L348,321L348,324L345,326L343,327L340,326L337,325L340,321L340,320L337,319L333,317L331,316L326,312L327,308L327,307L328,305L333,304L336,304L338,305L338,306Z"/>
+<path d="M644,197L648,204L645,206L642,208L635,211L633,211L630,213L627,213L625,214L624,215L621,215L620,212L619,209L619,208L619,206L620,204L621,201L622,202L626,202L630,202L632,202L636,198Z"/>
+<path d="M597,168L602,167L606,165L609,161L624,169L633,171L637,174L639,177L640,180L642,182L643,183L653,187L644,197L632,202L629,202L622,202L620,203L618,203L616,200L612,194L608,189L606,183L603,180L601,176L596,172L597,168Z"/>
+<path d="M494,152L496,159L493,161L490,164L483,167L476,173L474,175L471,175L467,178L460,188L453,190L454,188L456,184L459,180L462,176L465,172L471,169L474,161L479,156L484,151L490,152Z"/>
+<path d="M602,189L581,189L569,179L569,167L569,164L574,162L579,164L582,163L586,162L589,164L592,164L595,163L597,167L596,169L595,173L593,172L590,167L591,170L595,177L597,180L599,184L602,188Z"/>
+<path d="M569,189L566,194L555,190L541,186L538,186L532,183L529,182L528,180L527,176L527,173L527,170L526,166L528,164L530,162L532,160L535,159L539,159L544,163L550,165L554,165L555,162L558,159L564,159L566,161L569,161L569,164L569,167L569,179Z"/>
+<path d="M633,228L621,236L617,238L614,239L611,239L608,240L607,240L602,238L599,237L598,235L595,231L593,229L592,227L594,226L595,220L597,219L600,215L601,210L605,208L609,209L611,210L614,212L617,214L617,216L616,218L618,219L619,220L619,222L621,224L633,228Z"/>
+<path d="M594,253L589,253L585,253L584,253L583,254L582,254L582,252L583,251L583,248L584,247L585,246L586,245L587,244L585,244L586,240L586,240L587,239L589,240L591,239L593,239L594,238L596,240L596,242L597,245L596,247L595,249L594,250L594,253Z"/>
+<path d="M586,240L581,238L578,238L574,233L570,229L566,226L569,223L572,222L575,223L580,224L582,222L587,223L590,218L591,216L592,220L594,224L594,227L593,229L596,232L594,238L589,240Z"/>
+</g>
+</g>
 <g id="mR"></g><g id="mP"></g><g id="mL"></g>
-</g></svg>`;
+</svg>`;
 
-let mapScale=1, mapX=0, mapY=0;
-let isDragging=false, dragStartX=0, dragStartY=0, dragMapX=0, dragMapY=0;
+// ============================================================
+// ZOOM + PAN (cursor-aware zoom, labels don't scale)
+// ============================================================
+let mapScale=1,mapX=0,mapY=0,isDragging=false,dragSX=0,dragSY=0,dragMX=0,dragMY=0;
+let overlayData=[],routeData=[];
 
 function updateMapTransform(){
     const g=document.querySelector('#panZoomGroup');
     if(g)g.setAttribute('transform',`translate(${mapX},${mapY}) scale(${mapScale})`);
+    updateOverlays();
 }
-
-// Convert screen coords to SVG coords
-function screenToSVG(el, clientX, clientY){
-    const svg=el.querySelector('svg');
-    if(!svg)return{x:500,y:250};
-    const rect=svg.getBoundingClientRect();
-    return{
-        x:((clientX-rect.left)/rect.width)*1000,
-        y:((clientY-rect.top)/rect.height)*500
-    };
+function screenToSVG(el,cx,cy){
+    const svg=el.querySelector('svg');if(!svg)return{x:500,y:250};
+    const r=svg.getBoundingClientRect();
+    return{x:((cx-r.left)/r.width)*1000,y:((cy-r.top)/r.height)*500};
 }
-
-// Zoom toward a specific SVG point
-function zoomAtPoint(factor, svgX, svgY){
-    const newScale=Math.max(0.5,Math.min(5,mapScale*factor));
-    const r=newScale/mapScale;
-    // Adjust translation so the point under cursor stays fixed
-    mapX=svgX-(svgX-mapX)*r;
-    mapY=svgY-(svgY-mapY)*r;
-    mapScale=newScale;
-    updateMapTransform();
+function zoomAtPoint(f,sx,sy){
+    const ns=Math.max(0.5,Math.min(8,mapScale*f)),r=ns/mapScale;
+    mapX=sx-(sx-mapX)*r;mapY=sy-(sy-mapY)*r;mapScale=ns;updateMapTransform();
 }
-
-// Button zoom: zoom toward center of current view
-function zoomMap(factor){
-    const cx=(500-mapX)/mapScale;
-    const cy=(250-mapY)/mapScale;
-    zoomAtPoint(factor,cx,cy);
+function zoomMap(f){zoomAtPoint(f,(500-mapX)/mapScale,(250-mapY)/mapScale)}
+function resetZoom(){mapScale=1;mapX=0;mapY=0;updateMapTransform()}
+function w2s(lat,lng){
+    return{x:((lng+180)/360)*1000*mapScale+mapX,y:((90-lat)/180)*500*mapScale+mapY};
 }
-
-function resetZoom(){
-    mapScale=1;mapX=0;mapY=0;
-    updateMapTransform();
+function updateOverlays(){
+    overlayData.forEach(o=>{
+        const p=w2s(o.lat,o.lng);
+        if(o.glow){o.glow.setAttribute('cx',p.x);o.glow.setAttribute('cy',p.y)}
+        if(o.dot){o.dot.setAttribute('cx',p.x);o.dot.setAttribute('cy',p.y)}
+        if(o.bg){o.bg.setAttribute('x',p.x-o.bw/2);o.bg.setAttribute('y',p.y-22)}
+        if(o.label){o.label.setAttribute('x',p.x);o.label.setAttribute('y',p.y-12)}
+        if(o.hit){o.hit.setAttribute('cx',p.x);o.hit.setAttribute('cy',p.y)}
+    });
+    routeData.forEach(rd=>{
+        const a=w2s(rd.a[0],rd.a[1]),b=w2s(rd.b[0],rd.b[1]);
+        const mx=(a.x+b.x)/2,my=Math.min(a.y,b.y)-20-Math.abs(a.x-b.x)*.06;
+        rd.el.setAttribute('d',`M${a.x} ${a.y}Q${mx} ${my} ${b.x} ${b.y}`);
+        rd.el.style.setProperty('--len',rd.el.getTotalLength());
+    });
 }
-
-function initMapInteraction(){
+function initMap(){
     const el=document.getElementById('map');
-
-    // Mouse wheel zoom toward cursor
-    el.addEventListener('wheel',e=>{
-        e.preventDefault();
-        const factor=e.deltaY<0?1.15:0.87;
-        const pt=screenToSVG(el,e.clientX,e.clientY);
-        zoomAtPoint(factor,pt.x,pt.y);
-    },{passive:false});
-
-    // Mouse drag pan
-    el.addEventListener('mousedown',e=>{
-        isDragging=true;dragStartX=e.clientX;dragStartY=e.clientY;
-        dragMapX=mapX;dragMapY=mapY;
-    });
-    window.addEventListener('mousemove',e=>{
-        if(!isDragging)return;
-        const svg=el.querySelector('svg');
-        if(!svg)return;
-        const rect=svg.getBoundingClientRect();
-        mapX=dragMapX+(e.clientX-dragStartX)*(1000/rect.width);
-        mapY=dragMapY+(e.clientY-dragStartY)*(500/rect.height);
-        updateMapTransform();
-    });
+    el.addEventListener('wheel',e=>{e.preventDefault();const pt=screenToSVG(el,e.clientX,e.clientY);zoomAtPoint(e.deltaY<0?1.15:0.87,pt.x,pt.y)},{passive:false});
+    el.addEventListener('mousedown',e=>{isDragging=true;dragSX=e.clientX;dragSY=e.clientY;dragMX=mapX;dragMY=mapY});
+    window.addEventListener('mousemove',e=>{if(!isDragging)return;const svg=el.querySelector('svg');if(!svg)return;const r=svg.getBoundingClientRect();mapX=dragMX+(e.clientX-dragSX)*(1000/r.width);mapY=dragMY+(e.clientY-dragSY)*(500/r.height);updateMapTransform()});
     window.addEventListener('mouseup',()=>{isDragging=false});
+    let ltd=0;
+    el.addEventListener('touchstart',e=>{if(e.touches.length===1){isDragging=true;dragSX=e.touches[0].clientX;dragSY=e.touches[0].clientY;dragMX=mapX;dragMY=mapY}if(e.touches.length===2){isDragging=false;ltd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)}},{passive:true});
+    el.addEventListener('touchmove',e=>{if(e.touches.length===1&&isDragging){const svg=el.querySelector('svg');if(!svg)return;const r=svg.getBoundingClientRect();mapX=dragMX+(e.touches[0].clientX-dragSX)*(1000/r.width);mapY=dragMY+(e.touches[0].clientY-dragSY)*(500/r.height);updateMapTransform()}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(ltd>0){const cx=(e.touches[0].clientX+e.touches[1].clientX)/2,cy=(e.touches[0].clientY+e.touches[1].clientY)/2;const pt=screenToSVG(el,cx,cy);zoomAtPoint(d/ltd,pt.x,pt.y)}ltd=d}},{passive:true});
+    el.addEventListener('touchend',()=>{isDragging=false;ltd=0});
+}
 
-    // Touch support
-    let lastTouchDist=0, lastTouchCX=0, lastTouchCY=0;
-    el.addEventListener('touchstart',e=>{
-        if(e.touches.length===1){
-            isDragging=true;dragStartX=e.touches[0].clientX;dragStartY=e.touches[0].clientY;
-            dragMapX=mapX;dragMapY=mapY;
-        }
-        if(e.touches.length===2){
-            isDragging=false;
-            lastTouchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-            lastTouchCX=(e.touches[0].clientX+e.touches[1].clientX)/2;
-            lastTouchCY=(e.touches[0].clientY+e.touches[1].clientY)/2;
-        }
-    },{passive:true});
-    el.addEventListener('touchmove',e=>{
-        if(e.touches.length===1&&isDragging){
-            const svg=el.querySelector('svg');if(!svg)return;
-            const rect=svg.getBoundingClientRect();
-            mapX=dragMapX+(e.touches[0].clientX-dragStartX)*(1000/rect.width);
-            mapY=dragMapY+(e.touches[0].clientY-dragStartY)*(500/rect.height);
-            updateMapTransform();
-        }
-        if(e.touches.length===2){
-            const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-            if(lastTouchDist>0){
-                const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
-                const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
-                const pt=screenToSVG(el,cx,cy);
-                zoomAtPoint(dist/lastTouchDist,pt.x,pt.y);
+// ============================================================
+// POPUP
+// ============================================================
+function showPopup(data,sx,sy){
+    const p=document.getElementById('popup'),info=LC[data.language]||{};
+    const idx=data._idx!==undefined?` <span style="font-size:.65rem;color:var(--tm)">#${data._idx+1}</span>`:'';
+    p.innerHTML=`<div class="pp-lang">${data.language}${idx}</div>${data.word?`<div class="pp-word">${data.word}</div>`:''}${info.yr?`<div class="pp-yr">${info.yr}</div>`:''}${info.ppl?`<div class="pp-ppl">${info.ppl}</div>`:''}${info.lb?`<div class="pp-place">${info.lb}</div>`:''}`;
+    const mr=document.getElementById('map').getBoundingClientRect();
+    p.style.left=Math.max(10,Math.min((sx-mr.left)-90,mr.width-200))+'px';
+    p.style.top=Math.max(10,(sy-mr.top)-p.offsetHeight-20)+'px';
+    p.classList.add('vis');
+}
+function hidePopup(){document.getElementById('popup').classList.remove('vis')}
+
+// ============================================================
+// SEPARATE OVERLAPPING DOTS
+// ============================================================
+function separateOverlaps(chain){
+    // For any two stops at identical or very close coordinates, offset them slightly
+    const used=[];
+    chain.forEach(s=>{
+        if(!s.lat||!s.lng)return;
+        for(const u of used){
+            const dlat=Math.abs(s.lat-u.lat),dlng=Math.abs(s.lng-u.lng);
+            if(dlat<1.5&&dlng<1.5){
+                // Offset this point
+                s.lat+=1.8;
+                s.lng+=2.5;
+                // Check again recursively
+                for(const u2 of used){
+                    if(Math.abs(s.lat-u2.lat)<1.5&&Math.abs(s.lng-u2.lng)<1.5){
+                        s.lat-=3.6;s.lng-=1;
+                    }
+                }
             }
-            lastTouchDist=dist;
         }
-    },{passive:true});
-    el.addEventListener('touchend',()=>{isDragging=false;lastTouchDist=0});
+        used.push({lat:s.lat,lng:s.lng});
+    });
+    return chain;
 }
 
 // ============================================================
 // RENDERING
 // ============================================================
-function toXY(lat,lng){return{x:((lng+180)/360)*1000,y:((90-lat)/180)*500}}
-let TT=[];
-function clr(){TT.forEach(clearTimeout);TT=[]}
+let TT=[];function clr(){TT.forEach(clearTimeout);TT=[]}
 
-function drawMap(j){
-    const c=document.getElementById('map');c.innerHTML=MSVG;
-    mapScale=1;mapX=0;mapY=0;
-    initMapInteraction();
+function drawMap(j,cogs){
+    const c=document.getElementById('map'),pu=document.getElementById('popup');
+    c.innerHTML=MSVG;c.appendChild(pu);
+    mapScale=1;mapX=0;mapY=0;overlayData=[];routeData=[];
+    initMap();clr();hidePopup();
     const rG=c.querySelector('#mR'),pG=c.querySelector('#mP'),lG=c.querySelector('#mL');
-    clr();
+
     j.forEach((s,i)=>{
         if(!s.lat||!s.lng)return;
-        const p=toXY(s.lat,s.lng);
+        s._idx=i;
         TT.push(setTimeout(()=>{
+            const p=w2s(s.lat,s.lng);
             if(i>0&&j[i-1].lat&&j[i-1].lng){
-                const pv=toXY(j[i-1].lat,j[i-1].lng);
-                const mx=(pv.x+p.x)/2,my=Math.min(pv.y,p.y)-25-Math.abs(pv.x-p.x)*.08;
                 const pa=document.createElementNS('http://www.w3.org/2000/svg','path');
-                pa.setAttribute('d',`M${pv.x} ${pv.y}Q${mx} ${my} ${p.x} ${p.y}`);
+                const a=w2s(j[i-1].lat,j[i-1].lng);
+                const mx=(a.x+p.x)/2,my=Math.min(a.y,p.y)-20-Math.abs(a.x-p.x)*.06;
+                pa.setAttribute('d',`M${a.x} ${a.y}Q${mx} ${my} ${p.x} ${p.y}`);
                 pa.setAttribute('fill','none');pa.setAttribute('stroke','url(#rG)');
                 pa.setAttribute('stroke-width','2');pa.setAttribute('opacity','.7');
-                rG.appendChild(pa);
-                pa.style.setProperty('--len',pa.getTotalLength());pa.classList.add('rl');
+                rG.appendChild(pa);pa.style.setProperty('--len',pa.getTotalLength());pa.classList.add('rl');
+                routeData.push({el:pa,a:[j[i-1].lat,j[i-1].lng],b:[s.lat,s.lng]});
             }
             const gw=document.createElementNS('http://www.w3.org/2000/svg','circle');
             gw.setAttribute('cx',p.x);gw.setAttribute('cy',p.y);gw.setAttribute('r','15');
-            gw.setAttribute('fill',i===j.length-1?'url(#gB)':'url(#gA)');pG.appendChild(gw);
+            gw.setAttribute('fill',i===j.length-1?'url(#gB)':'url(#gA)');gw.style.opacity='0';gw.style.animation='fi .5s ease forwards';
+            pG.appendChild(gw);
             const dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
             dt.setAttribute('cx',p.x);dt.setAttribute('cy',p.y);dt.setAttribute('r','4');
             dt.setAttribute('fill',i===j.length-1?'#f0c040':'#6c63ff');dt.classList.add('pd');pG.appendChild(dt);
-            const nm=s.language,lw=nm.length*5.5+16;
+            const nm=s.language,bw=nm.length*5.2+14;
             const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
-            bg.setAttribute('x',p.x-lw/2);bg.setAttribute('y',p.y-22);bg.setAttribute('width',lw);bg.setAttribute('height','16');
-            bg.classList.add('mlb');lG.appendChild(bg);
+            bg.setAttribute('x',p.x-bw/2);bg.setAttribute('y',p.y-22);bg.setAttribute('width',bw);bg.setAttribute('height','16');
+            bg.setAttribute('fill','rgba(18,18,26,.88)');bg.setAttribute('rx','3');bg.style.opacity='0';bg.style.animation='fi .5s ease forwards';
+            lG.appendChild(bg);
             const lb=document.createElementNS('http://www.w3.org/2000/svg','text');
-            lb.setAttribute('x',p.x);lb.setAttribute('y',p.y-11);lb.textContent=nm;lb.classList.add('ml');lG.appendChild(lb);
-        },i*900));
+            lb.setAttribute('x',p.x);lb.setAttribute('y',p.y-12);lb.textContent=nm;
+            lb.setAttribute('font-family','Inter,system-ui,sans-serif');lb.setAttribute('font-size','8.5');
+            lb.setAttribute('fill','#e8e8ef');lb.setAttribute('font-weight','500');lb.setAttribute('text-anchor','middle');
+            lb.style.opacity='0';lb.style.animation='fi .5s ease forwards';lG.appendChild(lb);
+            const hit=document.createElementNS('http://www.w3.org/2000/svg','circle');
+            hit.setAttribute('cx',p.x);hit.setAttribute('cy',p.y);hit.setAttribute('r','18');
+            hit.setAttribute('fill','transparent');hit.setAttribute('cursor','pointer');
+            hit.addEventListener('mouseenter',ev=>showPopup(s,ev.clientX,ev.clientY));
+            hit.addEventListener('mouseleave',hidePopup);
+            hit.addEventListener('click',ev=>{ev.stopPropagation();showPopup(s,ev.clientX,ev.clientY)});
+            lG.appendChild(hit);
+            overlayData.push({lat:s.lat,lng:s.lng,glow:gw,dot:dt,bg,label:lb,bw,hit});
+        },i*800));
     });
+
+    // Cognate branches
+    if(cogs&&cogs.length){
+        const last=j[j.length>1?j.length-2:0];
+        cogs.forEach((cog,ci)=>{
+            if(!cog.lat||!cog.lng||!last.lat||!last.lng)return;
+            TT.push(setTimeout(()=>{
+                const a=w2s(last.lat,last.lng),b=w2s(cog.lat,cog.lng);
+                const mx=(a.x+b.x)/2,my=Math.min(a.y,b.y)-15-Math.abs(a.x-b.x)*.05;
+                const pa=document.createElementNS('http://www.w3.org/2000/svg','path');
+                pa.setAttribute('d',`M${a.x} ${a.y}Q${mx} ${my} ${b.x} ${b.y}`);
+                pa.setAttribute('fill','none');pa.setAttribute('stroke','url(#rB)');
+                pa.setAttribute('stroke-width','1.5');pa.setAttribute('stroke-dasharray','6,4');pa.setAttribute('opacity','.5');
+                rG.appendChild(pa);routeData.push({el:pa,a:[last.lat,last.lng],b:[cog.lat,cog.lng]});
+                const dt=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                dt.setAttribute('cx',b.x);dt.setAttribute('cy',b.y);dt.setAttribute('r','3');dt.setAttribute('fill','#886eff');dt.setAttribute('opacity','.7');
+                pG.appendChild(dt);
+                const nm=cog.language,bw=nm.length*5+12;
+                const bg2=document.createElementNS('http://www.w3.org/2000/svg','rect');
+                bg2.setAttribute('x',b.x-bw/2);bg2.setAttribute('y',b.y-22);bg2.setAttribute('width',bw);bg2.setAttribute('height','16');
+                bg2.setAttribute('fill','rgba(18,18,26,.7)');bg2.setAttribute('rx','3');bg2.style.opacity='0';bg2.style.animation='fi .5s ease forwards';
+                lG.appendChild(bg2);
+                const lb2=document.createElementNS('http://www.w3.org/2000/svg','text');
+                lb2.setAttribute('x',b.x);lb2.setAttribute('y',b.y-12);lb2.textContent=nm;
+                lb2.setAttribute('font-family','Inter,system-ui,sans-serif');lb2.setAttribute('font-size','7.5');
+                lb2.setAttribute('fill','#8888a0');lb2.setAttribute('text-anchor','middle');lb2.style.opacity='0';lb2.style.animation='fi .5s ease forwards';
+                lG.appendChild(lb2);
+                const h2=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                h2.setAttribute('cx',b.x);h2.setAttribute('cy',b.y);h2.setAttribute('r','18');h2.setAttribute('fill','transparent');h2.setAttribute('cursor','pointer');
+                h2.addEventListener('mouseenter',ev=>showPopup(cog,ev.clientX,ev.clientY));h2.addEventListener('mouseleave',hidePopup);
+                lG.appendChild(h2);
+                overlayData.push({lat:cog.lat,lng:cog.lng,glow:null,dot:dt,bg:bg2,label:lb2,bw,hit:h2});
+            },(j.length+ci)*800));
+        });
+    }
 }
 
-function drawTL(j){
+function drawTL(j,cogs){
     const el=document.getElementById('tl');el.innerHTML='';
     j.forEach((s,i)=>{
         const info=LC[s.language]||{};
         const d=document.createElement('div');d.className='ti';d.style.animationDelay=`${i*.15+.2}s`;
-        d.innerHTML=`<div class="td"></div>
-            <div class="tla">${s.language}</div>
-            ${s.word?`<div class="tw">${s.word}</div>`:''}
-            <div class="tmeta">
-                ${info.yr?`<span class="tyear">${info.yr}</span>`:''}
-                ${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}
-            </div>
-            <div class="tmn">${s.meaning||''}</div>`;
+        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${s.word?`<div class="tw">${s.word}</div>`:''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${s.meaning||''}</div>`;
         el.appendChild(d);
     });
+    if(cogs&&cogs.length){
+        const bl=document.createElement('div');bl.className='branch-label';bl.style.animationDelay=`${j.length*.15+.4}s`;
+        bl.textContent='↳ Cognate branches (same root, different path)';el.appendChild(bl);
+        cogs.forEach((cog,ci)=>{
+            const info=LC[cog.language]||{};
+            const d=document.createElement('div');d.className='ti branch';d.style.animationDelay=`${(j.length+ci)*.15+.5}s`;
+            d.innerHTML=`<div class="td"></div><div class="tla">${cog.language}</div>${cog.word?`<div class="tw">${cog.word}</div>`:''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${cog.meaning||''}</div>`;
+            el.appendChild(d);
+        });
+    }
 }
 
 function drawRel(word){
@@ -470,129 +473,159 @@ function drawRel(word){
 }
 
 // ============================================================
-// API + PARSER (proven in debug file)
+// API + PARSER
 // ============================================================
 async function fetchWikitext(word){
     const url=`https://en.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*`;
-    const r=await fetch(url);
-    if(!r.ok)throw new Error(`HTTP ${r.status}`);
-    const j=await r.json();
-    const pages=j.query.pages;
-    const pid=Object.keys(pages)[0];
+    const r=await fetch(url);if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const j=await r.json(),pages=j.query.pages,pid=Object.keys(pages)[0];
     if(pid==='-1')throw new Error('Word not found on Wiktionary');
-    const rev=pages[pid].revisions;
-    if(!rev||!rev[0])throw new Error('No revision data');
+    const rev=pages[pid].revisions;if(!rev||!rev[0])throw new Error('No revision data');
     if(rev[0].slots&&rev[0].slots.main)return rev[0].slots.main['*'];
     if(rev[0]['*'])return rev[0]['*'];
     throw new Error('Unexpected API format');
 }
 
-function parseWikitext(wt,word){
+// Check if word has multiple Etymology sections
+function findEtymologySections(wt){
     const engMatch=wt.match(/==\s*English\s*==([\s\S]*?)(?=\n==[^=]|$)/i);
     const searchIn=engMatch?engMatch[1]:wt;
-    const etymMatch=searchIn.match(/={2,4}\s*Etymology\s*(?:1\s*)?={2,4}\s*\n([\s\S]*?)(?=\n={2,4}[^=]|$)/i);
-    const etymSection=etymMatch?etymMatch[1]:'';
+    const sections=[];
+    const re=/={3,4}\s*Etymology\s+(\d+)\s*={3,4}\s*\n([\s\S]*?)(?=\n={3,4}\s*Etymology\s+\d|$)/gi;
+    let m;
+    while((m=re.exec(searchIn))!==null){
+        sections.push({num:parseInt(m[1]),text:m[2]});
+    }
+    if(sections.length<2){
+        // Single or no etymology section
+        const single=searchIn.match(/={2,4}\s*Etymology\s*(?:1\s*)?={2,4}\s*\n([\s\S]*?)(?=\n={2,4}[^=]|$)/i);
+        return single?[{num:1,text:single[1]}]:[];
+    }
+    return sections;
+}
 
-    const chain=[];
-    const seen=new Set();
+// Extract a short definition from an etymology section
+function extractSenseSummary(section){
+    // Look for ===Noun===, ===Verb=== etc and first definition
+    const posMatch=section.match(/===\s*(Noun|Verb|Adjective|Adverb|Pronoun|Conjunction|Preposition|Determiner|Interjection)\s*===/i);
+    const pos=posMatch?posMatch[1]:'';
+    const defMatch=section.match(/^# ([^\n#*]+)/m);
+    let def=defMatch?defMatch[1]:'';
+    def=def.replace(/\{\{(lb|label|lbl)\|[^}]*\}\}/gi,'').replace(/\{\{(gloss|gl)\|([^}]*)\}\}/gi,'($2)').replace(/\{\{[^}]*\}\}/g,'').replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2').replace(/<[^>]+>/g,'').trim().substring(0,120);
+    if(pos&&def)return`(${pos}) ${def}`;
+    if(def)return def;
+    // Fallback: etymology hint
+    const etymHint=section.replace(/\{\{[^}]*\}\}/g,'').replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2').replace(/<[^>]+>/g,'').trim().substring(0,80);
+    return etymHint||'(no definition found)';
+}
+
+function parseEtymSection(etymSection,word){
+    const chain=[],seen=new Set();
     const templateRe=/\{\{(inh|inherited|der|derived|bor|borrowed|m|mention)\|([^}]*)\}\}/gi;
     let tm;
     while((tm=templateRe.exec(etymSection))!==null){
         const type=tm[1].toLowerCase();
         const parts=tm[2].split('|').map(s=>s.trim());
         let langCode,foreignWord='';
-        if(['inh','inherited','der','derived','bor','borrowed'].includes(type)){
-            langCode=parts[1];foreignWord=parts[2]||'';
-        }else{
-            langCode=parts[0];foreignWord=parts[1]||'';
-        }
+        if(['inh','inherited','der','derived','bor','borrowed'].includes(type)){langCode=parts[1];foreignWord=parts[2]||''}
+        else{langCode=parts[0];foreignWord=parts[1]||''}
         if(!langCode)continue;
         foreignWord=foreignWord.replace(/\|.*/,'');
         if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(foreignWord))foreignWord='';
-        const langName=CODE2NAME[langCode];
+        const langName=C2N[langCode];
         if(langName&&LC[langName]&&!seen.has(langName)){
             seen.add(langName);
             chain.push({language:langName,word:foreignWord,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
         }
     }
-
-    // Wiktionary templates always list newest→oldest (en←enm←ang←gem-pro←ine-pro)
-    // Reverse so journey goes oldest→newest (origin first, English last)
-    if(chain.length>1) chain.reverse();
-
-    // Ensure English is at the end
+    // Cognates
+    const cogs=[],cogSeen=new Set();
+    const cogRe=/\{\{(cog|cognate)\|([^}]*)\}\}/gi;
+    while((tm=cogRe.exec(etymSection))!==null){
+        const parts=tm[2].split('|').map(s=>s.trim());
+        let langCode=parts[0],fw=parts[1]||'';
+        fw=fw.replace(/\|.*/,'');if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(fw))fw='';
+        const ln=C2N[langCode];
+        if(ln&&LC[ln]&&!seen.has(ln)&&!cogSeen.has(ln)){cogSeen.add(ln);cogs.push({language:ln,word:fw,meaning:LC[ln].lb,lat:LC[ln].lat,lng:LC[ln].lng})}
+    }
+    if(chain.length>1)chain.reverse();
     const ei=chain.findIndex(c=>c.language==='English');
     if(ei>=0&&ei<chain.length-1)chain.push(chain.splice(ei,1)[0]);
-    if(!chain.some(c=>c.language==='English'))
-        chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
+    if(!chain.some(c=>c.language==='English'))chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
 
-    let cleanEtym=etymSection
-        .replace(/\{\{(inh|der|bor|inherited|derived|borrowed)\|[^|]*\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
-            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
-        .replace(/\{\{(m|mention)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
-            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
-        .replace(/\{\{(cog|cognate)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,
-            (m,t,code,w)=>(CODE2NAME[code]||code)+' "'+w+'"')
-        .replace(/\{\{[^}]*\}\}/g,'')
-        .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
-        .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'')
-        .replace(/\s+/g,' ').trim();
+    // Clean etymology text
+    let cleanEtym=etymSection.replace(/\{\{(inh|der|bor|inherited|derived|borrowed)\|[^|]*\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
+        .replace(/\{\{(m|mention)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
+        .replace(/\{\{(cog|cognate)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
+        .replace(/\{\{[^}]*\}\}/g,'').replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
+        .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'').replace(/\s+/g,' ').trim();
 
-    const defSection=engMatch?engMatch[1]:wt;
-    let def='';
-    const dm=defSection.match(/^# ([^\n#*]+)/gm);
-    if(dm&&dm[0]){
-        def=dm[0].replace(/^# /,'')
-            .replace(/\{\{(lb|label|lbl)\|[^}]*\}\}/gi,'')
-            .replace(/\{\{(gloss|gl)\|([^}]*)\}\}/gi,'($2)')
-            .replace(/\{\{[^}]*\}\}/g,'')
-            .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
-            .replace(/<[^>]+>/g,'').trim().substring(0,200);
-    }
-    const posMatch=defSection.match(/===\s*(Noun|Verb|Adjective|Adverb|Preposition|Pronoun|Conjunction)\s*===/i);
-    if(posMatch&&def)def=`(${posMatch[1]}) ${def}`;
-
-    return{chain,cleanEtym,def};
+    return{chain:separateOverlaps(chain),cognates:cogs.slice(0,5),cleanEtym};
 }
 
 // ============================================================
-// MAIN
+// MAIN FLOW
 // ============================================================
-window._cur=null;
-function replay(){if(window._cur){drawMap(window._cur);drawTL(window._cur)}}
+window._cur=null;window._cog=null;
+function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window._cur,window._cog)}}
 
-async function go(word){
+async function go(word,forceSectionIdx){
     if(!word||!word.trim())return;
     word=word.trim().toLowerCase();
     document.getElementById('inp').value=word;
-    const lo=document.getElementById('lo');
-    lo.classList.add('v');
+    document.getElementById('sensePicker').classList.remove('v');
+    document.getElementById('lo').classList.add('v');
     document.getElementById('lotx').textContent='Fetching from Wiktionary...';
-
     try{
         const wt=await fetchWikitext(word);
-        const result=parseWikitext(wt,word);
-        window._cur=result.chain;
 
-        document.getElementById('wc').innerHTML=
-            `<div class="wd">${word}</div>${result.def?`<div class="wm">${result.def}</div>`:''}`;
+        // Check for multiple etymologies
+        const sections=findEtymologySections(wt);
+        if(sections.length>1&&forceSectionIdx===undefined){
+            // Show sense picker
+            document.getElementById('lo').classList.remove('v');
+            const opts=document.getElementById('senseOpts');
+            opts.innerHTML='';
+            sections.forEach((sec,i)=>{
+                const summary=extractSenseSummary(sec.text);
+                const d=document.createElement('div');d.className='sp-opt';
+                d.innerHTML=`<div class="sp-num">Etymology ${sec.num}</div><div class="sp-txt">${summary}</div>`;
+                d.addEventListener('click',()=>{
+                    document.getElementById('sensePicker').classList.remove('v');
+                    go(word,i);
+                });
+                opts.appendChild(d);
+            });
+            document.getElementById('sensePicker').classList.add('v');
+            return;
+        }
 
-        drawMap(result.chain);
-        drawTL(result.chain);
+        const sectionIdx=forceSectionIdx||0;
+        const etymSection=sections[sectionIdx]?sections[sectionIdx].text:'';
+        const result=parseEtymSection(etymSection,word);
+        window._cur=result.chain;window._cog=result.cognates;
 
-        const fc=document.getElementById('fc');
-        const facts=[];
-        if(result.chain.length>1)
-            facts.push({l:'Languages',t:`This word passed through ${result.chain.length} languages on its way to modern English.`});
+        // Definition: use the chosen etymology section so it matches the selected sense
+        const defSource=etymSection||((wt.match(/==\s*English\s*==([\s\S]*?)(?=\n==[^=]|$)/i))||['',''])[1];
+        let def='';
+        const dm=defSource.match(/^# ([^\n#*]+)/gm);
+        if(dm&&dm[0]){def=dm[0].replace(/^# /,'').replace(/\{\{(lb|label|lbl)\|[^}]*\}\}/gi,'').replace(/\{\{(gloss|gl)\|([^}]*)\}\}/gi,'($2)').replace(/\{\{[^}]*\}\}/g,'').replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2').replace(/<[^>]+>/g,'').trim().substring(0,200)}
+        const posMatch=defSource.match(/===\s*(Noun|Verb|Adjective|Adverb|Preposition|Pronoun|Conjunction)\s*===/i);
+        if(posMatch&&def)def=`(${posMatch[1]}) ${def}`;
+
+        document.getElementById('wc').innerHTML=`<div class="wd">${word}</div>${def?`<div class="wm">${def}</div>`:''}`;
+        drawMap(result.chain,result.cognates);
+        drawTL(result.chain,result.cognates);
+
+        const fc=document.getElementById('fc'),facts=[];
+        if(result.chain.length>1)facts.push({l:'Languages',t:`Passed through ${result.chain.length} languages to reach modern English.`});
         if(result.chain[0]&&result.chain[0].language!=='English'){
             const info=LC[result.chain[0].language]||{};
-            facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${info.yr?', around '+info.yr:''}.${info.ppl?' Carried by the '+info.ppl+'.':''}`});
+            facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${info.yr?', around '+info.yr:''}.${info.ppl?' Carried by '+info.ppl+'.':''}`});
         }
-        if(result.cleanEtym)
-            facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,600)+(result.cleanEtym.length>600?'...':'')});
-        fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')
-            ||'<div class="fi"><div class="ft" style="color:var(--tm)">No detailed etymology data found.</div></div>';
-
+        if(result.cognates.length)facts.push({l:'Branches',t:`Same root branched into ${result.cognates.map(c=>c.language).join(', ')}.`});
+        if(result.cleanEtym)facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,500)+(result.cleanEtym.length>500?'...':'')});
+        fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')||'<div class="fi"><div class="ft" style="color:var(--tm)">No etymology data found.</div></div>';
         drawRel(word);
         document.getElementById('mc').classList.add('v');
         setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
@@ -600,11 +633,9 @@ async function go(word){
         console.error(e);
         document.getElementById('mc').classList.add('v');
         document.getElementById('wc').innerHTML=`<div class="err"><h3>Word not found</h3><p>${e.message}. Try another word.</p></div>`;
-        document.getElementById('map').innerHTML='';
-        document.getElementById('tl').innerHTML='';
-        document.getElementById('fc').innerHTML='';
-        drawRel(word);
-    }finally{lo.classList.remove('v')}
+        document.getElementById('map').innerHTML='<div class="map-popup" id="popup"></div>';
+        document.getElementById('tl').innerHTML='';document.getElementById('fc').innerHTML='';drawRel(word);
+    }finally{document.getElementById('lo').classList.remove('v')}
 }
 
 // INIT
@@ -613,6 +644,7 @@ document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter'
 const ex=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle'];
 document.getElementById('examples').innerHTML=ex.map(w=>`<button onclick="go('${w}')">${w}</button>`).join('');
 document.getElementById('inp').focus();
+
 </script>
 </body>
 </html>
