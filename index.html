@@ -665,10 +665,26 @@ async function parseEtymSection(etymSection,word){
         const ln=C2N[langCode];
         if(ln&&LC[ln]&&!seen.has(ln)&&!cogSeen.has(ln)){cogSeen.add(ln);cogs.push({language:ln,word:fw,meaning:LC[ln].lb,lat:LC[ln].lat,lng:LC[ln].lng})}
     }
-    if(chain.length>1)chain.reverse();
-    const ei=chain.findIndex(c=>c.language==='English');
-    if(ei>=0&&ei<chain.length-1)chain.push(chain.splice(ei,1)[0]);
-    if(!chain.some(c=>c.language==='English'))chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
+    // Sort chain chronologically: oldest language first, English always last
+    // Extract start year from LC[lang].yr strings like "~4500–2500 BCE", "~1500–present"
+    function startYear(lang){
+        const info=LC[lang];
+        if(!info||!info.yr)return 0;
+        const m=info.yr.match(/(\d+)/);
+        if(!m)return 0;
+        const yr=parseInt(m[1]);
+        // If it contains BCE, make negative
+        if(/BCE/i.test(info.yr))return -yr;
+        // If it contains CE or "present", it's positive
+        return yr;
+    }
+    // Remove English from chain, sort rest by startYear ascending (oldest first), then append English
+    const engIdx=chain.findIndex(c=>c.language==='English');
+    let engEntry=null;
+    if(engIdx>=0)engEntry=chain.splice(engIdx,1)[0];
+    chain.sort((a,b)=>startYear(a.language)-startYear(b.language));
+    if(engEntry)chain.push(engEntry);
+    if(!engEntry)chain.push({language:'English',word:word,meaning:'London',lat:51.5,lng:-0.12});
 
     // Clean etymology text
     let cleanEtym=etymSection.replace(/\{\{(inh|der|bor|inherited|derived|borrowed)\|[^|]*\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
