@@ -360,11 +360,38 @@ function separateOverlaps(chain){
 // ============================================================
 let TT=[];function clr(){TT.forEach(clearTimeout);TT=[]}
 
+function autoZoom(j,cogs){
+    // Collect all points (chain + cognates)
+    const pts=[];
+    j.forEach(s=>{if(s.lat&&s.lng)pts.push({lat:s.lat,lng:s.lng})});
+    if(cogs)cogs.forEach(c=>{if(c.lat&&c.lng)pts.push({lat:c.lat,lng:c.lng})});
+    if(pts.length<2)return;
+    // Convert to SVG base coordinates (before zoom/pan)
+    const svgPts=pts.map(p=>({x:((p.lng+180)/360)*1000,y:((90-p.lat)/180)*500}));
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    svgPts.forEach(p=>{if(p.x<minX)minX=p.x;if(p.x>maxX)maxX=p.x;if(p.y<minY)minY=p.y;if(p.y>maxY)maxY=p.y});
+    // Add padding (15% on each side)
+    const pad=0.15;
+    const spanX=(maxX-minX)||100,spanY=(maxY-minY)||50;
+    const padX=spanX*pad,padY=spanY*pad;
+    minX-=padX;maxX+=padX;minY-=padY;maxY+=padY;
+    const bw=maxX-minX,bh=maxY-minY;
+    // Fit to 1000x500 viewBox
+    const scaleX=1000/bw,scaleY=500/bh;
+    const scale=Math.min(scaleX,scaleY,6); // cap at 6x
+    const cx=(minX+maxX)/2,cy=(minY+maxY)/2;
+    mapScale=scale;
+    mapX=500-cx*scale;
+    mapY=250-cy*scale;
+    updateMapTransform();
+}
+
 function drawMap(j,cogs){
     const c=document.getElementById('map'),pu=document.getElementById('popup');
     c.innerHTML=MSVG;c.appendChild(pu);
     mapScale=1;mapX=0;mapY=0;overlayData=[];routeData=[];
     initMap();clr();hidePopup();
+    autoZoom(j,cogs);
     const rG=c.querySelector('#mR'),pG=c.querySelector('#mP'),lG=c.querySelector('#mL');
 
     j.forEach((s,i)=>{
