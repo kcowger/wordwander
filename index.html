@@ -109,6 +109,54 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ft{font-size:.88rem;line-height:1.6}
 .rw{display:inline-block;padding:.4rem .9rem;margin:.25rem;font-size:.85rem;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:inherit;transition:all .2s}
 .rw:hover{border-color:var(--ac);background:var(--sh)}
+/* Time slider */
+.time-slider-wrap{padding:.6rem 1.5rem .2rem;display:flex;align-items:center;gap:.8rem}
+.time-slider-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tm);white-space:nowrap}
+.time-slider-year{font-size:.85rem;font-weight:600;color:var(--ac);min-width:120px;text-align:right;white-space:nowrap}
+.time-slider-track{flex:1;position:relative;height:28px;display:flex;align-items:center}
+.time-slider-bar{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--bd);border-radius:2px}
+.time-slider-fill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:4px;background:linear-gradient(to right,var(--ac),var(--gd));border-radius:2px;transition:width .3s ease}
+.time-slider-ticks{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;justify-content:space-between;z-index:3;pointer-events:none}
+.time-slider-tick{width:10px;height:10px;border-radius:50%;background:var(--bd);border:2px solid var(--bg);position:relative;z-index:3;pointer-events:auto;cursor:pointer;transition:all .2s}
+.time-slider-tick.reached{background:var(--ac)}
+.time-slider-tick.current{background:var(--gd);transform:scale(1.4);box-shadow:0 0 8px var(--gg)}
+.time-slider-tick:hover{transform:scale(1.3)}
+.time-slider-tick-label{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:.6rem;color:var(--tx);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;background:var(--sf);border:1px solid var(--bd);border-radius:4px;padding:1px 6px}
+.time-slider-tick:hover .time-slider-tick-label{opacity:1}
+.time-slider{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:100%;opacity:0;height:28px;cursor:pointer;z-index:2;margin:0}
+/* Battle stats */
+.battle-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:768px){.battle-stats{grid-template-columns:repeat(2,1fr)}}
+.bstat{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:1.2rem;text-align:center;transition:border-color .2s}
+.bstat:hover{border-color:var(--ac)}
+.bstat-icon{font-size:1.5rem;margin-bottom:.4rem}
+.bstat-val{font-size:1.8rem;font-weight:700;color:var(--ac);margin-bottom:.2rem;font-variant-numeric:tabular-nums}
+.bstat-val.gold{color:var(--gd)}
+.bstat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tm)}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.bstat.anim .bstat-val{animation:countUp .5s ease forwards}
+/* Language family tree */
+.fam-tree-section{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;margin-top:1.5rem}
+.fam-tree-wrap{overflow-x:auto;padding:.5rem 0;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.fam-tree-wrap::-webkit-scrollbar{height:6px}
+.fam-tree-wrap::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.fam-node{display:inline-flex;flex-direction:column;align-items:center;margin:0 .3rem;vertical-align:top}
+.fam-box{padding:.4rem .8rem;border-radius:8px;font-size:.78rem;font-weight:500;border:1px solid var(--bd);background:var(--bg);color:var(--tm);white-space:nowrap;cursor:default;transition:all .2s}
+.fam-box.active{border-color:var(--ac);color:var(--ac);background:var(--ag);font-weight:600}
+.fam-box.in-chain{border-color:var(--gd);color:var(--gd);background:var(--gg);cursor:default;position:relative}
+.fam-box.in-chain:hover{transform:scale(1.05)}
+.fam-tip{display:none;position:fixed;background:var(--sf);border:1px solid var(--ac);border-radius:8px;padding:.6rem .8rem;min-width:160px;max-width:220px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.4);pointer-events:none;text-align:left}
+.fam-tip.show{display:block}
+.fam-tip-lang{font-weight:600;font-size:.82rem;margin-bottom:.15rem}
+.fam-tip-word{font-style:italic;color:var(--gd);font-size:.9rem;margin-bottom:.2rem}
+.fam-tip-yr{font-size:.68rem;color:var(--ac);margin-bottom:.1rem}
+.fam-tip-ppl{font-size:.68rem;color:var(--tm);font-style:italic;margin-bottom:.1rem}
+.fam-tip-place{font-size:.7rem;color:var(--tm)}
+.fam-connector{width:1px;height:20px;background:var(--bd);margin:2px 0}
+.fam-row{display:flex;justify-content:center;gap:.3rem;flex-wrap:wrap;margin-bottom:.3rem}
+.fam-branch-line{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2px}
+.fam-h-line{height:1px;background:var(--bd);flex:1;max-width:60px}
+.fam-v-line{width:1px;height:16px;background:var(--bd)}
 .lo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);opacity:.92;z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
 .lo.v{display:flex}
 .ls{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
@@ -117,6 +165,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .rl{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:dl 1.2s ease forwards}
 @keyframes dl{to{stroke-dashoffset:0}}
 .pd{animation:pu 2s ease-in-out infinite}
+.rl{transition:opacity .3s ease}
 @keyframes pu{0%,100%{r:4;opacity:1}50%{r:7;opacity:.6}}
 @keyframes fi{to{opacity:1}}
 .err{text-align:center;padding:2rem;color:var(--tm)}.err h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--tx)}
@@ -148,13 +197,27 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <button onclick="zoomMap(0.7)">−</button>
 <button onclick="resetZoom()">⟲</button>
 </div>
+<div class="time-slider-wrap" id="timeSliderWrap" style="display:none">
+<div class="time-slider-label">Time Machine</div>
+<div class="time-slider-track" id="timeSliderTrack">
+<div class="time-slider-bar"></div>
+<div class="time-slider-fill" id="timeSliderFill"></div>
+<div class="time-slider-ticks" id="timeSliderTicks"></div>
+<input type="range" class="time-slider" id="timeSlider" min="0" max="100" step="1" value="100">
+</div>
+<div class="time-slider-year" id="timeSliderYear"></div>
+</div>
 <div class="mpc" id="map"><div class="map-popup" id="popup"></div></div>
 </div>
 <div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
 </div>
 <div class="bg">
 <div class="fs"><div class="st">Etymology</div><div id="fc"></div></div>
-<div class="rs"><div class="st">Explore More</div><div id="rc"></div></div>
+<div class="rs"><div class="st">Journey Stats</div><div class="battle-stats" id="battleStats"></div></div>
+</div>
+<div class="fam-tree-section" id="famTreeSection" style="display:none">
+<div class="st">Language Family Tree</div>
+<div class="fam-tree-wrap" id="famTree"></div>
 </div>
 </div>
 <div class="lo" id="lo"><div class="ls"></div><div class="lt" id="lotx">Tracing origins...</div></div>
@@ -677,10 +740,306 @@ function drawTL(j,cogs){
     }
 }
 
-function drawRel(word){
-    const el=document.getElementById('rc');
-    const pool=['philosophy','democracy','salary','alcohol','robot','tsunami','jungle','chocolate','coffee','sugar','guitar','yoga','pajama','kindergarten','cow','beef','butter','shampoo','hurricane','mosquito','ketchup','sofa','algebra','zero','lemon','orange','paradise','avatar','karma','typhoon','silk','tea'];
-    el.innerHTML=pool.filter(x=>x!==word).sort(()=>Math.random()-.5).slice(0,12).map(x=>`<button class="rw" onclick="go('${x}')">${x}</button>`).join('');
+function drawRel(word){}
+
+// ============================================================
+// TIME SLIDER
+// ============================================================
+function initTimeSlider(chain,cogs){
+    const wrap=document.getElementById('timeSliderWrap');
+    const slider=document.getElementById('timeSlider');
+    const yearEl=document.getElementById('timeSliderYear');
+    const ticksEl=document.getElementById('timeSliderTicks');
+    const fillEl=document.getElementById('timeSliderFill');
+    if(!chain||chain.length<2){wrap.style.display='none';return}
+    wrap.style.display='flex';
+    const total=chain.length-1;
+    slider.min=0;slider.max=1000;slider.value=1000;
+    // Build tick marks
+    ticksEl.innerHTML='';
+    chain.forEach((s,i)=>{
+        const info=LC[s.language]||{};
+        const tick=document.createElement('div');
+        tick.className='time-slider-tick reached current';
+        tick.dataset.idx=i;
+        const lbl=document.createElement('div');
+        lbl.className='time-slider-tick-label';
+        lbl.textContent=s.language;
+        tick.appendChild(lbl);
+        tick.addEventListener('click',()=>{
+            slider.value=total>0?(i/total)*1000:0;
+            updateSlider();
+        });
+        ticksEl.appendChild(tick);
+    });
+    // Create interpolation dot on SVG
+    const svg=document.querySelector('#map svg');
+    const pzg=svg.querySelector('#panZoomGroup');
+    let interpDot=svg.querySelector('#interpDot');
+    let interpTrail=svg.querySelector('#interpTrail');
+    if(!interpDot){
+        interpTrail=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        interpTrail.id='interpTrail';interpTrail.setAttribute('r','1.5');interpTrail.setAttribute('fill','none');interpTrail.setAttribute('stroke','#f0c040');interpTrail.setAttribute('stroke-width','.5');interpTrail.setAttribute('opacity','0');
+        pzg.appendChild(interpTrail);
+        interpDot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        interpDot.id='interpDot';interpDot.setAttribute('r','1.8');interpDot.setAttribute('fill','#f0c040');interpDot.setAttribute('opacity','0');interpDot.style.filter='drop-shadow(0 0 1.5px rgba(240,192,64,.5))';
+        pzg.appendChild(interpDot);
+    }
+
+    function updateSlider(){
+        const pct=parseFloat(slider.value)/1000;
+        const exactIdx=pct*total;
+        const floorIdx=Math.floor(exactIdx);
+        const ceilIdx=Math.min(floorIdx+1,total);
+        const frac=exactIdx-floorIdx;
+        const nearIdx=Math.round(exactIdx);
+        const step=chain[nearIdx];
+        const info=LC[step.language]||{};
+        yearEl.textContent=`${step.language}${info.yr?' \u00b7 '+info.yr:''}`;
+        fillEl.style.width=(pct*100)+'%';
+        ticksEl.querySelectorAll('.time-slider-tick').forEach((t,i)=>{
+            t.classList.toggle('reached',i<=floorIdx||(i===ceilIdx&&frac>0.5));
+            t.classList.toggle('current',i===nearIdx);
+        });
+        overlayData.forEach((o,i)=>{
+            if(i>=chain.length)return;
+            const fullyReached=i<=floorIdx;
+            const isNext=i===ceilIdx&&frac>0;
+            [o.glow,o.dot,o.bg,o.label,o.hit].forEach(el=>{
+                if(!el)return;
+                if(fullyReached){el.style.display='';el.style.opacity='1';}
+                else if(isNext){el.style.display='';el.style.opacity=String(frac*frac);}
+                else{el.style.display='none';}
+            });
+        });
+        routeData.forEach((r,i)=>{
+            if(i>=chain.length-1)return;
+            if(i<floorIdx){
+                r.el.style.display='';r.el.style.opacity='1';
+                r.el.style.strokeDasharray='';r.el.style.strokeDashoffset='';r.el.style.animation='';
+            }else if(i===floorIdx&&frac>0){
+                r.el.style.display='';
+                r.el.style.opacity=String(Math.min(1,frac*1.5));
+                const len=r.el.getTotalLength();
+                r.el.style.strokeDasharray=len;
+                r.el.style.strokeDashoffset=String(len*(1-frac));
+                r.el.style.animation='none';
+            }else{r.el.style.display='none';}
+        });
+        // Interpolation dot - use getPointAtLength on the actual SVG path
+        if(frac>0.01&&frac<0.99&&routeData[floorIdx]&&routeData[floorIdx].el){
+            const pathEl=routeData[floorIdx].el;
+            const len=pathEl.getTotalLength();
+            const pt=pathEl.getPointAtLength(len*frac);
+            interpDot.setAttribute('cx',pt.x);interpDot.setAttribute('cy',pt.y);interpDot.setAttribute('opacity','1');
+            interpTrail.setAttribute('cx',pt.x);interpTrail.setAttribute('cy',pt.y);interpTrail.setAttribute('opacity','.6');
+            interpTrail.setAttribute('r',String(1.5+frac*2));
+        }else{
+            interpDot.setAttribute('opacity','0');
+            interpTrail.setAttribute('opacity','0');
+        }
+        document.querySelectorAll('#tl .ti').forEach((el,i)=>{
+            if(i>=chain.length)return;
+            const reached=i<=floorIdx;
+            const arriving=i===ceilIdx&&frac>0.3;
+            el.classList.toggle('vis',reached||arriving);
+            el.style.opacity=reached?'1':arriving?String((frac-0.3)*1.43):'0';
+            el.style.transition='opacity .15s ease, transform .15s ease';
+        });
+        if(frac<0.2||frac>0.8)highlightStep(nearIdx);
+        else clearHighlight();
+    }
+    slider.addEventListener('input',updateSlider);
+    updateSlider();
+}
+
+// ============================================================
+// BATTLE STATS
+// ============================================================
+function calcDistance(lat1,lng1,lat2,lng2){
+    const R=6371;
+    const dLat=(lat2-lat1)*Math.PI/180;
+    const dLng=(lng2-lng1)*Math.PI/180;
+    const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function drawBattleStats(chain,cogs){
+    const el=document.getElementById('battleStats');
+    if(!chain||chain.length<2){el.innerHTML='';return}
+    // Total distance
+    let totalKm=0;
+    for(let i=1;i<chain.length;i++){
+        if(chain[i-1].lat&&chain[i].lat)totalKm+=calcDistance(chain[i-1].lat,chain[i-1].lng,chain[i].lat,chain[i].lng);
+    }
+    const totalMi=Math.round(totalKm*0.621371);
+    totalKm=Math.round(totalKm);
+    // Time span
+    function parseYear(lang){
+        const info=LC[lang];if(!info||!info.yr)return null;
+        const m=info.yr.match(/(\d+)/);if(!m)return null;
+        return /BCE/i.test(info.yr)?-parseInt(m[1]):parseInt(m[1]);
+    }
+    const firstYr=parseYear(chain[0].language);
+    const lastYr=parseYear(chain[chain.length-1].language)||2025;
+    const centuries=firstYr!==null?Math.round(Math.abs(lastYr-(firstYr))/100):null;
+    // Count language families
+    const families=new Set();
+    const famMap={'Proto-Indo-European':'Indo-European','Proto-Germanic':'Germanic','Proto-West Germanic':'Germanic','Proto-Slavic':'Slavic','Proto-Celtic':'Celtic','Proto-Italic':'Italic','Proto-Semitic':'Semitic','Latin':'Italic','Ancient Greek':'Hellenic','Sanskrit':'Indo-Aryan','Arabic':'Semitic','Old English':'Germanic','Middle English':'Germanic','English':'Germanic','French':'Romance','Old French':'Romance','Italian':'Romance','Spanish':'Romance','Portuguese':'Romance','German':'Germanic','Dutch':'Germanic','Old Norse':'Germanic','Persian':'Iranian','Turkish':'Turkic','Chinese':'Sino-Tibetan','Japanese':'Japonic','Korean':'Koreanic','Hindi':'Indo-Aryan','Tamil':'Dravidian','Russian':'Slavic','Finnish':'Uralic','Hungarian':'Uralic','Hebrew':'Semitic','Swahili':'Bantu','Thai':'Kra-Dai','Vietnamese':'Austroasiatic'};
+    chain.forEach(s=>{const f=famMap[s.language];if(f)families.add(f)});
+    if(cogs)cogs.forEach(c=>{const f=famMap[c.language];if(f)families.add(f)});
+    // Continents crossed
+    const continents=new Set();
+    function getContinent(lat,lng){
+        if(lat>35&&lng<-25)return'North America';if(lat<15&&lng<-35)return'South America';
+        if(lat>35&&lng>-25&&lng<60)return'Europe';if(lat<35&&lat>-35&&lng>-20&&lng<60)return'Africa';
+        if(lat>0&&lng>=60)return'Asia';if(lat<=0&&lng>=60)return'Oceania';return'Other';
+    }
+    chain.forEach(s=>{if(s.lat)continents.add(getContinent(s.lat,s.lng))});
+    if(cogs)cogs.forEach(c=>{if(c.lat)continents.add(getContinent(c.lat,c.lng))});
+
+    const stats=[
+        {icon:'🗺️',val:totalKm.toLocaleString()+' km',label:'Distance Traveled'},
+        {icon:'⏳',val:centuries!==null?centuries+'+':'?',label:'Centuries in Transit',gold:true},
+        {icon:'🌍',val:continents.size,label:continents.size===1?'Continent':'Continents Crossed'},
+        {icon:'🔀',val:families.size,label:'Language Families'}
+    ];
+    el.innerHTML=stats.map((s,i)=>`<div class="bstat" style="animation-delay:${i*.1}s"><div class="bstat-icon">${s.icon}</div><div class="bstat-val${s.gold?' gold':''}" id="bstat${i}">0</div><div class="bstat-label">${s.label}</div></div>`).join('');
+    // Animate counters
+    stats.forEach((s,i)=>{
+        const target=typeof s.val==='number'?s.val:parseInt(s.val.replace(/[^0-9]/g,''));
+        const suffix=typeof s.val==='string'?s.val.replace(/^[\d,]+/,''):'';
+        const valEl=document.getElementById('bstat'+i);
+        if(isNaN(target)||target===0){valEl.textContent=s.val;return}
+        let current=0;
+        const step=Math.max(1,Math.floor(target/30));
+        const iv=setInterval(()=>{
+            current=Math.min(current+step,target);
+            valEl.textContent=current.toLocaleString()+suffix;
+            if(current>=target)clearInterval(iv);
+        },30);
+    });
+}
+
+// ============================================================
+// LANGUAGE FAMILY TREE
+// ============================================================
+const LANG_FAMILIES={
+    'Indo-European':{
+        children:{
+            'Germanic':{children:{'Old English':{},'Middle English':{},'English':{},'Old Norse':{},'Old High German':{},'Middle High German':{},'German':{},'Dutch':{},'Middle Dutch':{},'Old Dutch':{},'Old Saxon':{},'Old Frisian':{},'Gothic':{},'Swedish':{},'Danish':{},'Norwegian':{},'Icelandic':{},'Proto-Germanic':{},'Proto-West Germanic':{}}},
+            'Italic/Romance':{children:{'Latin':{},'Late Latin':{},'Vulgar Latin':{},'Medieval Latin':{},'New Latin':{},'French':{},'Old French':{},'Middle French':{},'Anglo-Norman':{},'Spanish':{},'Old Spanish':{},'Portuguese':{},'Italian':{},'Old Italian':{},'Romanian':{},'Catalan':{},'Occitan':{},'Proto-Italic':{}}},
+            'Hellenic':{children:{'Ancient Greek':{},'Greek':{},'Byzantine Greek':{},'Proto-Hellenic':{}}},
+            'Indo-Iranian':{children:{'Sanskrit':{},'Vedic Sanskrit':{},'Hindi':{},'Urdu':{},'Bengali':{},'Punjabi':{},'Gujarati':{},'Marathi':{},'Pali':{},'Old Persian':{},'Middle Persian':{},'Persian':{},'Avestan':{},'Proto-Indo-Aryan':{},'Proto-Indo-Iranian':{},'Proto-Iranian':{}}},
+            'Celtic':{children:{'Old Irish':{},'Irish':{},'Welsh':{},'Scottish Gaelic':{},'Middle Irish':{},'Old Welsh':{},'Proto-Celtic':{}}},
+            'Slavic':{children:{'Russian':{},'Old Church Slavonic':{},'Polish':{},'Czech':{},'Ukrainian':{},'Bulgarian':{},'Croatian':{},'Serbian':{},'Proto-Slavic':{}}},
+            'Baltic':{children:{'Lithuanian':{},'Latvian':{}}},
+            'Armenian':{children:{'Armenian':{}}},
+            'Albanian':{children:{'Albanian':{}}}
+        }
+    },
+    'Semitic':{children:{'Arabic':{},'Hijazi Arabic':{},'Hebrew':{},'Aramaic':{},'Phoenician':{},'Proto-Semitic':{}}},
+    'Turkic':{children:{'Turkish':{},'Ottoman Turkish':{},'Proto-Turkic':{}}},
+    'Sino-Tibetan':{children:{'Chinese':{},'Middle Chinese':{},'Old Chinese':{},'Tibetan':{},'Burmese':{},'Proto-Sino-Tibetan':{}}},
+    'Japonic':{children:{'Japanese':{}}},
+    'Koreanic':{children:{'Korean':{}}},
+    'Austronesian':{children:{'Malay':{},'Indonesian':{},'Tagalog':{},'Javanese':{},'Old Javanese':{},'Proto-Austronesian':{}}},
+    'Dravidian':{children:{'Tamil':{},'Proto-Dravidian':{}}},
+    'Uralic':{children:{'Finnish':{},'Hungarian':{},'Estonian':{},'Proto-Finnic':{}}},
+    'Uto-Aztecan':{children:{'Nahuatl':{},'Classical Nahuatl':{}}},
+    'Quechuan':{children:{'Quechua':{}}},
+    'Afro-Asiatic':{children:{'Egyptian':{},'Amharic':{}}},
+    'Niger-Congo':{children:{'Swahili':{},'Yoruba':{},'Fon':{}}},
+    'Kartvelian':{children:{'Georgian':{},'Mingrelian':{}}},
+    'Kra-Dai':{children:{'Thai':{}}},
+    'Austroasiatic':{children:{'Vietnamese':{},'Khmer':{}}}
+};
+
+function findFamilyPath(lang){
+    for(const[fam,data]of Object.entries(LANG_FAMILIES)){
+        if(data.children){
+            for(const[branch,bdata]of Object.entries(data.children)){
+                if(branch===lang)return{family:fam,branch:null};
+                if(bdata.children&&bdata.children[lang])return{family:fam,branch};
+            }
+        }
+    }
+    return null;
+}
+
+function drawFamilyTree(chain,cogs){
+    const section=document.getElementById('famTreeSection');
+    const el=document.getElementById('famTree');
+    if(!chain||chain.length<2){section.style.display='none';return}
+    section.style.display='block';
+    const chainLangs=new Set(chain.map(c=>c.language));
+    if(cogs)cogs.forEach(c=>chainLangs.add(c.language));
+    const chainData={};
+    chain.forEach(c=>{chainData[c.language]=c});
+    if(cogs)cogs.forEach(c=>{if(!chainData[c.language])chainData[c.language]=c});
+    const involved=new Map();
+    chainLangs.forEach(lang=>{
+        const fp=findFamilyPath(lang);
+        if(fp){
+            if(!involved.has(fp.family))involved.set(fp.family,new Map());
+            const fam=involved.get(fp.family);
+            const br=fp.branch||'(root)';
+            if(!fam.has(br))fam.set(br,new Set());
+            fam.get(br).add(lang);
+        }
+    });
+    if(involved.size===0){section.style.display='none';return}
+    // Shared tooltip element
+    let tip=document.getElementById('famTip');
+    if(!tip){tip=document.createElement('div');tip.id='famTip';tip.className='fam-tip';document.body.appendChild(tip);}
+    let html='';
+    involved.forEach((branches,family)=>{
+        html+=`<div style="margin-bottom:1.2rem">`;
+        html+=`<div class="fam-row"><div class="fam-box active">${family}</div></div>`;
+        html+=`<div class="fam-row" style="gap:1.5rem">`;
+        branches.forEach((langs,branch)=>{
+            html+=`<div class="fam-node">`;
+            if(branch!=='(root)'){
+                html+=`<div class="fam-v-line"></div>`;
+                html+=`<div class="fam-box" style="border-color:var(--tm);color:var(--tm);font-size:.72rem">${branch}</div>`;
+            }
+            html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px">`;
+            const allInBranch=LANG_FAMILIES[family]&&LANG_FAMILIES[family].children&&LANG_FAMILIES[family].children[branch]?Object.keys(LANG_FAMILIES[family].children[branch].children||{}):[...langs];
+            const chainOrder=chain.map(c=>c.language);
+            const sorted=[...new Set([...allInBranch])].filter(l=>langs.has(l)).sort((a,b)=>{
+                const ai=chainOrder.indexOf(a),bi=chainOrder.indexOf(b);
+                if(ai>=0&&bi>=0)return ai-bi;
+                if(ai>=0)return -1;if(bi>=0)return 1;return 0;
+            });
+            sorted.forEach(lang=>{
+                html+=`<div class="fam-v-line"></div>`;
+                html+=`<div class="fam-box in-chain" data-lang="${lang}">${lang}</div>`;
+            });
+            html+=`</div></div>`;
+        });
+        html+=`</div></div>`;
+    });
+    el.innerHTML=html;
+    // Attach hover events to all in-chain boxes
+    el.querySelectorAll('.fam-box.in-chain').forEach(box=>{
+        box.addEventListener('mouseenter',e=>{
+            const lang=box.dataset.lang;
+            const info=LC[lang]||{};
+            const cd=chainData[lang]||{};
+            const wordStr=isValidWord(cd.word)?cd.word:'';
+            tip.innerHTML=`<div class="fam-tip-lang">${lang}</div>${wordStr?`<div class="fam-tip-word">${wordStr}</div>`:''}${info.yr?`<div class="fam-tip-yr">${info.yr}</div>`:''}${info.ppl?`<div class="fam-tip-ppl">${info.ppl}</div>`:''}${info.lb?`<div class="fam-tip-place">${info.lb}</div>`:''}`;
+            const r=box.getBoundingClientRect();
+            tip.style.left=r.left+(r.width/2)-80+'px';
+            // Show above or below depending on space
+            tip.classList.add('show');
+            const tipH=tip.offsetHeight;
+            if(r.bottom+tipH+8>window.innerHeight){
+                tip.style.top=(r.top-tipH-8)+'px';
+            }else{
+                tip.style.top=(r.bottom+8)+'px';
+            }
+        });
+        box.addEventListener('mouseleave',()=>{tip.classList.remove('show')});
+    });
 }
 
 // ============================================================
@@ -927,7 +1286,7 @@ async function parseEtymSection(etymSection,word){
 // MAIN FLOW
 // ============================================================
 window._cur=null;window._cog=null;
-function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window._cur,window._cog)}}
+function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window._cur,window._cog);setTimeout(()=>initTimeSlider(window._cur,window._cog),200)}}
 
 async function go(word,forceSectionIdx){
     if(!word||!word.trim())return;
@@ -996,15 +1355,19 @@ async function go(word,forceSectionIdx){
         if(result.cognates.length)facts.push({l:'Branches',t:`Same root branched into ${result.cognates.map(c=>c.language).join(', ')}.`});
         if(result.cleanEtym)facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,500)+(result.cleanEtym.length>500?'...':'')+` <a href="https://en.wiktionary.org/wiki/${encodeURIComponent(word)}#Etymology" target="_blank" rel="noopener" style="display:inline-block;margin-top:.4rem;font-size:.78rem;color:var(--ac);text-decoration:none;border-bottom:1px solid var(--ac)">Learn more on Wiktionary →</a>`});
         fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')||'<div class="fi"><div class="ft" style="color:var(--tm)">No etymology data found.</div></div>';
-        drawRel(word);
+        drawBattleStats(result.chain,result.cognates);
+        drawFamilyTree(result.chain,result.cognates);
         document.getElementById('mc').classList.add('v');
-        setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
+        setTimeout(()=>{
+            document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'});
+            initTimeSlider(result.chain,result.cognates);
+        },200);
     }catch(e){
         console.error(e);
         document.getElementById('mc').classList.add('v');
         document.getElementById('wc').innerHTML=`<div class="err"><h3>Word not found</h3><p>${e.message}. Try another word.</p></div>`;
         document.getElementById('map').innerHTML='<div class="map-popup" id="popup"></div>';
-        document.getElementById('tl').innerHTML='';document.getElementById('fc').innerHTML='';drawRel(word);
+        document.getElementById('tl').innerHTML='';document.getElementById('fc').innerHTML='';document.getElementById('battleStats').innerHTML='';document.getElementById('famTreeSection').style.display='none';
     }finally{document.getElementById('lo').classList.remove('v')}
 }
 
@@ -1031,9 +1394,10 @@ function demoCow(){
     drawMap(chain,cognates);drawTL(chain,cognates);
     const fc=document.getElementById('fc');
     fc.innerHTML='<div class="fi"><div class="fl">Languages</div><div class="ft">Passed through 6 languages to reach modern English.</div></div><div class="fi"><div class="fl">Origin</div><div class="ft">Traces back to Proto-Indo-European as "*gʷṓws", around ~4500–2500 BCE. Carried by Yamnaya pastoralists.</div></div>';
-    drawRel('cow');
+    drawBattleStats(chain,cognates);
+    drawFamilyTree(chain,cognates);
     document.getElementById('mc').classList.add('v');
-    setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
+    setTimeout(()=>{document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'});initTimeSlider(chain,cognates)},200);
 }
 
 // INIT
