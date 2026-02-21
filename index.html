@@ -6,11 +6,24 @@
 <title>Wordwander</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--sf:#12121a;--sh:#1a1a25;--bd:#2a2a3a;--tx:#e8e8ef;--tm:#8888a0;--ac:#6c63ff;--ag:rgba(108,99,255,.3);--gd:#f0c040;--gg:rgba(240,192,64,.3)}
+:root{--bg:#0a0a0f;--sf:#12121a;--sh:#1a1a25;--bd:#2a2a3a;--tx:#e8e8ef;--tm:#8888a0;--ac:#6c63ff;--ag:rgba(108,99,255,.3);--gd:#f0c040;--gg:rgba(240,192,64,.3);--map-land:#16162a;--map-border:#252540;--map-grid:#13131f;--label-bg:rgba(18,18,26,.88);--label-bg-cog:rgba(18,18,26,.7);--label-tx:#e8e8ef;--cog-tx:#8888a0}
+[data-theme="light"]{--bg:#f4f4f8;--sf:#ffffff;--sh:#eeeef2;--bd:#d0d0da;--tx:#1a1a2e;--tm:#6a6a80;--ac:#5b52e0;--ag:rgba(91,82,224,.2);--gd:#d4a020;--gg:rgba(212,160,32,.2);--map-land:#d8d8e8;--map-border:#b8b8cc;--map-grid:#c0c0d0;--label-bg:rgba(255,255,255,.9);--label-bg-cog:rgba(255,255,255,.75);--label-tx:#1a1a2e;--cog-tx:#6a6a80}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f4f8;--sf:#ffffff;--sh:#eeeef2;--bd:#d0d0da;--tx:#1a1a2e;--tm:#6a6a80;--ac:#5b52e0;--ag:rgba(91,82,224,.2);--gd:#d4a020;--gg:rgba(212,160,32,.2);--map-land:#d8d8e8;--map-border:#b8b8cc;--map-grid:#c0c0d0;--label-bg:rgba(255,255,255,.9);--label-bg-cog:rgba(255,255,255,.75);--label-tx:#1a1a2e;--cog-tx:#6a6a80}}
+.theme-toggle{background:none;border:1px solid var(--bd);border-radius:8px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tm);transition:all .2s}
+.theme-toggle:hover{border-color:var(--ac);color:var(--tx)}
+.theme-toggle svg{width:18px;height:18px}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
-.hd{padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
-.logo{font-size:1.6rem;font-weight:700}
-.tag{font-size:.72rem;color:var(--tm);letter-spacing:.15em;text-transform:uppercase}
+.hd{padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+.hd-left{display:flex;align-items:center;gap:.75rem}
+.hd-icon{width:28px;height:28px;flex-shrink:0}
+.hd-icon svg{width:100%;height:100%}
+.hd-icon .globe{fill:none;stroke:var(--ac);stroke-width:1.5}
+.hd-icon .path-dot{fill:var(--gd)}
+.hd-icon .path-line{stroke:var(--gd);stroke-width:1.2;fill:none;stroke-dasharray:20;stroke-dashoffset:20;animation:hd-draw 2s ease forwards}
+@keyframes hd-draw{to{stroke-dashoffset:0}}
+.logo{font-size:1.4rem;font-weight:700;letter-spacing:-.02em}
+.tag{font-size:.7rem;color:var(--tm);letter-spacing:.12em;text-transform:uppercase;margin-left:.6rem;padding-left:.6rem;border-left:1px solid var(--bd)}
+@media(max-width:600px){.tag{display:none}}
 .ss{display:flex;flex-direction:column;align-items:center;padding:3.5rem 2rem 1.5rem}
 .sc{position:relative;width:100%;max-width:520px}
 .si{width:100%;padding:1rem 3.5rem 1rem 1.5rem;font-size:1.1rem;font-weight:300;background:var(--sf);border:1px solid var(--bd);border-radius:12px;color:var(--tx);outline:none;font-family:inherit;transition:all .3s}
@@ -74,8 +87,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ti.hl .td{background:var(--ac);box-shadow:0 0 14px var(--ag);transform:scale(1.3)}
 .ti.hl{background:rgba(108,99,255,.18);border-radius:8px;margin-left:-.5rem;padding:.5rem .5rem .5rem calc(2rem + .5rem);box-shadow:inset 0 0 0 1px rgba(108,99,255,.35)}
 .ti.hl .td{left:calc(-2rem + .5rem)}
-.ti.hl .tla{color:#9b94ff;font-weight:700}
-.ti.hl .tw{color:#ffd966}
+.ti.hl .tla{color:var(--ac);font-weight:700}
+.ti.hl .tw{color:var(--gd)}
 .tla{font-weight:600;font-size:.88rem;margin-bottom:.1rem;transition:color .3s}
 .tw{font-size:1.1rem;font-style:italic;color:var(--gd);margin-bottom:.2rem}
 .tmeta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.2rem}
@@ -96,7 +109,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ft{font-size:.88rem;line-height:1.6}
 .rw{display:inline-block;padding:.4rem .9rem;margin:.25rem;font-size:.85rem;background:var(--bg);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:inherit;transition:all .2s}
 .rw:hover{border-color:var(--ac);background:var(--sh)}
-.lo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,15,.85);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+.lo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);opacity:.92;z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
 .lo.v{display:flex}
 .ls{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
 .lt{font-size:.9rem;color:var(--tm)}
@@ -112,7 +125,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header class="hd"><div class="logo">Wordwander</div><div class="tag">Word Origin Explorer</div></header>
+<header class="hd"><div class="hd-left"><div class="hd-icon"><svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="globe" cx="14" cy="14" r="11"/><ellipse class="globe" cx="14" cy="14" rx="5" ry="11"/><line class="globe" x1="3" y1="14" x2="25" y2="14"/><path class="path-line" d="M7 20Q11 8 21 10"/><circle class="path-dot" cx="7" cy="20" r="2"/><circle class="path-dot" cx="21" cy="10" r="2"/></svg></div><div class="logo">Wordwander</div><div class="tag">Word Origin Explorer</div></div><button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg></button></header>
 <section class="ss">
 <div class="sc">
 <input type="text" class="si" id="inp" placeholder="Enter a word to trace its origins..." autocomplete="off">
@@ -146,6 +159,35 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 </div>
 <div class="lo" id="lo"><div class="ls"></div><div class="lt" id="lotx">Tracing origins...</div></div>
 <script>
+// Theme
+function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function isDark(){
+    const t=document.documentElement.getAttribute('data-theme');
+    if(t)return t==='dark';
+    return window.matchMedia('(prefers-color-scheme:dark)').matches;
+}
+function updateThemeIcon(){
+    const icon=document.getElementById('themeIcon');
+    if(isDark()){
+        icon.innerHTML='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }else{
+        icon.innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    }
+}
+function toggleTheme(){
+    const current=isDark();
+    document.documentElement.setAttribute('data-theme',current?'light':'dark');
+    localStorage.setItem('ww-theme',current?'light':'dark');
+    updateThemeIcon();
+    if(window._cur)replay();
+}
+(function initTheme(){
+    const saved=localStorage.getItem('ww-theme');
+    if(saved)document.documentElement.setAttribute('data-theme',saved);
+    updateThemeIcon();
+})();
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+
 // Language code → name
 const C2N={'en':'English','enm':'Middle English','ang':'Old English','gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European','la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin','grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek','sa':'Sanskrit','inc-ash':'Vedic Sanskrit','peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan','ar':'Arabic','acw':'Hijazi Arabic','non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German','nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian','got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic','fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman','es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan','sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic','ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian','tr':'Turkish','ota':'Ottoman Turkish','zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese','ja':'Japanese','ko':'Korean','hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi','ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese','nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino','fi':'Finnish','hu':'Hungarian','et':'Estonian','he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian','sw':'Swahili','am':'Amharic','yo':'Yoruba','th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese','ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian','pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian','sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic','sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic','bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic','trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan','map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian','inc-gan':'Gandhari','inc-pro':'Proto-Indo-Aryan','iir-pro':'Proto-Indo-Iranian','ira-pro':'Proto-Iranian','roa-oit':'Old Italian','roa-opt':'Old Portuguese','fon':'Fon','mga':'Middle Irish','owl':'Old Welsh','enm-ear':'Early Middle English','ang-lat':'Anglo-Latin','xmf':'Mingrelian','osp-ear':'Early Old Spanish'};
 
@@ -161,11 +203,11 @@ const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
 <linearGradient id="rB"><stop offset="0%" stop-color="#6c63ff" stop-opacity=".4"/><stop offset="100%" stop-color="#886eff" stop-opacity=".4"/></linearGradient>
 </defs>
 <g id="panZoomGroup">
-<g stroke="#13131f" stroke-width=".3" fill="none" opacity=".4">
+<g stroke="var(--map-grid)" stroke-width=".3" fill="none" opacity=".4">
 <line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="2,8"/>
 <line x1="500" y1="0" x2="500" y2="500" stroke-dasharray="2,8"/>
 </g>
-<g fill="#16162a" stroke="#252540" stroke-width=".5">
+<g fill="var(--map-land)" stroke="var(--map-border)" stroke-width=".5">
 <path d="M594,253L605,259L609,263L608,268L610,270L609,272L610,275L612,279L610,280L605,281L602,282L598,282L595,278L594,276L589,275L587,274L585,273L582,268L582,265L583,262L585,260L585,258L585,257L585,256L584,253L589,253Z"/>
 <path d="M476,173L476,173L476,174L476,178L467,178L467,185L464,185L464,187L464,191L453,191L453,192L453,190L453,190L459,190L459,189L460,188L461,184L465,181L467,178L467,177L468,175L471,175L472,175L473,175L474,175L476,175L476,173L476,173Z"/>
 <path d="M159,114L145,105L139,96L125,85L111,83L118,58L139,55L154,55L173,58L192,62L203,59L222,62L235,61L236,50L248,60L262,59L272,61L261,67L248,75L241,87L257,94L272,102L278,98L282,87L293,77L307,83L321,82L335,97L345,105L323,110L302,120L319,116L332,121L316,129L312,119L304,124L291,126L280,129L271,134L271,131L268,122L265,121L255,116L240,115L230,114L178,114Z"/>
@@ -470,12 +512,12 @@ function drawMap(j,cogs){
             const nm=s.language,bw=nm.length*5.2+14;
             const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
             bg.setAttribute('x',p.x-bw/2);bg.setAttribute('y',p.y-22);bg.setAttribute('width',bw);bg.setAttribute('height','16');
-            bg.setAttribute('fill','rgba(18,18,26,.88)');bg.setAttribute('rx','3');bg.style.opacity='0';bg.style.animation='fi .5s ease forwards';
+            bg.setAttribute('fill',getCSS('--label-bg'));bg.setAttribute('rx','3');bg.style.opacity='0';bg.style.animation='fi .5s ease forwards';
             lG.appendChild(bg);
             const lb=document.createElementNS('http://www.w3.org/2000/svg','text');
             lb.setAttribute('x',p.x);lb.setAttribute('y',p.y-12);lb.textContent=nm;
             lb.setAttribute('font-family','Inter,system-ui,sans-serif');lb.setAttribute('font-size','8.5');
-            lb.setAttribute('fill','#e8e8ef');lb.setAttribute('font-weight','500');lb.setAttribute('text-anchor','middle');
+            lb.setAttribute('fill',getCSS('--label-tx'));lb.setAttribute('font-weight','500');lb.setAttribute('text-anchor','middle');
             lb.style.opacity='0';lb.style.animation='fi .5s ease forwards';lG.appendChild(lb);
             const hit=document.createElementNS('http://www.w3.org/2000/svg','circle');
             hit.setAttribute('cx',p.x);hit.setAttribute('cy',p.y);hit.setAttribute('r','18');
@@ -506,12 +548,12 @@ function drawMap(j,cogs){
                 const nm=cog.language,bw=nm.length*5+12;
                 const bg2=document.createElementNS('http://www.w3.org/2000/svg','rect');
                 bg2.setAttribute('x',b.x-bw/2);bg2.setAttribute('y',b.y-22);bg2.setAttribute('width',bw);bg2.setAttribute('height','16');
-                bg2.setAttribute('fill','rgba(18,18,26,.7)');bg2.setAttribute('rx','3');bg2.style.opacity='0';bg2.style.animation='fi .5s ease forwards';
+                bg2.setAttribute('fill',getCSS('--label-bg-cog'));bg2.setAttribute('rx','3');bg2.style.opacity='0';bg2.style.animation='fi .5s ease forwards';
                 lG.appendChild(bg2);
                 const lb2=document.createElementNS('http://www.w3.org/2000/svg','text');
                 lb2.setAttribute('x',b.x);lb2.setAttribute('y',b.y-12);lb2.textContent=nm;
                 lb2.setAttribute('font-family','Inter,system-ui,sans-serif');lb2.setAttribute('font-size','7.5');
-                lb2.setAttribute('fill','#8888a0');lb2.setAttribute('text-anchor','middle');lb2.style.opacity='0';lb2.style.animation='fi .5s ease forwards';
+                lb2.setAttribute('fill',getCSS('--cog-tx'));lb2.setAttribute('text-anchor','middle');lb2.style.opacity='0';lb2.style.animation='fi .5s ease forwards';
                 lG.appendChild(lb2);
                 const h2=document.createElementNS('http://www.w3.org/2000/svg','circle');
                 h2.setAttribute('cx',b.x);h2.setAttribute('cy',b.y);h2.setAttribute('r','18');h2.setAttribute('fill','transparent');h2.setAttribute('cursor','pointer');
@@ -533,10 +575,10 @@ function highlightStep(idx){
     overlayData.forEach((o,i)=>{
         if(!o.dot)return;
         if(i===idx){
-            o.dot.setAttribute('r','10');o.dot.setAttribute('fill','#fff');o.dot.setAttribute('opacity','1');
+            o.dot.setAttribute('r','10');o.dot.setAttribute('fill',isDark()?'#fff':'#5b52e0');o.dot.setAttribute('opacity','1');
             if(o.glow){o.glow.setAttribute('r','28');o.glow.setAttribute('opacity','1');o.glow.parentNode.appendChild(o.glow);}
             o.dot.parentNode.appendChild(o.dot);
-            if(o.label){o.label.setAttribute('fill','#fff');o.label.parentNode.appendChild(o.label);}
+            if(o.label){o.label.setAttribute('fill',isDark()?'#fff':'#1a1a2e');o.label.parentNode.appendChild(o.label);}
             if(o.bg){o.bg.setAttribute('fill','rgba(108,99,255,.7)');o.bg.parentNode.appendChild(o.bg);}
             if(o.hit)o.hit.parentNode.appendChild(o.hit);
             // Ensure label renders after bg
@@ -548,8 +590,8 @@ function highlightStep(idx){
         }else{
             o.dot.setAttribute('r','4');o.dot.setAttribute('fill',i===overlayData.length-1?'#f0c040':'#6c63ff');o.dot.setAttribute('opacity','1');
             if(o.glow){o.glow.setAttribute('r','15');o.glow.setAttribute('opacity','');}
-            if(o.label)o.label.setAttribute('fill','#e8e8ef');
-            if(o.bg)o.bg.setAttribute('fill','rgba(18,18,26,.88)');
+            if(o.label)o.label.setAttribute('fill',getCSS('--label-tx'));
+            if(o.bg)o.bg.setAttribute('fill',getCSS('--label-bg'));
         }
     });
 }
@@ -560,8 +602,8 @@ function clearHighlight(){
         o.dot.setAttribute('r','4');
         o.dot.setAttribute('fill',i===overlayData.length-1?'#f0c040':'#6c63ff');
         if(o.glow){o.glow.setAttribute('r','15');o.glow.setAttribute('opacity','');}
-        if(o.label)o.label.setAttribute('fill','#e8e8ef');
-        if(o.bg)o.bg.setAttribute('fill','rgba(18,18,26,.88)');
+        if(o.label)o.label.setAttribute('fill',getCSS('--label-tx'));
+        if(o.bg)o.bg.setAttribute('fill',getCSS('--label-bg'));
     });
 }
 
