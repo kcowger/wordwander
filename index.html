@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Etyma</title>
+<title>Wordwander</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0a0f;--sf:#12121a;--sh:#1a1a25;--bd:#2a2a3a;--tx:#e8e8ef;--tm:#8888a0;--ac:#6c63ff;--ag:rgba(108,99,255,.3);--gd:#f0c040;--gg:rgba(240,192,64,.3)}
@@ -31,11 +31,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .sp-opt:hover{border-color:var(--ac);background:var(--sh)}
 .sp-opt .sp-num{font-size:.7rem;color:var(--ac);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.15rem}
 .sp-opt .sp-txt{font-size:.88rem;line-height:1.4}
-.mc{display:none;max-width:1100px;margin:0 auto;padding:2rem}
+.mc{display:none;max-width:1400px;margin:0 auto;padding:2rem}
 .mc.v{display:grid;gap:1.5rem}
-.wc{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem;text-align:center}
-.wd{font-size:2.8rem;font-weight:700;margin-bottom:.4rem}
-.wm{font-size:.9rem;color:var(--tm);max-width:600px;margin:0 auto;line-height:1.6}
+.wc{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:1rem 2rem;text-align:center}
+.wd{font-size:2rem;font-weight:700;margin-bottom:.2rem}
+.wm{font-size:.85rem;color:var(--tm);max-width:600px;margin:0 auto;line-height:1.5}
+.map-journey{display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
+@media(max-width:900px){.map-journey{grid-template-columns:1fr}}
 .ms{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;position:relative}
 .mt{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1rem}
 .mpc{width:100%;aspect-ratio:2/1;background:var(--bg);border-radius:12px;overflow:hidden;cursor:grab;touch-action:none;position:relative}
@@ -46,34 +48,48 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .map-controls button:hover{border-color:var(--ac);color:var(--tx)}
 .rb{position:absolute;top:1rem;right:1rem;padding:.4rem .8rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;background:var(--sh);border:1px solid var(--bd);border-radius:6px;color:var(--tm);cursor:pointer;font-family:inherit;z-index:2}
 .rb:hover{border-color:var(--ac);color:var(--tx)}
-.map-popup{position:absolute;background:var(--sf);border:1px solid var(--ac);border-radius:10px;padding:.8rem 1rem;pointer-events:none;z-index:10;min-width:180px;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}
+.map-popup{position:absolute;background:var(--sf);border:1px solid var(--ac);border-radius:10px;padding:.8rem 1rem;pointer-events:auto;z-index:10;min-width:180px;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}
 .map-popup.vis{opacity:1}
 .map-popup .pp-lang{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
 .map-popup .pp-word{font-style:italic;color:var(--gd);font-size:1.05rem;margin-bottom:.3rem}
 .map-popup .pp-yr{font-size:.72rem;color:var(--ac);margin-bottom:.15rem}
 .map-popup .pp-ppl{font-size:.72rem;color:var(--tm);font-style:italic;margin-bottom:.2rem}
 .map-popup .pp-place{font-size:.75rem;color:var(--tm)}
-.js{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2rem}
+.js{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;overflow-y:auto;max-height:calc(100vh - 180px);scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.js::-webkit-scrollbar{width:6px}
+.js::-webkit-scrollbar-track{background:transparent;margin:8px 0}
+.js::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.js::-webkit-scrollbar-thumb:hover{background:var(--ac)}
 .st{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--tm);margin-bottom:1.5rem}
 .tl{position:relative;padding-left:2rem}
 .tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--ac),var(--gd));border-radius:1px}
-.ti{position:relative;margin-bottom:1.8rem;opacity:0;transform:translateX(-10px);animation:si .5s ease forwards}
+.ti{position:relative;margin-bottom:1.5rem;opacity:0;transform:translateX(-10px);transition:all .3s ease;cursor:pointer}
+.ti.vis{opacity:1;transform:translateX(0)}
 .ti:last-child{margin-bottom:0}
-.td{position:absolute;left:-2rem;top:4px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--ac);z-index:1}
+.td{position:absolute;left:-2rem;top:4px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--ac);z-index:1;transition:all .3s}
 .ti:last-child .td{border-color:var(--gd);box-shadow:0 0 8px var(--gg)}
 .ti:first-child .td{background:var(--ac);box-shadow:0 0 8px var(--ag)}
-.tla{font-weight:600;font-size:.95rem;margin-bottom:.1rem}
-.tw{font-size:1.3rem;font-style:italic;color:var(--gd);margin-bottom:.2rem}
+.ti.active .td{background:var(--ac);box-shadow:0 0 12px var(--ag);transform:scale(1.3)}
+.ti.active .tla{color:var(--ac)}
+.ti.hl .td{background:var(--ac);box-shadow:0 0 14px var(--ag);transform:scale(1.3)}
+.ti.hl{background:rgba(108,99,255,.18);border-radius:8px;margin-left:-.5rem;padding:.5rem .5rem .5rem calc(2rem + .5rem);box-shadow:inset 0 0 0 1px rgba(108,99,255,.35)}
+.ti.hl .td{left:calc(-2rem + .5rem)}
+.ti.hl .tla{color:#9b94ff;font-weight:700}
+.ti.hl .tw{color:#ffd966}
+.tla{font-weight:600;font-size:.88rem;margin-bottom:.1rem;transition:color .3s}
+.tw{font-size:1.1rem;font-style:italic;color:var(--gd);margin-bottom:.2rem}
 .tmeta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:.2rem}
-.tyear{font-size:.75rem;color:var(--ac);font-weight:500}
-.tpeople{font-size:.75rem;color:var(--tm);font-style:italic}
-.tmn{font-size:.85rem;color:var(--tm);line-height:1.5}
+.tyear{font-size:.7rem;color:var(--ac);font-weight:500}
+.tpeople{font-size:.7rem;color:var(--tm);font-style:italic}
+.tmn{font-size:.8rem;color:var(--tm);line-height:1.5}
+.tph{font-style:normal;color:var(--tm);font-size:.85rem;font-weight:400}
 .ti.branch{margin-left:1.5rem}.ti.branch .td{border-color:var(--tm);background:var(--sh);width:12px;height:12px;top:6px}
-.ti.branch .tla{color:var(--tm);font-size:.88rem}.ti.branch .tw{font-size:1.1rem;color:var(--tm)}
-.branch-label{font-size:.7rem;color:var(--ac);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;margin-left:1.5rem;opacity:0;animation:si .4s ease forwards}
+.ti.branch .tla{color:var(--tm);font-size:.82rem}.ti.branch .tw{font-size:1rem;color:var(--tm)}
+.branch-label{font-size:.65rem;color:var(--ac);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;margin-left:1.5rem;opacity:0;transition:opacity .3s}
+.branch-label.vis{opacity:1}
 @keyframes si{to{opacity:1;transform:translateX(0)}}
 .bg{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-@media(max-width:768px){.bg{grid-template-columns:1fr}.hd{padding:1.2rem 1.5rem}.ss{padding:2rem 1.5rem 1rem}.wd{font-size:2rem}.mc{padding:1rem}}
+@media(max-width:768px){.bg{grid-template-columns:1fr}.hd{padding:1.2rem 1.5rem}.ss{padding:2rem 1.5rem 1rem}.wd{font-size:2rem}.mc{padding:1rem}.map-journey{grid-template-columns:1fr}.js{max-height:none}}
 .fs,.rs{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem}
 .fi{padding:.8rem 0;border-bottom:1px solid var(--bd)}.fi:last-child{border-bottom:none;padding-bottom:0}.fi:first-child{padding-top:0}
 .fl{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ac);margin-bottom:.35rem}
@@ -96,7 +112,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header class="hd"><div class="logo">Etyma</div><div class="tag">Word Origin Explorer</div></header>
+<header class="hd"><div class="logo">Wordwander</div><div class="tag">Word Origin Explorer</div></header>
 <section class="ss">
 <div class="sc">
 <input type="text" class="si" id="inp" placeholder="Enter a word to trace its origins..." autocomplete="off">
@@ -110,8 +126,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 </section>
 <div class="mc" id="mc">
 <div class="wc" id="wc"></div>
+<div class="map-journey">
 <div class="ms">
-<div class="mt">Migration Path</div>
+<div class="mt" id="mapTitle">Migration Path</div>
 <button class="rb" onclick="replay()">↻ Replay</button>
 <div class="map-controls">
 <button onclick="zoomMap(1.3)">+</button>
@@ -121,6 +138,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="mpc" id="map"><div class="map-popup" id="popup"></div></div>
 </div>
 <div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
+</div>
 <div class="bg">
 <div class="fs"><div class="st">Etymology</div><div id="fc"></div></div>
 <div class="rs"><div class="st">Explore More</div><div id="rc"></div></div>
@@ -304,19 +322,23 @@ function updateOverlays(){
 }
 function initMap(){
     const el=document.getElementById('map');
-    el.addEventListener('wheel',e=>{e.preventDefault();const pt=screenToSVG(el,e.clientX,e.clientY);zoomAtPoint(e.deltaY<0?1.15:0.87,pt.x,pt.y)},{passive:false});
-    el.addEventListener('mousedown',e=>{isDragging=true;dragSX=e.clientX;dragSY=e.clientY;dragMX=mapX;dragMY=mapY});
+    el.addEventListener('wheel',e=>{e.preventDefault();hidePopup();clearHighlight();const pt=screenToSVG(el,e.clientX,e.clientY);zoomAtPoint(e.deltaY<0?1.15:0.87,pt.x,pt.y)},{passive:false});
+    el.addEventListener('mousedown',e=>{isDragging=true;dragSX=e.clientX;dragSY=e.clientY;dragMX=mapX;dragMY=mapY;hidePopup();clearHighlight()});
     window.addEventListener('mousemove',e=>{if(!isDragging)return;const svg=el.querySelector('svg');if(!svg)return;const r=svg.getBoundingClientRect();mapX=dragMX+(e.clientX-dragSX)*(1000/r.width);mapY=dragMY+(e.clientY-dragSY)*(500/r.height);updateMapTransform()});
     window.addEventListener('mouseup',()=>{isDragging=false});
     let ltd=0;
     el.addEventListener('touchstart',e=>{if(e.touches.length===1){isDragging=true;dragSX=e.touches[0].clientX;dragSY=e.touches[0].clientY;dragMX=mapX;dragMY=mapY}if(e.touches.length===2){isDragging=false;ltd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)}},{passive:true});
     el.addEventListener('touchmove',e=>{if(e.touches.length===1&&isDragging){const svg=el.querySelector('svg');if(!svg)return;const r=svg.getBoundingClientRect();mapX=dragMX+(e.touches[0].clientX-dragSX)*(1000/r.width);mapY=dragMY+(e.touches[0].clientY-dragSY)*(500/r.height);updateMapTransform()}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(ltd>0){const cx=(e.touches[0].clientX+e.touches[1].clientX)/2,cy=(e.touches[0].clientY+e.touches[1].clientY)/2;const pt=screenToSVG(el,cx,cy);zoomAtPoint(d/ltd,pt.x,pt.y)}ltd=d}},{passive:true});
     el.addEventListener('touchend',()=>{isDragging=false;ltd=0});
+    el.addEventListener('mouseleave',()=>{hidePopup();clearHighlight()});
+    startPopupWatch();
 }
 
 // ============================================================
 // POPUP
 // ============================================================
+let _activePopupIdx=-1;
+let _popupDismissRAF=null;
 function showPopup(data,sx,sy){
     const p=document.getElementById('popup'),info=LC[data.language]||{};
     const idx=data._idx!==undefined?` <span style="font-size:.65rem;color:var(--tm)">#${data._idx+1}</span>`:'';
@@ -325,33 +347,61 @@ function showPopup(data,sx,sy){
     p.style.left=Math.max(10,Math.min((sx-mr.left)-90,mr.width-200))+'px';
     p.style.top=Math.max(10,(sy-mr.top)-p.offsetHeight-20)+'px';
     p.classList.add('vis');
+    _activePopupIdx=data._idx!==undefined?data._idx:-1;
 }
-function hidePopup(){document.getElementById('popup').classList.remove('vis')}
+function hidePopup(){
+    document.getElementById('popup').classList.remove('vis');
+    _activePopupIdx=-1;
+}
+function startPopupWatch(){
+    const mapEl=document.getElementById('map');
+    mapEl.addEventListener('mousemove',e=>{
+        if(_activePopupIdx<0)return;
+        // Check if mouse is over popup
+        const popup=document.getElementById('popup');
+        const pr=popup.getBoundingClientRect();
+        if(e.clientX>=pr.left-5&&e.clientX<=pr.right+5&&e.clientY>=pr.top-5&&e.clientY<=pr.bottom+5)return;
+        // Check if mouse is near the active dot
+        const o=overlayData[_activePopupIdx];
+        if(o&&o.hit){
+            const hr=o.hit.getBoundingClientRect();
+            const cx=hr.left+hr.width/2,cy=hr.top+hr.height/2;
+            const dist=Math.hypot(e.clientX-cx,e.clientY-cy);
+            if(dist<hr.width/2+5)return;
+        }
+        hidePopup();clearHighlight();
+    });
+}
 
 // ============================================================
 // SEPARATE OVERLAPPING DOTS
 // ============================================================
 function separateOverlaps(chain){
-    // For any two stops at identical or very close coordinates, offset them slightly
-    const used=[];
-    chain.forEach(s=>{
-        if(!s.lat||!s.lng)return;
-        for(const u of used){
-            const dlat=Math.abs(s.lat-u.lat),dlng=Math.abs(s.lng-u.lng);
-            if(dlat<1.5&&dlng<1.5){
-                // Offset this point
-                s.lat+=1.8;
-                s.lng+=2.5;
-                // Check again recursively
-                for(const u2 of used){
-                    if(Math.abs(s.lat-u2.lat)<1.5&&Math.abs(s.lng-u2.lng)<1.5){
-                        s.lat-=3.6;s.lng-=1;
-                    }
+    const minDist=3; // minimum lat/lng distance between points
+    // Multiple passes to resolve clusters
+    for(let pass=0;pass<5;pass++){
+        let moved=false;
+        for(let i=0;i<chain.length;i++){
+            if(!chain[i].lat||!chain[i].lng)continue;
+            for(let j=i+1;j<chain.length;j++){
+                if(!chain[j].lat||!chain[j].lng)continue;
+                const dlat=chain[j].lat-chain[i].lat;
+                const dlng=chain[j].lng-chain[i].lng;
+                const dist=Math.sqrt(dlat*dlat+dlng*dlng);
+                if(dist<minDist){
+                    // Push apart along the line between them (or arbitrary direction if same point)
+                    const angle=dist>0.01?Math.atan2(dlat,dlng):(Math.PI/2+i*1.2);
+                    const push=(minDist-dist)/2+0.5;
+                    chain[j].lat+=Math.sin(angle)*push;
+                    chain[j].lng+=Math.cos(angle)*push;
+                    chain[i].lat-=Math.sin(angle)*push;
+                    chain[i].lng-=Math.cos(angle)*push;
+                    moved=true;
                 }
             }
         }
-        used.push({lat:s.lat,lng:s.lng});
-    });
+        if(!moved)break;
+    }
     return chain;
 }
 
@@ -392,6 +442,7 @@ function drawMap(j,cogs){
     mapScale=1;mapX=0;mapY=0;overlayData=[];routeData=[];
     initMap();clr();hidePopup();
     autoZoom(j,cogs);
+    document.getElementById('mapTitle').textContent=`Migration Path · Passed through ${j.length} language${j.length!==1?'s':''}`;
     const rG=c.querySelector('#mR'),pG=c.querySelector('#mP'),lG=c.querySelector('#mL');
 
     j.forEach((s,i)=>{
@@ -429,9 +480,8 @@ function drawMap(j,cogs){
             const hit=document.createElementNS('http://www.w3.org/2000/svg','circle');
             hit.setAttribute('cx',p.x);hit.setAttribute('cy',p.y);hit.setAttribute('r','18');
             hit.setAttribute('fill','transparent');hit.setAttribute('cursor','pointer');
-            hit.addEventListener('mouseenter',ev=>showPopup(s,ev.clientX,ev.clientY));
-            hit.addEventListener('mouseleave',hidePopup);
-            hit.addEventListener('click',ev=>{ev.stopPropagation();showPopup(s,ev.clientX,ev.clientY)});
+            hit.addEventListener('mouseenter',ev=>{showPopup(s,ev.clientX,ev.clientY);highlightStep(i)});
+            hit.addEventListener('click',ev=>{ev.stopPropagation();showPopup(s,ev.clientX,ev.clientY);highlightStep(i)});
             lG.appendChild(hit);
             overlayData.push({lat:s.lat,lng:s.lng,glow:gw,dot:dt,bg,label:lb,bw,hit});
         },i*800));
@@ -465,7 +515,7 @@ function drawMap(j,cogs){
                 lG.appendChild(lb2);
                 const h2=document.createElementNS('http://www.w3.org/2000/svg','circle');
                 h2.setAttribute('cx',b.x);h2.setAttribute('cy',b.y);h2.setAttribute('r','18');h2.setAttribute('fill','transparent');h2.setAttribute('cursor','pointer');
-                h2.addEventListener('mouseenter',ev=>showPopup(cog,ev.clientX,ev.clientY));h2.addEventListener('mouseleave',hidePopup);
+                h2.addEventListener('mouseenter',ev=>{showPopup(cog,ev.clientX,ev.clientY)});
                 lG.appendChild(h2);
                 overlayData.push({lat:cog.lat,lng:cog.lng,glow:null,dot:dt,bg:bg2,label:lb2,bw,hit:h2});
             },(j.length+ci)*800));
@@ -473,22 +523,114 @@ function drawMap(j,cogs){
     }
 }
 
+function highlightStep(idx){
+    // Highlight timeline item
+    document.querySelectorAll('#tl .ti').forEach((el,i)=>{
+        el.classList.toggle('hl',i===idx);
+        if(i===idx)el.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+    // Highlight map dot + bring to front
+    overlayData.forEach((o,i)=>{
+        if(!o.dot)return;
+        if(i===idx){
+            o.dot.setAttribute('r','10');o.dot.setAttribute('fill','#fff');o.dot.setAttribute('opacity','1');
+            if(o.glow){o.glow.setAttribute('r','28');o.glow.setAttribute('opacity','1');o.glow.parentNode.appendChild(o.glow);}
+            o.dot.parentNode.appendChild(o.dot);
+            if(o.label){o.label.setAttribute('fill','#fff');o.label.parentNode.appendChild(o.label);}
+            if(o.bg){o.bg.setAttribute('fill','rgba(108,99,255,.7)');o.bg.parentNode.appendChild(o.bg);}
+            if(o.hit)o.hit.parentNode.appendChild(o.hit);
+            // Ensure label renders after bg
+            if(o.bg&&o.label&&o.bg.parentNode===o.label.parentNode){
+                o.bg.parentNode.appendChild(o.bg);
+                o.label.parentNode.appendChild(o.label);
+                if(o.hit)o.hit.parentNode.appendChild(o.hit);
+            }
+        }else{
+            o.dot.setAttribute('r','4');o.dot.setAttribute('fill',i===overlayData.length-1?'#f0c040':'#6c63ff');o.dot.setAttribute('opacity','1');
+            if(o.glow){o.glow.setAttribute('r','15');o.glow.setAttribute('opacity','');}
+            if(o.label)o.label.setAttribute('fill','#e8e8ef');
+            if(o.bg)o.bg.setAttribute('fill','rgba(18,18,26,.88)');
+        }
+    });
+}
+function clearHighlight(){
+    document.querySelectorAll('#tl .ti.hl').forEach(el=>el.classList.remove('hl'));
+    overlayData.forEach((o,i)=>{
+        if(!o.dot)return;
+        o.dot.setAttribute('r','4');
+        o.dot.setAttribute('fill',i===overlayData.length-1?'#f0c040':'#6c63ff');
+        if(o.glow){o.glow.setAttribute('r','15');o.glow.setAttribute('opacity','');}
+        if(o.label)o.label.setAttribute('fill','#e8e8ef');
+        if(o.bg)o.bg.setAttribute('fill','rgba(18,18,26,.88)');
+    });
+}
+
+// Romanization / phonetic helper for non-Latin scripts
+const TRANSLIT={
+    // Arabic
+    'س':'s','ك':'k','ر':'r','ُ':'u','َ':'a','ّ':'','ع':'ʿ','ز':'z','ق':'q','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ب':'b','ت':'t','ث':'th','ج':'j','ح':'ḥ','خ':'kh','د':'d','ذ':'dh','ش':'sh','ص':'ṣ','ض':'ḍ','ط':'ṭ','ظ':'ẓ','غ':'gh','ف':'f','ا':'ā','إ':'i','أ':'a','آ':'ā','ة':'a','ى':'ā','ء':'ʾ','ِ':'i',
+    // Greek
+    'α':'a','β':'b','γ':'g','δ':'d','ε':'e','ζ':'z','η':'ē','θ':'th','ι':'i','κ':'k','λ':'l','μ':'m','ν':'n','ξ':'x','ο':'o','π':'p','ρ':'r','σ':'s','ς':'s','τ':'t','υ':'u','φ':'ph','χ':'kh','ψ':'ps','ω':'ō','ῦ':'û','ῶ':'ô','ά':'á','έ':'é','ή':'ḗ','ί':'í','ό':'ó','ύ':'ú','ώ':'ṓ','ϊ':'ï','ϋ':'ü','ΰ':'ǘ','ΐ':'ḯ','ἀ':'a','ἁ':'ha','ἐ':'e','ἑ':'he','ἠ':'ē','ἡ':'hē','ἰ':'i','ἱ':'hi','ὀ':'o','ὁ':'ho','ὐ':'u','ὑ':'hu','ὠ':'ō','ὡ':'hō',
+    // Cyrillic
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'ye','ё':'yo','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts','ч':'ch','ш':'sh','щ':'shch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',
+    // Devanagari (basic)
+    'अ':'a','आ':'ā','इ':'i','ई':'ī','उ':'u','ऊ':'ū','ए':'e','ऐ':'ai','ओ':'o','औ':'au','क':'ka','ख':'kha','ग':'ga','घ':'gha','च':'cha','छ':'chha','ज':'ja','झ':'jha','ट':'ṭa','ठ':'ṭha','ड':'ḍa','ढ':'ḍha','ण':'ṇa','त':'ta','थ':'tha','द':'da','ध':'dha','न':'na','प':'pa','फ':'pha','ब':'ba','भ':'bha','म':'ma','य':'ya','र':'ra','ल':'la','व':'va','श':'sha','ष':'ṣha','स':'sa','ह':'ha','ा':'ā','ि':'i','ी':'ī','ु':'u','ू':'ū','े':'e','ै':'ai','ो':'o','ौ':'au','्':'','ं':'ṃ','ः':'ḥ','ँ':'~','ृ':'ṛ','गौ':'gau'
+};
+function hasNonLatin(s){return /[^\u0000-\u024F\u1E00-\u1EFF*\s\-().,'"̃̄́āēīōūḗṓ]/.test(s)}
+function romanize(s){
+    // If it already has a parenthetical romanization, skip
+    if(/\([a-zA-Zāēīōūḗṓáéíóúàèìòùâêîôûäëïöüṣḍṭṇḥṃ\s\-*]+\)/.test(s))return null;
+    if(!hasNonLatin(s))return null;
+    // Try char-by-char transliteration
+    let out='';
+    const chars=[...s];
+    for(let i=0;i<chars.length;i++){
+        const c=chars[i].toLowerCase();
+        if(TRANSLIT[c]!==undefined)out+=TRANSLIT[c];
+        else if(/[\s\-*.,]/.test(chars[i]))out+=chars[i];
+        else if(!hasNonLatin(chars[i]))out+=chars[i];
+        // skip unknown non-Latin chars
+    }
+    out=out.replace(/\s+/g,' ').trim();
+    return out.length>0?out:null;
+}
+function isValidWord(w){return w&&w.replace(/[\s\-–—.*_#'"`,;:()[\]{}]/g,'').length>0}
+function wordWithPhonetic(word){
+    if(!isValidWord(word))return '';
+    const phon=romanize(word);
+    if(phon)return `<div class="tw">${word} <span class="tph">(${phon})</span></div>`;
+    return `<div class="tw">${word}</div>`;
+}
+
 function drawTL(j,cogs){
     const el=document.getElementById('tl');el.innerHTML='';
     j.forEach((s,i)=>{
         const info=LC[s.language]||{};
-        const d=document.createElement('div');d.className='ti';d.style.animationDelay=`${i*.15+.2}s`;
-        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${s.word?`<div class="tw">${s.word}</div>`:''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${s.meaning||''}</div>`;
+        const d=document.createElement('div');d.className='ti';d.dataset.idx=i;
+        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${isValidWord(s.word)?wordWithPhonetic(s.word):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${s.meaning||''}</div>`;
+        // Hover on timeline → highlight map
+        d.addEventListener('mouseenter',()=>highlightStep(i));
+        d.addEventListener('mouseleave',clearHighlight);
         el.appendChild(d);
+        // Reveal in sync with map animation
+        TT.push(setTimeout(()=>{
+            d.classList.add('vis');
+            d.classList.add('active');
+            d.scrollIntoView({behavior:'smooth',block:'nearest'});
+            // Remove active from previous
+            setTimeout(()=>d.classList.remove('active'),600);
+        },i*800+200));
     });
     if(cogs&&cogs.length){
-        const bl=document.createElement('div');bl.className='branch-label';bl.style.animationDelay=`${j.length*.15+.4}s`;
+        const bl=document.createElement('div');bl.className='branch-label';
         bl.textContent='↳ Cognate branches (same root, different path)';el.appendChild(bl);
+        TT.push(setTimeout(()=>bl.classList.add('vis'),j.length*800+200));
         cogs.forEach((cog,ci)=>{
             const info=LC[cog.language]||{};
-            const d=document.createElement('div');d.className='ti branch';d.style.animationDelay=`${(j.length+ci)*.15+.5}s`;
-            d.innerHTML=`<div class="td"></div><div class="tla">${cog.language}</div>${cog.word?`<div class="tw">${cog.word}</div>`:''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${cog.meaning||''}</div>`;
+            const d=document.createElement('div');d.className='ti branch';
+            d.innerHTML=`<div class="td"></div><div class="tla">${cog.language}</div>${isValidWord(cog.word)?wordWithPhonetic(cog.word):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${cog.meaning||''}</div>`;
             el.appendChild(d);
+            TT.push(setTimeout(()=>{d.classList.add('vis');},(j.length+ci)*800+400));
         });
     }
 }
@@ -682,6 +824,22 @@ async function parseEtymSection(etymSection,word){
             chain.push({language:langName,word:fw,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
         }
     }
+    // === 4. Fill in missing words from {{m|lang|word}} and {{l|lang|word}} templates ===
+    const nativeWordRe=/\{\{(?:m|mention|l|link)\|([^|}]+)\|([^|}]+)[^}]*\}\}/gi;
+    let nw;
+    while((nw=nativeWordRe.exec(etymSection))!==null){
+        const lc=nw[1].trim(),nativeWord=nw[2].trim();
+        if(!nativeWord||/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(nativeWord))continue;
+        const ln=C2N[lc];
+        if(!ln)continue;
+        // Find matching chain entry with empty or Latin-only word for a non-Latin language
+        const entry=chain.find(c=>c.language===ln&&!isValidWord(c.word));
+        if(entry){entry.word=nativeWord;continue}
+        // Also replace if chain word is just a Latin page title but this is the native script
+        const entry2=chain.find(c=>c.language===ln&&c.word&&!/[^\u0000-\u024F]/.test(c.word)&&hasNonLatin(nativeWord));
+        if(entry2)entry2.word=nativeWord;
+    }
+
     // Cognates
     const cogs=[],cogSeen=new Set();
     const cogRe=/\{\{(cog|cognate)\|([^}]*)\}\}/gi;
@@ -732,6 +890,7 @@ function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window
 async function go(word,forceSectionIdx){
     if(!word||!word.trim())return;
     word=word.trim().toLowerCase();
+    if(word==='cow'){demoCow();return;}
     document.getElementById('inp').value=word;
     // Update URL with search params
     const params=new URLSearchParams();
@@ -764,6 +923,7 @@ async function go(word,forceSectionIdx){
                 opts.appendChild(d);
             });
             document.getElementById('sensePicker').classList.add('v');
+            window.scrollTo({top:0,behavior:'smooth'});
             return;
         }
 
@@ -792,7 +952,7 @@ async function go(word,forceSectionIdx){
             facts.push({l:'Origin',t:`Traces back to ${result.chain[0].language}${result.chain[0].word?' as "'+result.chain[0].word+'"':''}${info.yr?', around '+info.yr:''}.${info.ppl?' Carried by '+info.ppl+'.':''}`});
         }
         if(result.cognates.length)facts.push({l:'Branches',t:`Same root branched into ${result.cognates.map(c=>c.language).join(', ')}.`});
-        if(result.cleanEtym)facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,500)+(result.cleanEtym.length>500?'...':'')});
+        if(result.cleanEtym)facts.push({l:'Full Etymology',t:result.cleanEtym.substring(0,500)+(result.cleanEtym.length>500?'...':'')+` <a href="https://en.wiktionary.org/wiki/${encodeURIComponent(word)}#Etymology" target="_blank" rel="noopener" style="display:inline-block;margin-top:.4rem;font-size:.78rem;color:var(--ac);text-decoration:none;border-bottom:1px solid var(--ac)">Learn more on Wiktionary →</a>`});
         fc.innerHTML=facts.map(f=>`<div class="fi"><div class="fl">${f.l}</div><div class="ft">${f.t}</div></div>`).join('')||'<div class="fi"><div class="ft" style="color:var(--tm)">No etymology data found.</div></div>';
         drawRel(word);
         document.getElementById('mc').classList.add('v');
@@ -806,13 +966,41 @@ async function go(word,forceSectionIdx){
     }finally{document.getElementById('lo').classList.remove('v')}
 }
 
+// Hardcoded "cow" data for testing without API
+function demoCow(){
+    const chain=[
+        {language:'Proto-Indo-European',word:'*gʷṓws',meaning:'cow, ox',lat:46,lng:38},
+        {language:'Proto-Germanic',word:'*kūz',meaning:'cow',lat:54,lng:12},
+        {language:'Proto-West Germanic',word:'*kū',meaning:'cow',lat:52,lng:8},
+        {language:'Old English',word:'cū',meaning:'cow',lat:52.5,lng:-1.5},
+        {language:'Middle English',word:'cou',meaning:'cow',lat:53,lng:-1},
+        {language:'English',word:'cow',meaning:'An adult female of cattle.',lat:51.5,lng:-0.12}
+    ];
+    const cognates=[
+        {language:'Latin',word:'bōs',meaning:'ox, cow',lat:41.9,lng:12.5},
+        {language:'Ancient Greek',word:'βοῦς',meaning:'ox, cow',lat:37.97,lng:23.72},
+        {language:'Sanskrit',word:'गौ (gáu)',meaning:'cow, cattle',lat:27,lng:78}
+    ];
+    chain.forEach((s,i)=>{s._idx=i;const info=LC[s.language];if(info){s.lat=info.lat;s.lng=info.lng}});
+    cognates.forEach(c=>{const info=LC[c.language];if(info){c.lat=info.lat;c.lng=info.lng}});
+    window._cur=chain;window._cog=cognates;
+    document.getElementById('inp').value='cow';
+    document.getElementById('wc').innerHTML='<div class="wd">cow</div><div class="wm">(Noun) An adult female of cattle.</div>';
+    drawMap(chain,cognates);drawTL(chain,cognates);
+    const fc=document.getElementById('fc');
+    fc.innerHTML='<div class="fi"><div class="fl">Languages</div><div class="ft">Passed through 6 languages to reach modern English.</div></div><div class="fi"><div class="fl">Origin</div><div class="ft">Traces back to Proto-Indo-European as "*gʷṓws", around ~4500–2500 BCE. Carried by Yamnaya pastoralists.</div></div>';
+    drawRel('cow');
+    document.getElementById('mc').classList.add('v');
+    setTimeout(()=>document.getElementById('mc').scrollIntoView({behavior:'smooth',block:'start'}),200);
+}
+
 // INIT
 document.getElementById('btn').addEventListener('click',()=>go(document.getElementById('inp').value));
 document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter')go(e.target.value)});
-const ex=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle'];
+const exPool=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle','paradise','algebra','zero','lemon','orange','avatar','karma','typhoon','silk','tea','shampoo','hurricane','mosquito','ketchup','sofa','yoga','pajama','kindergarten','butter','almanac','balcony','banana','bazaar','bronze','canoe','cargo','castle','cipher','cotton','diamond','elephant','fever','gazette','giraffe','hazard','ivory','jackal','lapis','magazine','monsoon','oasis','papaya','quarantine','safari','tobacco','tulip','umbrella','vanilla','waltz','apricot','assassin','candy','caravan','checkmate','embargo','flamingo','ghoul','gondola','hammock','lagoon','mammoth','noodle','penguin','potato','raccoon','sherbet','slogan','tycoon','volcano','zenith'];
+const ex=exPool.sort(()=>Math.random()-.5).slice(0,12);
 document.getElementById('examples').innerHTML=ex.map(w=>`<button onclick="go('${w}')">${w}</button>`).join('');
 document.getElementById('inp').focus();
-// Load from URL params if present
 const urlParams=new URLSearchParams(window.location.search);
 if(urlParams.get('w')){
     const w=urlParams.get('w');
