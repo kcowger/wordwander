@@ -706,6 +706,11 @@ async function go(word,forceSectionIdx){
     if(!word||!word.trim())return;
     word=word.trim().toLowerCase();
     document.getElementById('inp').value=word;
+    // Update URL with search params
+    const params=new URLSearchParams();
+    params.set('w',word);
+    if(forceSectionIdx!==undefined)params.set('s',forceSectionIdx);
+    history.replaceState(null,'',`?${params.toString()}`);
     document.getElementById('sensePicker').classList.remove('v');
     document.getElementById('lo').classList.add('v');
     document.getElementById('lotx').textContent='Fetching from Wiktionary...';
@@ -780,6 +785,14 @@ document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter'
 const ex=['cow','philosophy','salary','alcohol','democracy','robot','tsunami','chocolate','coffee','guitar','sugar','jungle'];
 document.getElementById('examples').innerHTML=ex.map(w=>`<button onclick="go('${w}')">${w}</button>`).join('');
 document.getElementById('inp').focus();
+// Load from URL params if present
+const urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('w')){
+    const w=urlParams.get('w');
+    const s=urlParams.get('s');
+    document.getElementById('inp').value=w;
+    go(w,s!==null?parseInt(s):undefined);
+}
 
 </script>
 </body>
