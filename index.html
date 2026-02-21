@@ -129,10 +129,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="lo" id="lo"><div class="ls"></div><div class="lt" id="lotx">Tracing origins...</div></div>
 <script>
 // Language code → name
-const C2N={'en':'English','enm':'Middle English','ang':'Old English','gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European','la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin','grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek','sa':'Sanskrit','inc-ash':'Vedic Sanskrit','peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan','ar':'Arabic','acw':'Hijazi Arabic','non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German','nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian','got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic','fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman','es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan','sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic','ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian','tr':'Turkish','ota':'Ottoman Turkish','zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese','ja':'Japanese','ko':'Korean','hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi','ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese','nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino','fi':'Finnish','hu':'Hungarian','et':'Estonian','he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian','sw':'Swahili','am':'Amharic','yo':'Yoruba','th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese','ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian','pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian','sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic','sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic','bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic','trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan','map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian'};
+const C2N={'en':'English','enm':'Middle English','ang':'Old English','gmw-pro':'Proto-West Germanic','gem-pro':'Proto-Germanic','ine-pro':'Proto-Indo-European','la':'Latin','LL.':'Late Latin','ML.':'Medieval Latin','NL.':'New Latin','VL.':'Vulgar Latin','grc':'Ancient Greek','el':'Greek','gkm':'Byzantine Greek','sa':'Sanskrit','inc-ash':'Vedic Sanskrit','peo':'Old Persian','pal':'Middle Persian','fa':'Persian','ae':'Avestan','ar':'Arabic','acw':'Hijazi Arabic','non':'Old Norse','goh':'Old High German','gmh':'Middle High German','de':'German','nl':'Dutch','dum':'Middle Dutch','odt':'Old Dutch','osx':'Old Saxon','ofs':'Old Frisian','got':'Gothic','sv':'Swedish','da':'Danish','no':'Norwegian','is':'Icelandic','fr':'French','fro':'Old French','frm':'Middle French','xno':'Anglo-Norman','es':'Spanish','osp':'Old Spanish','pt':'Portuguese','it':'Italian','ro':'Romanian','ca':'Catalan','oc':'Occitan','sga':'Old Irish','ga':'Irish','cy':'Welsh','gd':'Scottish Gaelic','ru':'Russian','cu':'Old Church Slavonic','pl':'Polish','cs':'Czech','uk':'Ukrainian','bg':'Bulgarian','hr':'Croatian','sr':'Serbian','tr':'Turkish','ota':'Ottoman Turkish','zh':'Chinese','ltc':'Middle Chinese','och':'Old Chinese','ja':'Japanese','ko':'Korean','hi':'Hindi','ur':'Urdu','ta':'Tamil','bn':'Bengali','pa':'Punjabi','gu':'Gujarati','mr':'Marathi','ms':'Malay','id':'Indonesian','tl':'Tagalog','jv':'Javanese','nah':'Nahuatl','nci':'Classical Nahuatl','qu':'Quechua','tnq':'Taino','fi':'Finnish','hu':'Hungarian','et':'Estonian','he':'Hebrew','arc':'Aramaic','phn':'Phoenician','egy':'Egyptian','sw':'Swahili','am':'Amharic','yo':'Yoruba','th':'Thai','vi':'Vietnamese','km':'Khmer','my':'Burmese','ka':'Georgian','hy':'Armenian','sq':'Albanian','lt':'Lithuanian','lv':'Latvian','pi':'Pali','kaw':'Old Javanese','bo':'Tibetan','mn':'Mongolian','sla-pro':'Proto-Slavic','cel-pro':'Proto-Celtic','itc-pro':'Proto-Italic','sem-pro':'Proto-Semitic','grk-pro':'Proto-Hellenic','bat-pro':'Proto-Balto-Slavic','fiu-pro':'Proto-Finnic','trk-pro':'Proto-Turkic','sit-pro':'Proto-Sino-Tibetan','map-pro':'Proto-Austronesian','dra-pro':'Proto-Dravidian','inc-gan':'Gandhari','inc-pro':'Proto-Indo-Aryan','iir-pro':'Proto-Indo-Iranian','ira-pro':'Proto-Iranian','roa-oit':'Old Italian','roa-opt':'Old Portuguese','fon':'Fon','mga':'Middle Irish','owl':'Old Welsh','enm-ear':'Early Middle English','ang-lat':'Anglo-Latin','xmf':'Mingrelian','osp-ear':'Early Old Spanish'};
 
 // Language → coords, years, peoples (English/OldEnglish/MiddleEnglish in UK not continental Europe)
-const LC={'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe',yr:'~4500–2500 BCE',ppl:'Yamnaya pastoralists'},'Proto-Germanic':{lat:54,lng:12,lb:'N. Europe',yr:'~500 BCE–200 CE',ppl:'Early Germanic tribes'},'Proto-West Germanic':{lat:52,lng:8,lb:'W. Europe',yr:'~200–500 CE',ppl:'Western Germanic peoples'},'Proto-Slavic':{lat:50,lng:30,lb:'E. Europe',yr:'~1500 BCE–500 CE',ppl:'Early Slavs'},'Proto-Celtic':{lat:48,lng:5,lb:'C. Europe',yr:'~800–300 BCE',ppl:'Hallstatt/La Tène cultures'},'Proto-Italic':{lat:43,lng:12,lb:'Italy',yr:'~1000–500 BCE',ppl:'Italic tribes'},'Proto-Semitic':{lat:30,lng:38,lb:'Levant',yr:'~3750–2500 BCE',ppl:'Early Semitic peoples'},'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans',yr:'~2000–1500 BCE',ppl:'Hellenic migrants'},'Proto-Balto-Slavic':{lat:52,lng:24,lb:'E. Europe',yr:'~1500–1000 BCE',ppl:'Balto-Slavic communities'},'Proto-Finnic':{lat:60,lng:25,lb:'Finland',yr:'~1500–1000 BCE',ppl:'Finno-Ugric peoples'},'Proto-Turkic':{lat:47,lng:88,lb:'C. Asia',yr:'~500 BCE–500 CE',ppl:'Early Turkic nomads'},'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'E. Asia',yr:'~4000–3000 BCE',ppl:'Early Sino-Tibetan peoples'},'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan',yr:'~3500–2000 BCE',ppl:'Austronesian seafarers'},'Proto-Dravidian':{lat:13,lng:78,lb:'S. India',yr:'~3000–1500 BCE',ppl:'Early Dravidians'},'Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~700 BCE–200 CE',ppl:'Romans'},'Late Latin':{lat:42.5,lng:13,lb:'Rome',yr:'~200–600 CE',ppl:'Late Roman scholars'},'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire',yr:'~200–900 CE',ppl:'Roman provincials'},'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe',yr:'~500–1500 CE',ppl:'Monks and clergy'},'New Latin':{lat:48.8,lng:2.3,lb:'Europe',yr:'~1500–1900 CE',ppl:'Enlightenment scholars'},'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens',yr:'~800–300 BCE',ppl:'Greeks of the city-states'},'Greek':{lat:37.97,lng:23.72,lb:'Greece',yr:'modern',ppl:'Greek people'},'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople',yr:'~330–1453 CE',ppl:'Byzantines'},'Sanskrit':{lat:27,lng:78,lb:'N. India',yr:'~1500 BCE–600 CE',ppl:'Vedic/Classical scholars'},'Vedic Sanskrit':{lat:28,lng:77,lb:'N. India',yr:'~1500–500 BCE',ppl:'Vedic priests'},'Old Persian':{lat:30,lng:52,lb:'Persia',yr:'~600–300 BCE',ppl:'Achaemenid Persians'},'Middle Persian':{lat:32.5,lng:52,lb:'Persia',yr:'~300 BCE–800 CE',ppl:'Sasanian Persians'},'Persian':{lat:35.7,lng:51.4,lb:'Iran',yr:'~800 CE–present',ppl:'Persian speakers'},'Avestan':{lat:34,lng:60,lb:'Ancient Iran',yr:'~1500–500 BCE',ppl:'Zoroastrian priests'},'Arabic':{lat:24.7,lng:46.7,lb:'Arabia',yr:'~500 CE–present',ppl:'Arab peoples'},'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz',yr:'~600 CE–present',ppl:'Hejazi Arabs'},'Old English':{lat:52.5,lng:-1.5,lb:'England',yr:'~450–1100 CE',ppl:'Anglo-Saxons'},'Middle English':{lat:53,lng:-1,lb:'England',yr:'~1100–1500 CE',ppl:'Post-Norman English'},'English':{lat:51.5,lng:-0.12,lb:'London',yr:'~1500–present',ppl:'English speakers worldwide'},'Old Norse':{lat:60,lng:11,lb:'Scandinavia',yr:'~700–1300 CE',ppl:'Vikings'},'Old High German':{lat:50,lng:10,lb:'Germany',yr:'~750–1050 CE',ppl:'Frankish/Alemannic peoples'},'Middle High German':{lat:50,lng:10,lb:'Germany',yr:'~1050–1350 CE',ppl:'Medieval German nobility'},'German':{lat:52.5,lng:13.4,lb:'Berlin',yr:'~1350–present',ppl:'German speakers'},'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam',yr:'~1500–present',ppl:'Dutch/Flemish'},'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands',yr:'~1150–1500 CE',ppl:'Low Countries peoples'},'Old Dutch':{lat:52,lng:5,lb:'Netherlands',yr:'~450–1150 CE',ppl:'Frankish settlers'},'Old Saxon':{lat:53,lng:9,lb:'N. Germany',yr:'~450–1100 CE',ppl:'Continental Saxons'},'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia',yr:'~700–1500 CE',ppl:'Frisians'},'Gothic':{lat:46,lng:24,lb:'Gothic lands',yr:'~200–600 CE',ppl:'Goths'},'Swedish':{lat:59.3,lng:18,lb:'Stockholm',yr:'~1500–present',ppl:'Swedes'},'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen',yr:'~1500–present',ppl:'Danes'},'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo',yr:'~1500–present',ppl:'Norwegians'},'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik',yr:'~900–present',ppl:'Icelanders'},'French':{lat:48.86,lng:2.35,lb:'Paris',yr:'~1300–present',ppl:'French people'},'Old French':{lat:48.86,lng:2.35,lb:'France',yr:'~842–1300 CE',ppl:'Franks/Gallo-Romans'},'Middle French':{lat:48.86,lng:2.35,lb:'France',yr:'~1300–1600 CE',ppl:'Late medieval French'},'Anglo-Norman':{lat:49.2,lng:-0.4,lb:'Normandy',yr:'~1066–1300 CE',ppl:'Norman conquerors'},'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid',yr:'~1500–present',ppl:'Spanish speakers'},'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile',yr:'~900–1500 CE',ppl:'Castilians'},'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–present',ppl:'Portuguese'},'Italian':{lat:41.9,lng:12.5,lb:'Rome',yr:'~1300–present',ppl:'Italians'},'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest',yr:'~1500–present',ppl:'Romanians'},'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona',yr:'~1000–present',ppl:'Catalans'},'Occitan':{lat:43.6,lng:3.9,lb:'S. France',yr:'~900–present',ppl:'Troubadours'},'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland',yr:'~600–900 CE',ppl:'Irish monks'},'Irish':{lat:53.3,lng:-6.3,lb:'Dublin',yr:'~900–present',ppl:'Irish people'},'Welsh':{lat:51.9,lng:-3.7,lb:'Wales',yr:'~600–present',ppl:'Welsh people'},'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland',yr:'~1000–present',ppl:'Highland Scots'},'Russian':{lat:55.75,lng:37.6,lb:'Moscow',yr:'~1300–present',ppl:'Russians'},'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans',yr:'~860–1100 CE',ppl:'Slavic monks'},'Polish':{lat:52.2,lng:21,lb:'Warsaw',yr:'~1500–present',ppl:'Poles'},'Czech':{lat:50.08,lng:14.4,lb:'Prague',yr:'~1300–present',ppl:'Czechs'},'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv',yr:'~1300–present',ppl:'Ukrainians'},'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia',yr:'~900–present',ppl:'Bulgarians'},'Croatian':{lat:45.8,lng:16,lb:'Zagreb',yr:'~1100–present',ppl:'Croats'},'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade',yr:'~1100–present',ppl:'Serbs'},'Turkish':{lat:39.9,lng:32.9,lb:'Ankara',yr:'~1300–present',ppl:'Turks'},'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul',yr:'~1300–1920 CE',ppl:'Ottoman scholars'},'Chinese':{lat:39.9,lng:116.4,lb:'Beijing',yr:'modern',ppl:'Chinese speakers'},'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an",yr:'~600–1200 CE',ppl:'Tang/Song dynasty'},'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China',yr:'~1250–200 BCE',ppl:'Zhou/Shang dynasty'},'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo',yr:'~700–present',ppl:'Japanese'},'Korean':{lat:37.55,lng:127,lb:'Seoul',yr:'~400–present',ppl:'Koreans'},'Hindi':{lat:28.6,lng:77.2,lb:'Delhi',yr:'~1000–present',ppl:'Hindi speakers'},'Urdu':{lat:33.7,lng:73,lb:'Islamabad',yr:'~1200–present',ppl:'Mughal court'},'Tamil':{lat:13,lng:80.3,lb:'Chennai',yr:'~300 BCE–present',ppl:'Tamils'},'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka',yr:'~1000–present',ppl:'Bengalis'},'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore',yr:'~1000–present',ppl:'Punjabis'},'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad',yr:'~1100–present',ppl:'Gujaratis'},'Marathi':{lat:19,lng:72.8,lb:'Mumbai',yr:'~1000–present',ppl:'Marathis'},'Pali':{lat:25,lng:83,lb:'N. India',yr:'~500 BCE–present',ppl:'Buddhist monks'},'Malay':{lat:3.1,lng:101.7,lb:'Malaysia',yr:'~700–present',ppl:'Malays'},'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta',yr:'~1900–present',ppl:'Indonesians'},'Tagalog':{lat:14.6,lng:121,lb:'Manila',yr:'~900–present',ppl:'Tagalogs'},'Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–present',ppl:'Javanese'},'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–1500 CE',ppl:'Hindu-Buddhist Javanese'},'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico',yr:'~600–present',ppl:'Nahua peoples'},'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico',yr:'~1300–1600 CE',ppl:'Aztecs'},'Quechua':{lat:-13.5,lng:-72,lb:'Andes',yr:'~1000–present',ppl:'Inca/Andean peoples'},'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean',yr:'~1200–1600 CE',ppl:'Taino'},'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki',yr:'~1500–present',ppl:'Finns'},'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest',yr:'~1000–present',ppl:'Magyars'},'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn',yr:'~1200–present',ppl:'Estonians'},'Hebrew':{lat:31.8,lng:35.2,lb:'Israel',yr:'~1000 BCE–present',ppl:'Israelites/Jewish communities'},'Aramaic':{lat:33.5,lng:36.3,lb:'Levant',yr:'~1100 BCE–present',ppl:'Arameans'},'Phoenician':{lat:34,lng:35.5,lb:'Levant',yr:'~1200–300 BCE',ppl:'Phoenician traders'},'Egyptian':{lat:26,lng:32,lb:'Egypt',yr:'~3100 BCE–600 CE',ppl:'Ancient Egyptians'},'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa',yr:'~1000–present',ppl:'Swahili coast'},'Amharic':{lat:9,lng:38.7,lb:'Ethiopia',yr:'~1200–present',ppl:'Ethiopians'},'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa',yr:'~1000–present',ppl:'Yoruba'},'Thai':{lat:13.75,lng:100.5,lb:'Bangkok',yr:'~1200–present',ppl:'Thais'},'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi',yr:'~900–present',ppl:'Vietnamese'},'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia',yr:'~600–present',ppl:'Khmer'},'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar',yr:'~800–present',ppl:'Burmese'},'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa',yr:'~600–present',ppl:'Tibetans'},'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia',yr:'~1200–present',ppl:'Mongols'},'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi',yr:'~400–present',ppl:'Georgians'},'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan',yr:'~400–present',ppl:'Armenians'},'Albanian':{lat:41.3,lng:19.8,lb:'Tirana',yr:'~1400–present',ppl:'Albanians'},'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius',yr:'~1500–present',ppl:'Lithuanians'},'Latvian':{lat:56.95,lng:24.1,lb:'Riga',yr:'~1500–present',ppl:'Latvians'}};
+const LC={'Proto-Indo-European':{lat:46,lng:38,lb:'Pontic Steppe',yr:'~4500–2500 BCE',ppl:'Yamnaya pastoralists'},'Proto-Germanic':{lat:54,lng:12,lb:'N. Europe',yr:'~500 BCE–200 CE',ppl:'Early Germanic tribes'},'Proto-West Germanic':{lat:52,lng:8,lb:'W. Europe',yr:'~200–500 CE',ppl:'Western Germanic peoples'},'Proto-Slavic':{lat:50,lng:30,lb:'E. Europe',yr:'~1500 BCE–500 CE',ppl:'Early Slavs'},'Proto-Celtic':{lat:48,lng:5,lb:'C. Europe',yr:'~800–300 BCE',ppl:'Hallstatt/La Tène cultures'},'Proto-Italic':{lat:43,lng:12,lb:'Italy',yr:'~1000–500 BCE',ppl:'Italic tribes'},'Proto-Semitic':{lat:30,lng:38,lb:'Levant',yr:'~3750–2500 BCE',ppl:'Early Semitic peoples'},'Proto-Hellenic':{lat:40,lng:22,lb:'Balkans',yr:'~2000–1500 BCE',ppl:'Hellenic migrants'},'Proto-Balto-Slavic':{lat:52,lng:24,lb:'E. Europe',yr:'~1500–1000 BCE',ppl:'Balto-Slavic communities'},'Proto-Finnic':{lat:60,lng:25,lb:'Finland',yr:'~1500–1000 BCE',ppl:'Finno-Ugric peoples'},'Proto-Turkic':{lat:47,lng:88,lb:'C. Asia',yr:'~500 BCE–500 CE',ppl:'Early Turkic nomads'},'Proto-Sino-Tibetan':{lat:30,lng:100,lb:'E. Asia',yr:'~4000–3000 BCE',ppl:'Early Sino-Tibetan peoples'},'Proto-Austronesian':{lat:23,lng:121,lb:'Taiwan',yr:'~3500–2000 BCE',ppl:'Austronesian seafarers'},'Proto-Dravidian':{lat:13,lng:78,lb:'S. India',yr:'~3000–1500 BCE',ppl:'Early Dravidians'},'Latin':{lat:41.9,lng:12.5,lb:'Rome',yr:'~700 BCE–200 CE',ppl:'Romans'},'Late Latin':{lat:42.5,lng:13,lb:'Rome',yr:'~200–600 CE',ppl:'Late Roman scholars'},'Vulgar Latin':{lat:43,lng:5,lb:'Roman Empire',yr:'~200–900 CE',ppl:'Roman provincials'},'Medieval Latin':{lat:48.8,lng:2.3,lb:'Medieval Europe',yr:'~500–1500 CE',ppl:'Monks and clergy'},'New Latin':{lat:48.8,lng:2.3,lb:'Europe',yr:'~1500–1900 CE',ppl:'Enlightenment scholars'},'Ancient Greek':{lat:37.97,lng:23.72,lb:'Athens',yr:'~800–300 BCE',ppl:'Greeks of the city-states'},'Greek':{lat:37.97,lng:23.72,lb:'Greece',yr:'modern',ppl:'Greek people'},'Byzantine Greek':{lat:41,lng:29,lb:'Constantinople',yr:'~330–1453 CE',ppl:'Byzantines'},'Sanskrit':{lat:27,lng:78,lb:'N. India',yr:'~1500 BCE–600 CE',ppl:'Vedic/Classical scholars'},'Vedic Sanskrit':{lat:28,lng:77,lb:'N. India',yr:'~1500–500 BCE',ppl:'Vedic priests'},'Old Persian':{lat:30,lng:52,lb:'Persia',yr:'~600–300 BCE',ppl:'Achaemenid Persians'},'Middle Persian':{lat:32.5,lng:52,lb:'Persia',yr:'~300 BCE–800 CE',ppl:'Sasanian Persians'},'Persian':{lat:35.7,lng:51.4,lb:'Iran',yr:'~800 CE–present',ppl:'Persian speakers'},'Avestan':{lat:34,lng:60,lb:'Ancient Iran',yr:'~1500–500 BCE',ppl:'Zoroastrian priests'},'Arabic':{lat:24.7,lng:46.7,lb:'Arabia',yr:'~500 CE–present',ppl:'Arab peoples'},'Hijazi Arabic':{lat:21.4,lng:39.8,lb:'Hejaz',yr:'~600 CE–present',ppl:'Hejazi Arabs'},'Old English':{lat:52.5,lng:-1.5,lb:'England',yr:'~450–1100 CE',ppl:'Anglo-Saxons'},'Middle English':{lat:53,lng:-1,lb:'England',yr:'~1100–1500 CE',ppl:'Post-Norman English'},'English':{lat:51.5,lng:-0.12,lb:'London',yr:'~1500–present',ppl:'English speakers worldwide'},'Old Norse':{lat:60,lng:11,lb:'Scandinavia',yr:'~700–1300 CE',ppl:'Vikings'},'Old High German':{lat:50,lng:10,lb:'Germany',yr:'~750–1050 CE',ppl:'Frankish/Alemannic peoples'},'Middle High German':{lat:50,lng:10,lb:'Germany',yr:'~1050–1350 CE',ppl:'Medieval German nobility'},'German':{lat:52.5,lng:13.4,lb:'Berlin',yr:'~1350–present',ppl:'German speakers'},'Dutch':{lat:52.4,lng:4.9,lb:'Amsterdam',yr:'~1500–present',ppl:'Dutch/Flemish'},'Middle Dutch':{lat:52.4,lng:4.9,lb:'Netherlands',yr:'~1150–1500 CE',ppl:'Low Countries peoples'},'Old Dutch':{lat:52,lng:5,lb:'Netherlands',yr:'~450–1150 CE',ppl:'Frankish settlers'},'Old Saxon':{lat:53,lng:9,lb:'N. Germany',yr:'~450–1100 CE',ppl:'Continental Saxons'},'Old Frisian':{lat:53.2,lng:5.8,lb:'Frisia',yr:'~700–1500 CE',ppl:'Frisians'},'Gothic':{lat:46,lng:24,lb:'Gothic lands',yr:'~200–600 CE',ppl:'Goths'},'Swedish':{lat:59.3,lng:18,lb:'Stockholm',yr:'~1500–present',ppl:'Swedes'},'Danish':{lat:55.7,lng:12.6,lb:'Copenhagen',yr:'~1500–present',ppl:'Danes'},'Norwegian':{lat:59.9,lng:10.7,lb:'Oslo',yr:'~1500–present',ppl:'Norwegians'},'Icelandic':{lat:64.1,lng:-21.9,lb:'Reykjavik',yr:'~900–present',ppl:'Icelanders'},'French':{lat:48.86,lng:2.35,lb:'Paris',yr:'~1300–present',ppl:'French people'},'Old French':{lat:48.86,lng:2.35,lb:'France',yr:'~842–1300 CE',ppl:'Franks/Gallo-Romans'},'Middle French':{lat:48.86,lng:2.35,lb:'France',yr:'~1300–1600 CE',ppl:'Late medieval French'},'Anglo-Norman':{lat:49.2,lng:-0.4,lb:'Normandy',yr:'~1066–1300 CE',ppl:'Norman conquerors'},'Spanish':{lat:40.4,lng:-3.7,lb:'Madrid',yr:'~1500–present',ppl:'Spanish speakers'},'Old Spanish':{lat:40.4,lng:-3.7,lb:'Castile',yr:'~900–1500 CE',ppl:'Castilians'},'Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–present',ppl:'Portuguese'},'Italian':{lat:41.9,lng:12.5,lb:'Rome',yr:'~1300–present',ppl:'Italians'},'Romanian':{lat:44.4,lng:26.1,lb:'Bucharest',yr:'~1500–present',ppl:'Romanians'},'Catalan':{lat:41.4,lng:2.17,lb:'Barcelona',yr:'~1000–present',ppl:'Catalans'},'Occitan':{lat:43.6,lng:3.9,lb:'S. France',yr:'~900–present',ppl:'Troubadours'},'Old Irish':{lat:53.3,lng:-6.3,lb:'Ireland',yr:'~600–900 CE',ppl:'Irish monks'},'Irish':{lat:53.3,lng:-6.3,lb:'Dublin',yr:'~900–present',ppl:'Irish people'},'Welsh':{lat:51.9,lng:-3.7,lb:'Wales',yr:'~600–present',ppl:'Welsh people'},'Scottish Gaelic':{lat:57,lng:-5,lb:'Scotland',yr:'~1000–present',ppl:'Highland Scots'},'Russian':{lat:55.75,lng:37.6,lb:'Moscow',yr:'~1300–present',ppl:'Russians'},'Old Church Slavonic':{lat:42,lng:24,lb:'Balkans',yr:'~860–1100 CE',ppl:'Slavic monks'},'Polish':{lat:52.2,lng:21,lb:'Warsaw',yr:'~1500–present',ppl:'Poles'},'Czech':{lat:50.08,lng:14.4,lb:'Prague',yr:'~1300–present',ppl:'Czechs'},'Ukrainian':{lat:50.45,lng:30.5,lb:'Kyiv',yr:'~1300–present',ppl:'Ukrainians'},'Bulgarian':{lat:42.7,lng:23.3,lb:'Sofia',yr:'~900–present',ppl:'Bulgarians'},'Croatian':{lat:45.8,lng:16,lb:'Zagreb',yr:'~1100–present',ppl:'Croats'},'Serbian':{lat:44.8,lng:20.5,lb:'Belgrade',yr:'~1100–present',ppl:'Serbs'},'Turkish':{lat:39.9,lng:32.9,lb:'Ankara',yr:'~1300–present',ppl:'Turks'},'Ottoman Turkish':{lat:41,lng:29,lb:'Istanbul',yr:'~1300–1920 CE',ppl:'Ottoman scholars'},'Chinese':{lat:39.9,lng:116.4,lb:'Beijing',yr:'modern',ppl:'Chinese speakers'},'Middle Chinese':{lat:34.3,lng:108.9,lb:"Chang'an",yr:'~600–1200 CE',ppl:'Tang/Song dynasty'},'Old Chinese':{lat:34.8,lng:114,lb:'Ancient China',yr:'~1250–200 BCE',ppl:'Zhou/Shang dynasty'},'Japanese':{lat:35.7,lng:139.7,lb:'Tokyo',yr:'~700–present',ppl:'Japanese'},'Korean':{lat:37.55,lng:127,lb:'Seoul',yr:'~400–present',ppl:'Koreans'},'Hindi':{lat:28.6,lng:77.2,lb:'Delhi',yr:'~1000–present',ppl:'Hindi speakers'},'Urdu':{lat:33.7,lng:73,lb:'Islamabad',yr:'~1200–present',ppl:'Mughal court'},'Tamil':{lat:13,lng:80.3,lb:'Chennai',yr:'~300 BCE–present',ppl:'Tamils'},'Bengali':{lat:23.8,lng:90.4,lb:'Dhaka',yr:'~1000–present',ppl:'Bengalis'},'Punjabi':{lat:31.5,lng:74.3,lb:'Lahore',yr:'~1000–present',ppl:'Punjabis'},'Gujarati':{lat:23,lng:72.6,lb:'Ahmedabad',yr:'~1100–present',ppl:'Gujaratis'},'Marathi':{lat:19,lng:72.8,lb:'Mumbai',yr:'~1000–present',ppl:'Marathis'},'Pali':{lat:25,lng:83,lb:'N. India',yr:'~500 BCE–present',ppl:'Buddhist monks'},'Malay':{lat:3.1,lng:101.7,lb:'Malaysia',yr:'~700–present',ppl:'Malays'},'Indonesian':{lat:-6.2,lng:106.8,lb:'Jakarta',yr:'~1900–present',ppl:'Indonesians'},'Tagalog':{lat:14.6,lng:121,lb:'Manila',yr:'~900–present',ppl:'Tagalogs'},'Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–present',ppl:'Javanese'},'Old Javanese':{lat:-7.8,lng:110.4,lb:'Java',yr:'~800–1500 CE',ppl:'Hindu-Buddhist Javanese'},'Nahuatl':{lat:19.4,lng:-99.1,lb:'Mexico',yr:'~600–present',ppl:'Nahua peoples'},'Classical Nahuatl':{lat:19.4,lng:-99.1,lb:'Aztec Mexico',yr:'~1300–1600 CE',ppl:'Aztecs'},'Quechua':{lat:-13.5,lng:-72,lb:'Andes',yr:'~1000–present',ppl:'Inca/Andean peoples'},'Taino':{lat:18.5,lng:-69.9,lb:'Caribbean',yr:'~1200–1600 CE',ppl:'Taino'},'Finnish':{lat:60.2,lng:24.9,lb:'Helsinki',yr:'~1500–present',ppl:'Finns'},'Hungarian':{lat:47.5,lng:19.04,lb:'Budapest',yr:'~1000–present',ppl:'Magyars'},'Estonian':{lat:59.4,lng:24.75,lb:'Tallinn',yr:'~1200–present',ppl:'Estonians'},'Hebrew':{lat:31.8,lng:35.2,lb:'Israel',yr:'~1000 BCE–present',ppl:'Israelites/Jewish communities'},'Aramaic':{lat:33.5,lng:36.3,lb:'Levant',yr:'~1100 BCE–present',ppl:'Arameans'},'Phoenician':{lat:34,lng:35.5,lb:'Levant',yr:'~1200–300 BCE',ppl:'Phoenician traders'},'Egyptian':{lat:26,lng:32,lb:'Egypt',yr:'~3100 BCE–600 CE',ppl:'Ancient Egyptians'},'Swahili':{lat:-6.8,lng:39.3,lb:'E. Africa',yr:'~1000–present',ppl:'Swahili coast'},'Amharic':{lat:9,lng:38.7,lb:'Ethiopia',yr:'~1200–present',ppl:'Ethiopians'},'Yoruba':{lat:6.5,lng:3.4,lb:'W. Africa',yr:'~1000–present',ppl:'Yoruba'},'Thai':{lat:13.75,lng:100.5,lb:'Bangkok',yr:'~1200–present',ppl:'Thais'},'Vietnamese':{lat:21,lng:105.85,lb:'Hanoi',yr:'~900–present',ppl:'Vietnamese'},'Khmer':{lat:11.55,lng:104.9,lb:'Cambodia',yr:'~600–present',ppl:'Khmer'},'Burmese':{lat:16.87,lng:96.2,lb:'Myanmar',yr:'~800–present',ppl:'Burmese'},'Tibetan':{lat:29.65,lng:91.1,lb:'Lhasa',yr:'~600–present',ppl:'Tibetans'},'Mongolian':{lat:47.9,lng:106.9,lb:'Mongolia',yr:'~1200–present',ppl:'Mongols'},'Georgian':{lat:41.7,lng:44.8,lb:'Tbilisi',yr:'~400–present',ppl:'Georgians'},'Armenian':{lat:40.2,lng:44.5,lb:'Yerevan',yr:'~400–present',ppl:'Armenians'},'Albanian':{lat:41.3,lng:19.8,lb:'Tirana',yr:'~1400–present',ppl:'Albanians'},'Lithuanian':{lat:54.7,lng:25.3,lb:'Vilnius',yr:'~1500–present',ppl:'Lithuanians'},'Latvian':{lat:56.95,lng:24.1,lb:'Riga',yr:'~1500–present',ppl:'Latvians'},'Gandhari':{lat:34,lng:71.5,lb:'Gandhara',yr:'~300 BCE–400 CE',ppl:'Gandharan Buddhists'},'Proto-Indo-Aryan':{lat:30,lng:70,lb:'NW India',yr:'~2000–1500 BCE',ppl:'Early Indo-Aryan migrants'},'Proto-Indo-Iranian':{lat:38,lng:58,lb:'Central Asia',yr:'~2500–2000 BCE',ppl:'Indo-Iranian peoples'},'Proto-Iranian':{lat:36,lng:55,lb:'Iran/C. Asia',yr:'~2000–1000 BCE',ppl:'Early Iranian peoples'},'Old Italian':{lat:43.8,lng:11.2,lb:'Florence/Tuscany',yr:'~1200–1500 CE',ppl:'Medieval Italians'},'Old Portuguese':{lat:38.7,lng:-9.14,lb:'Lisbon',yr:'~1200–1500 CE',ppl:'Medieval Portuguese'}};
 
 // Map SVG with real-world coastline data
 const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
@@ -519,23 +519,140 @@ function extractSenseSummary(section){
     return etymHint||'(no definition found)';
 }
 
-function parseEtymSection(etymSection,word){
+// Extract etymon entries from a single {{etymon}} template
+function parseEtymonTemplate(text){
+    const m=text.match(/\{\{etymon\|([^}]*)\}\}/i);
+    if(!m)return[];
+    const parts=m[1].split('|').map(s=>s.trim());
+    const entries=[];
+    for(let i=1;i<parts.length;i++){
+        const p=parts[i];
+        if(p.startsWith(':'))continue;
+        if(p.includes('=')||!p.includes(':'))continue;
+        const [lc,rawWord]=p.split(':');
+        if(!lc)continue;
+        const fw=(rawWord||'').replace(/<[^>]*>/g,'').trim();
+        entries.push({code:lc,word:fw});
+    }
+    return entries;
+}
+
+// Recursively follow {{etymon}} chain across Wiktionary pages
+async function followEtymonChain(startCode,startWord,maxDepth=8){
+    const chain=[];
+    const visited=new Set();
+    let code=startCode,word=startWord;
+    for(let depth=0;depth<maxDepth;depth++){
+        if(!code||!word||visited.has(code+':'+word))break;
+        visited.add(code+':'+word);
+        try{
+            const url=`https://en.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*`;
+            const r=await fetch(url);if(!r.ok)break;
+            const j=await r.json(),pages=j.query.pages,pid=Object.keys(pages)[0];
+            if(pid==='-1')break;
+            const rev=pages[pid].revisions;if(!rev||!rev[0])break;
+            const wt=rev[0].slots?rev[0].slots.main['*']:rev[0]['*'];if(!wt)break;
+            // Find the section for this language
+            const langName=C2N[code];
+            let section=wt;
+            if(langName){
+                const lre=new RegExp('==\\s*'+langName.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*==([\\s\\S]*?)(?=\\n==[^=]|$)','i');
+                const lm=wt.match(lre);
+                if(lm)section=lm[1];
+            }
+            // Find {{etymon}} in this section
+            const entries=parseEtymonTemplate(section);
+            if(entries.length===0){
+                // Fallback: try classic templates
+                const classicRe=/\{\{(inh|inherited|der|derived|bor|borrowed)\|[^|]*\|([^|}]*)\|([^|}]*)[^}]*\}\}/gi;
+                let cm;
+                while((cm=classicRe.exec(section))!==null){
+                    const lc=cm[2],fw=cm[3]||'';
+                    if(lc&&C2N[lc]&&LC[C2N[lc]]&&!visited.has(lc+':'+fw)){
+                        entries.push({code:lc,word:fw.replace(/<[^>]*>/g,'')});
+                    }
+                }
+            }
+            if(entries.length===0)break;
+            // Take the first entry as the next ancestor
+            const next=entries[0];
+            const nextName=C2N[next.code];
+            if(nextName&&LC[nextName]){
+                chain.push({language:nextName,word:next.word,meaning:LC[nextName].lb,lat:LC[nextName].lat,lng:LC[nextName].lng});
+            }
+            code=next.code;
+            word=next.word;
+        }catch(e){console.warn('Chain fetch error:',e);break}
+    }
+    return chain;
+}
+
+async function parseEtymSection(etymSection,word){
     const chain=[],seen=new Set();
-    const templateRe=/\{\{(inh|inherited|der|derived|bor|borrowed|m|mention)\|([^}]*)\}\}/gi;
+
+    // === 1. Modern {{etymon}} template - recursive chain following ===
+    const etymonEntries=parseEtymonTemplate(etymSection);
+    if(etymonEntries.length>0){
+        // Add direct entries from this page's etymon template
+        for(const e of etymonEntries){
+            const ln=C2N[e.code];
+            if(ln&&LC[ln]&&!seen.has(ln)){
+                seen.add(ln);
+                chain.push({language:ln,word:e.word,meaning:LC[ln].lb,lat:LC[ln].lat,lng:LC[ln].lng});
+            }
+        }
+        // Follow the chain recursively from the first entry
+        const first=etymonEntries[0];
+        if(first.word){
+            const deeper=await followEtymonChain(first.code,first.word);
+            for(const d of deeper){
+                if(!seen.has(d.language)){
+                    seen.add(d.language);
+                    chain.push(d);
+                }
+            }
+        }
+    }
+
+    // === 2. Classic {{inh}}/{{der}}/{{bor}} templates ===
+    const templateRe=/\{\{(inh|inherited|der|derived|bor|borrowed)\|([^}]*)\}\}/gi;
     let tm;
     while((tm=templateRe.exec(etymSection))!==null){
-        const type=tm[1].toLowerCase();
         const parts=tm[2].split('|').map(s=>s.trim());
-        let langCode,foreignWord='';
-        if(['inh','inherited','der','derived','bor','borrowed'].includes(type)){langCode=parts[1];foreignWord=parts[2]||''}
-        else{langCode=parts[0];foreignWord=parts[1]||''}
-        if(!langCode)continue;
-        foreignWord=foreignWord.replace(/\|.*/,'');
-        if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(foreignWord))foreignWord='';
+        let i=1;
+        while(i<parts.length){
+            let langCode=parts[i];
+            if(!langCode||/=/.test(langCode))break;
+            let fw='';
+            if(i+1<parts.length){
+                const next=parts[i+1];
+                if(next&&!/=/.test(next)){
+                    const isLangCode=C2N[next]||/^[a-z]{2,3}(-[a-z]{2,8})?$/.test(next);
+                    if(!isLangCode){fw=next;i+=2}
+                    else{i+=1}
+                }else{i+=1}
+            }else{i+=1}
+            if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(fw))fw='';
+            const langName=C2N[langCode];
+            if(langName&&LC[langName]&&!seen.has(langName)){
+                seen.add(langName);
+                chain.push({language:langName,word:fw,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
+            }
+        }
+    }
+
+    // === 3. {{m|mention}} for non-English languages ===
+    const mentionRe=/\{\{(m|mention)\|([^}]*)\}\}/gi;
+    while((tm=mentionRe.exec(etymSection))!==null){
+        const parts=tm[2].split('|').map(s=>s.trim());
+        const langCode=parts[0];let fw=parts[1]||'';
+        fw=fw.replace(/\|.*/,'');
+        if(/^(t|tr|pos|gloss|lit|g|id|sc)=/.test(fw))fw='';
+        if(langCode==='en')continue;
         const langName=C2N[langCode];
         if(langName&&LC[langName]&&!seen.has(langName)){
             seen.add(langName);
-            chain.push({language:langName,word:foreignWord,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
+            chain.push({language:langName,word:fw,meaning:LC[langName].lb,lat:LC[langName].lat,lng:LC[langName].lng});
         }
     }
     // Cognates
@@ -581,18 +698,20 @@ async function go(word,forceSectionIdx){
 
         // Check for multiple etymologies
         const sections=findEtymologySections(wt);
-        if(sections.length>1&&forceSectionIdx===undefined){
+        // Filter to only sections with meaningful definitions
+        const viableSections=sections.map((sec,i)=>({...sec,origIdx:i,summary:extractSenseSummary(sec.text)}))
+            .filter(s=>s.summary.replace(/\(?\w+\)?\s*:?\s*\.?\s*/,'').length>3);
+        if(viableSections.length>1&&forceSectionIdx===undefined){
             // Show sense picker
             document.getElementById('lo').classList.remove('v');
             const opts=document.getElementById('senseOpts');
             opts.innerHTML='';
-            sections.forEach((sec,i)=>{
-                const summary=extractSenseSummary(sec.text);
+            viableSections.forEach((sec)=>{
                 const d=document.createElement('div');d.className='sp-opt';
-                d.innerHTML=`<div class="sp-num">Etymology ${sec.num}</div><div class="sp-txt">${summary}</div>`;
+                d.innerHTML=`<div class="sp-num">Etymology ${sec.num}</div><div class="sp-txt">${sec.summary}</div>`;
                 d.addEventListener('click',()=>{
                     document.getElementById('sensePicker').classList.remove('v');
-                    go(word,i);
+                    go(word,sec.origIdx);
                 });
                 opts.appendChild(d);
             });
@@ -602,7 +721,8 @@ async function go(word,forceSectionIdx){
 
         const sectionIdx=forceSectionIdx||0;
         const etymSection=sections[sectionIdx]?sections[sectionIdx].text:'';
-        const result=parseEtymSection(etymSection,word);
+        document.getElementById('lotx').textContent='Tracing etymology chain...';
+        const result=await parseEtymSection(etymSection,word);
         window._cur=result.chain;window._cog=result.cognates;
 
         // Definition: use the chosen etymology section so it matches the selected sense
