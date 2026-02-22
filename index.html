@@ -135,6 +135,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .bstat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tm)}
 @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .bstat.anim .bstat-val{animation:countUp .5s ease forwards}
+/* Audio pronunciation */
+.audio-play-all{font-size:.65rem;padding:.3rem .8rem;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--tm);cursor:pointer;margin:-.2rem 0 .6rem;transition:all .2s;letter-spacing:.03em;display:inline-block}
+.audio-play-all:hover{background:var(--ag);border-color:var(--ac);color:var(--ac)}
+.audio-play-all.playing{border-color:var(--gd);color:var(--gd);animation:pulse-audio 1s ease-in-out infinite}
+@keyframes pulse-audio{0%,100%{opacity:1}50%{opacity:.5}}
+.tw-audio{display:inline-block;cursor:pointer;opacity:.4;margin-left:.3rem;font-size:.75rem;transition:opacity .2s;vertical-align:middle}
+.tw-audio:hover{opacity:1}
+.tw-audio.speaking{opacity:1;color:var(--gd)}
 /* Historical overlay */
 .hist-badges{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 1.5rem .2rem;min-height:0}
 .hist-badge{font-size:.65rem;padding:.2rem .6rem;border-radius:12px;border:1px solid;opacity:.9;white-space:nowrap;cursor:default;position:relative}
@@ -215,7 +223,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="mpc" id="map"><div class="map-popup" id="popup"></div></div>
 <div class="hist-badges" id="histBadges"></div>
 </div>
-<div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
+<div class="js"><div class="st">Etymology Journey</div><button class="audio-play-all" id="playJourney" title="Listen to pronunciation journey" onclick="playAudioJourney()">🔊 Play Journey</button><div class="tl" id="tl"></div></div>
 </div>
 <div class="bg">
 <div class="fs"><div class="st">Etymology</div><div id="fc"></div></div>
@@ -707,11 +715,145 @@ function romanize(s){
     return out.length>0?out:null;
 }
 function isValidWord(w){return w&&w.replace(/[\s\-–—.*_#'"`,;:()[\]{}]/g,'').length>0}
-function wordWithPhonetic(word){
+function wordWithPhonetic(word,lang){
     if(!isValidWord(word))return '';
     const phon=romanize(word);
-    if(phon)return `<div class="tw">${word} <span class="tph">(${phon})</span></div>`;
-    return `<div class="tw">${word}</div>`;
+    const spk=`<span class="tw-audio" onclick="event.stopPropagation();speakWord('${word.replace(/'/g,"\\'")}','${(lang||'').replace(/'/g,"\\'")}',this)" title="Listen">🔊</span>`;
+    if(phon)return `<div class="tw">${word} <span class="tph">(${phon})</span>${spk}</div>`;
+    return `<div class="tw">${word}${spk}</div>`;
+}
+
+// ============================================================
+// AUDIO PRONUNCIATION
+// ============================================================
+const LANG_VOICE_MAP={
+    'English':'en-GB','Middle English':'en-GB','Old English':'en-GB',
+    'French':'fr-FR','Old French':'fr-FR','Middle French':'fr-FR','Anglo-Norman':'fr-FR',
+    'Spanish':'es-ES','Old Spanish':'es-ES',
+    'Portuguese':'pt-PT','Old Portuguese':'pt-PT',
+    'Italian':'it-IT','Old Italian':'it-IT',
+    'German':'de-DE','Old High German':'de-DE','Middle High German':'de-DE',
+    'Dutch':'nl-NL','Middle Dutch':'nl-NL','Old Dutch':'nl-NL',
+    'Latin':'it-IT','Late Latin':'it-IT','Vulgar Latin':'it-IT','Medieval Latin':'it-IT','New Latin':'it-IT',
+    'Ancient Greek':'el-GR','Greek':'el-GR','Byzantine Greek':'el-GR','Proto-Hellenic':'el-GR',
+    'Russian':'ru-RU','Ukrainian':'uk-UA','Polish':'pl-PL','Czech':'cs-CZ','Bulgarian':'bg-BG',
+    'Old Church Slavonic':'bg-BG','Croatian':'hr-HR','Serbian':'sr-RS',
+    'Arabic':'ar-SA','Hijazi Arabic':'ar-SA',
+    'Persian':'fa-IR','Middle Persian':'fa-IR','Old Persian':'fa-IR',
+    'Turkish':'tr-TR','Ottoman Turkish':'tr-TR',
+    'Hindi':'hi-IN','Urdu':'ur-PK','Bengali':'bn-IN','Gujarati':'gu-IN','Marathi':'mr-IN','Punjabi':'pa-IN',
+    'Sanskrit':'hi-IN','Vedic Sanskrit':'hi-IN','Pali':'hi-IN',
+    'Tamil':'ta-IN',
+    'Chinese':'zh-CN','Middle Chinese':'zh-CN','Old Chinese':'zh-CN',
+    'Japanese':'ja-JP','Korean':'ko-KR',
+    'Thai':'th-TH','Vietnamese':'vi-VN','Khmer':'km-KH',
+    'Malay':'ms-MY','Indonesian':'id-ID','Tagalog':'fil-PH',
+    'Swedish':'sv-SE','Danish':'da-DK','Norwegian':'nb-NO','Icelandic':'is-IS',
+    'Finnish':'fi-FI','Hungarian':'hu-HU','Estonian':'et-EE',
+    'Hebrew':'he-IL','Romanian':'ro-RO','Catalan':'ca-ES',
+    'Albanian':'sq-AL','Armenian':'hy-AM','Georgian':'ka-GE',
+    'Lithuanian':'lt-LT','Latvian':'lv-LV',
+    'Old Norse':'nb-NO','Old Saxon':'de-DE','Old Frisian':'nl-NL','Gothic':'de-DE',
+    'Nahuatl':'es-MX','Classical Nahuatl':'es-MX','Quechua':'es-PE','Taino':'es-ES',
+    'Swahili':'sw-KE','Amharic':'am-ET','Yoruba':'yo-NG',
+    'Mongolian':'mn-MN','Tibetan':'bo-CN','Burmese':'my-MM',
+    'Proto-Indo-European':'en-GB','Proto-Germanic':'de-DE','Proto-West Germanic':'de-DE',
+    'Proto-Slavic':'ru-RU','Proto-Celtic':'ga-IE','Proto-Italic':'it-IT',
+    'Proto-Semitic':'ar-SA','Proto-Turkic':'tr-TR','Proto-Sino-Tibetan':'zh-CN',
+    'Proto-Indo-Iranian':'hi-IN','Proto-Indo-Aryan':'hi-IN','Proto-Iranian':'fa-IR',
+    'Proto-Austronesian':'ms-MY','Proto-Dravidian':'ta-IN','Proto-Finnic':'fi-FI',
+    'Proto-Balto-Slavic':'lt-LT',
+    'Old Irish':'ga-IE','Irish':'ga-IE','Welsh':'cy-GB','Scottish Gaelic':'gd-GB',
+    'Occitan':'oc-FR','Javanese':'jv-ID','Old Javanese':'jv-ID'
+};
+
+let _speechQueue=[];let _speechPlaying=false;
+
+function getBestVoice(langCode){
+    const voices=speechSynthesis.getVoices();
+    if(!voices.length)return null;
+    // Exact match
+    let v=voices.find(v=>v.lang===langCode);
+    if(v)return v;
+    // Prefix match (e.g. 'fr' matches 'fr-FR')
+    const prefix=langCode.split('-')[0];
+    v=voices.find(v=>v.lang.startsWith(prefix+'-'));
+    if(v)return v;
+    v=voices.find(v=>v.lang.startsWith(prefix));
+    if(v)return v;
+    // Fallback to English
+    return voices.find(v=>v.lang.startsWith('en'))||voices[0];
+}
+
+function speakWord(word,lang,btnEl){
+    if(!window.speechSynthesis)return;
+    speechSynthesis.cancel();
+    // Use romanized form for non-Latin scripts so the voice engine has something to work with
+    const rom=romanize(word);
+    const textToSpeak=rom||word;
+    const langCode=LANG_VOICE_MAP[lang]||'en-GB';
+    const utter=new SpeechSynthesisUtterance(textToSpeak);
+    const voice=getBestVoice(langCode);
+    if(voice)utter.voice=voice;
+    utter.lang=langCode;
+    utter.rate=0.8;
+    utter.pitch=1;
+    if(btnEl){
+        btnEl.classList.add('speaking');
+        utter.onend=()=>btnEl.classList.remove('speaking');
+        utter.onerror=()=>btnEl.classList.remove('speaking');
+    }
+    speechSynthesis.speak(utter);
+}
+
+function playAudioJourney(){
+    if(!window.speechSynthesis||!window._cur)return;
+    const btn=document.getElementById('playJourney');
+    if(_speechPlaying){speechSynthesis.cancel();_speechPlaying=false;btn.classList.remove('playing');btn.textContent='🔊 Play Journey';return}
+    const chain=window._cur.filter(s=>isValidWord(s.word));
+    if(!chain.length)return;
+    _speechPlaying=true;btn.classList.add('playing');btn.textContent='⏹ Stop';
+    let idx=0;
+    function playNext(){
+        if(idx>=chain.length||!_speechPlaying){
+            _speechPlaying=false;btn.classList.remove('playing');btn.textContent='🔊 Play Journey';return;
+        }
+        const s=chain[idx];
+        const rom=romanize(s.word);
+        const text=rom||s.word;
+        const langCode=LANG_VOICE_MAP[s.language]||'en-GB';
+        const utter=new SpeechSynthesisUtterance(text);
+        const voice=getBestVoice(langCode);
+        if(voice)utter.voice=voice;
+        utter.lang=langCode;
+        utter.rate=0.75;
+        // Highlight the timeline item
+        const items=document.querySelectorAll('#tl .ti');
+        items.forEach(el=>el.classList.remove('active'));
+        if(items[idx])items[idx].classList.add('active');
+        highlightStep(idx);
+        // Also sync the time slider
+        const slider=document.getElementById('timeSlider');
+        if(slider&&chain.length>1){
+            const total=window._cur.length-1;
+            const origIdx=window._cur.indexOf(s);
+            if(origIdx>=0){slider.value=(origIdx/total)*1000;slider.dispatchEvent(new Event('input'));}
+        }
+        utter.onend=()=>{
+            idx++;
+            // Brief pause between words
+            setTimeout(playNext,600);
+        };
+        utter.onerror=()=>{idx++;setTimeout(playNext,300)};
+        speechSynthesis.speak(utter);
+    }
+    playNext();
+}
+
+// Preload voices (some browsers need this)
+if(window.speechSynthesis){
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
 }
 
 function drawTL(j,cogs){
@@ -719,7 +861,7 @@ function drawTL(j,cogs){
     j.forEach((s,i)=>{
         const info=LC[s.language]||{};
         const d=document.createElement('div');d.className='ti';d.dataset.idx=i;
-        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${isValidWord(s.word)?wordWithPhonetic(s.word):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${s.meaning||''}</div>`;
+        d.innerHTML=`<div class="td"></div><div class="tla">${s.language}</div>${isValidWord(s.word)?wordWithPhonetic(s.word,s.language):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${s.meaning||''}</div>`;
         // Hover on timeline → highlight map
         d.addEventListener('mouseenter',()=>highlightStep(i));
         d.addEventListener('mouseleave',clearHighlight);
@@ -740,7 +882,7 @@ function drawTL(j,cogs){
         cogs.forEach((cog,ci)=>{
             const info=LC[cog.language]||{};
             const d=document.createElement('div');d.className='ti branch';
-            d.innerHTML=`<div class="td"></div><div class="tla">${cog.language}</div>${isValidWord(cog.word)?wordWithPhonetic(cog.word):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${cog.meaning||''}</div>`;
+            d.innerHTML=`<div class="td"></div><div class="tla">${cog.language}</div>${isValidWord(cog.word)?wordWithPhonetic(cog.word,cog.language):''}<div class="tmeta">${info.yr?`<span class="tyear">${info.yr}</span>`:''}${info.ppl?`<span class="tpeople">${info.ppl}</span>`:''}</div><div class="tmn">${cog.meaning||''}</div>`;
             el.appendChild(d);
             TT.push(setTimeout(()=>{d.classList.add('vis');},(j.length+ci)*800+400));
         });
@@ -1506,7 +1648,11 @@ async function parseEtymSection(etymSection,word){
         .replace(/\{\{(m|mention)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
         .replace(/\{\{(cog|cognate)\|([^|]*)\|([^|}]*)[^}]*\}\}/gi,(m,t,c,w)=>(C2N[c]||c)+' "'+w+'"')
         .replace(/\{\{[^}]*\}\}/g,'').replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g,'$2')
-        .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'').replace(/\s+/g,' ').trim();
+        .replace(/<[^>]+>/g,'').replace(/'{2,}/g,'').replace(/\s+/g,' ').trim()
+        .replace(/^[\s,;:\-–—.]+/,'').replace(/^(but|and|or|from|via|through|probably|ultimately|perhaps|possibly)\s/i,(m)=>m.charAt(0).toUpperCase()+m.slice(1));
+
+    // Capitalize first letter
+    if(cleanEtym.length)cleanEtym=cleanEtym.charAt(0).toUpperCase()+cleanEtym.slice(1);
 
     return{chain:separateOverlaps(chain),cognates:cogs.slice(0,5),cleanEtym};
 }
