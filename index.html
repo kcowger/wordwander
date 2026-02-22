@@ -135,6 +135,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .bstat-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tm)}
 @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .bstat.anim .bstat-val{animation:countUp .5s ease forwards}
+/* Historical overlay */
+.hist-badges{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 1.5rem .2rem;min-height:0}
+.hist-badge{font-size:.65rem;padding:.2rem .6rem;border-radius:12px;border:1px solid;opacity:.9;white-space:nowrap;cursor:default;position:relative}
+.hist-badge-tip{display:none;position:fixed;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:.5rem .7rem;font-size:.72rem;max-width:260px;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;text-align:left;color:var(--tx);line-height:1.4}
+.hist-badge-tip.show{display:block}
 /* Language family tree */
 .fam-tree-section{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;margin-top:1.5rem}
 .fam-tree-wrap{overflow-x:auto;padding:.5rem 0;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
@@ -208,6 +213,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="time-slider-year" id="timeSliderYear"></div>
 </div>
 <div class="mpc" id="map"><div class="map-popup" id="popup"></div></div>
+<div class="hist-badges" id="histBadges"></div>
 </div>
 <div class="js"><div class="st">Etymology Journey</div><div class="tl" id="tl"></div></div>
 </div>
@@ -381,7 +387,7 @@ const MSVG=`<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
 <path d="M586,240L581,238L578,238L574,233L570,229L566,226L569,223L572,222L575,223L580,224L582,222L587,223L590,218L591,216L592,220L594,224L594,227L593,229L596,232L594,238L589,240Z"/>
 </g>
 </g>
-<g id="mR"></g><g id="mP"></g><g id="mL"></g>
+<g id="mH"></g><g id="mR"></g><g id="mP"></g><g id="mL"></g>
 </svg>`;
 
 // ============================================================
@@ -424,6 +430,7 @@ function updateOverlays(){
         rd.el.setAttribute('d',`M${a.x} ${a.y}Q${mx} ${my} ${b.x} ${b.y}`);
         rd.el.style.setProperty('--len',rd.el.getTotalLength());
     });
+    if(typeof updateHistOverlays==='function')updateHistOverlays();
 }
 function initMap(){
     const el=document.getElementById('map');
@@ -1043,6 +1050,228 @@ function drawFamilyTree(chain,cogs){
 }
 
 // ============================================================
+// HISTORICAL OVERLAY
+// ============================================================
+const HIST_EVENTS=[
+{id:'silk-road',name:'Silk Road',yr:'~200 BCE–1450 CE',desc:'Network of trade routes connecting China to the Mediterranean, carrying goods, ideas, and words across Central Asia.',color:'#e8a735',
+ langs:['Chinese','Middle Chinese','Old Chinese','Persian','Middle Persian','Old Persian','Arabic','Sanskrit','Turkish','Ottoman Turkish','Hindi','Urdu'],
+ route:[[35,108],[39,75],[37,59],[35,51],[33,44],[37,35],[38,28]],
+ regions:[[{lat:42,lng:60},{lat:42,lng:100},{lat:32,lng:100},{lat:32,lng:60}]]},
+{id:'roman-empire',name:'Roman Empire',yr:'27 BCE–476 CE',desc:'Latin spread across Europe, North Africa, and the Near East, becoming the root of all Romance languages.',color:'#d44040',
+ langs:['Latin','Late Latin','Vulgar Latin','Ancient Greek','Old French','French','Spanish','Old Spanish','Portuguese','Italian','Old Italian','Romanian','Catalan','Occitan'],
+ regions:[[{lat:55,lng:-5},{lat:55,lng:35},{lat:30,lng:35},{lat:30,lng:-5}]]},
+{id:'norman-conquest',name:'Norman Conquest',yr:'1066 CE',desc:'William the Conqueror brought Norman French to England, flooding English with thousands of French-origin words.',color:'#4a9eff',
+ langs:['Anglo-Norman','Old French','Middle English','Old English','English','French'],
+ route:[[49.2,-0.4],[51.5,-0.12]],
+ regions:[[{lat:53,lng:-6},{lat:53,lng:2},{lat:49,lng:2},{lat:49,lng:-6}]]},
+{id:'islamic-golden',name:'Islamic Golden Age',yr:'~750–1258 CE',desc:'Arabic became the language of science, medicine, and philosophy. Words for algebra, algorithm, chemistry entered European languages.',color:'#35c78a',
+ langs:['Arabic','Hijazi Arabic','Persian','Middle Persian','Ottoman Turkish','Turkish','Sanskrit','Ancient Greek','Medieval Latin','Spanish','Old Spanish'],
+ regions:[[{lat:40,lng:-5},{lat:40,lng:75},{lat:15,lng:75},{lat:15,lng:-5}]]},
+{id:'viking-age',name:'Viking Age',yr:'~793–1066 CE',desc:'Norse raiders and settlers spread Old Norse words throughout Britain and beyond.',color:'#6ecfff',
+ langs:['Old Norse','Old English','Middle English','English','Danish','Norwegian','Swedish','Icelandic','Old Frisian'],
+ route:[[60,11],[58,-3],[54,-1],[53,0]],
+ regions:[[{lat:70,lng:-25},{lat:70,lng:30},{lat:55,lng:30},{lat:55,lng:-25}]]},
+{id:'age-exploration',name:'Age of Exploration',yr:'~1400–1600 CE',desc:'European voyagers brought back words from the Americas, Africa, and Asia alongside spices and gold.',color:'#ff8c42',
+ langs:['Spanish','Portuguese','Old Spanish','English','French','Dutch','Nahuatl','Classical Nahuatl','Quechua','Taino','Malay','Japanese','Chinese'],
+ route:[[38.7,-9.14],[28,-15],[10,-60],[19.4,-99.1]],
+ regions:[]},
+{id:'moorish-iberia',name:'Moorish Iberia',yr:'~711–1492 CE',desc:'Arabic-speaking Moors ruled much of Spain, infusing hundreds of Arabic words into Spanish and Portuguese.',color:'#c7a035',
+ langs:['Arabic','Old Spanish','Spanish','Portuguese','Old Portuguese','Medieval Latin'],
+ route:[[34,0],[37,-4],[40,-3.7]],
+ regions:[[{lat:44,lng:-10},{lat:44,lng:3},{lat:36,lng:3},{lat:36,lng:-10}]]},
+{id:'mongol-empire',name:'Mongol Empire',yr:'~1206–1368 CE',desc:'The largest contiguous land empire facilitated word exchange across Eurasia.',color:'#a855f7',
+ langs:['Mongolian','Turkish','Persian','Middle Persian','Chinese','Middle Chinese','Russian','Arabic','Korean'],
+ regions:[[{lat:55,lng:40},{lat:55,lng:120},{lat:25,lng:120},{lat:25,lng:40}]]},
+{id:'british-empire',name:'British Colonial Era',yr:'~1600–1947 CE',desc:'English absorbed words from Hindi, Urdu, Malay, and many other languages of colonized territories.',color:'#f06292',
+ langs:['English','Hindi','Urdu','Bengali','Tamil','Malay','Swahili','Arabic','Persian'],
+ route:[[51.5,-0.12],[36,-5],[13,80],[3.1,101.7],[-6.8,39.3]],
+ regions:[[{lat:55,lng:-8},{lat:55,lng:2},{lat:49,lng:2},{lat:49,lng:-8}]]},
+{id:'greek-learning',name:'Greek Intellectual Legacy',yr:'~800–300 BCE',desc:'Greek philosophy, science, and politics gave English words like democracy, philosophy, and atom.',color:'#7ec8e3',
+ langs:['Ancient Greek','Proto-Hellenic','Latin','Medieval Latin','New Latin','English','French'],
+ regions:[[{lat:42,lng:19},{lat:42,lng:30},{lat:34,lng:30},{lat:34,lng:19}]]},
+{id:'indo-aryan-migration',name:'Indo-Aryan Migration',yr:'~2000–1000 BCE',desc:'Indo-European speakers migrated into the Indian subcontinent, giving rise to Sanskrit and its descendants.',color:'#f9a825',
+ langs:['Proto-Indo-European','Proto-Indo-Iranian','Proto-Indo-Aryan','Sanskrit','Vedic Sanskrit','Avestan','Old Persian'],
+ route:[[46,38],[38,58],[30,70],[27,78]],
+ regions:[]},
+{id:'printing-press',name:'Printing Revolution',yr:'~1440–1600 CE',desc:'Standardized spelling and spread Latin/Greek loanwords into vernacular European languages.',color:'#b0bec5',
+ langs:['Medieval Latin','New Latin','German','Middle High German','English','Middle English','French','Middle French','Dutch','Italian'],
+ regions:[[{lat:55,lng:-5},{lat:55,lng:20},{lat:42,lng:20},{lat:42,lng:-5}]]},
+{id:'crusades',name:'The Crusades',yr:'~1096–1291 CE',desc:'Brought Arabic, Persian, and Byzantine words back to Western Europe through military and trade contact.',color:'#ef5350',
+ langs:['Arabic','Old French','Medieval Latin','Middle English','Anglo-Norman','Byzantine Greek','Persian','Italian','Old Italian'],
+ route:[[48.86,2.35],[41,29],[33,35],[31.8,35.2]],
+ regions:[]},
+{id:'sanskrit-spread',name:'Sanskrit Literary Tradition',yr:'~1500 BCE–600 CE',desc:'Sacred and scholarly language whose words entered Southeast Asian and eventually European languages.',color:'#ffb74d',
+ langs:['Sanskrit','Vedic Sanskrit','Pali','Hindi','Bengali','Tamil','Javanese','Old Javanese','Malay','Thai','Khmer','Burmese'],
+ regions:[[{lat:30,lng:68},{lat:30,lng:100},{lat:5,lng:100},{lat:5,lng:68}]]},
+{id:'ottoman-expansion',name:'Ottoman Expansion',yr:'~1299–1683 CE',desc:'Turkish/Ottoman words spread across the Balkans, Middle East, and North Africa.',color:'#ce93d8',
+ langs:['Ottoman Turkish','Turkish','Arabic','Persian','Greek','Bulgarian','Serbian','Croatian','Albanian','Romanian','Hungarian'],
+ regions:[[{lat:48,lng:15},{lat:48,lng:45},{lat:30,lng:45},{lat:30,lng:15}]]},
+{id:'columbian-exchange',name:'Columbian Exchange',yr:'~1492–1600 CE',desc:'New World languages contributed words for plants, animals, and concepts unknown in Europe.',color:'#66bb6a',
+ langs:['Nahuatl','Classical Nahuatl','Quechua','Taino','Spanish','Portuguese','English','French'],
+ route:[[-13.5,-72],[18.5,-69.9],[40.4,-3.7],[48.86,2.35],[51.5,-0.12]],
+ regions:[]},
+{id:'pax-mongolica',name:'Pax Mongolica Trade',yr:'~1250–1350 CE',desc:'Period of stability across the Mongol Empire enabling safe trade and word exchange from China to Europe.',color:'#90a4ae',
+ langs:['Chinese','Middle Chinese','Persian','Arabic','Italian','Old Italian','Turkish'],
+ route:[[39.9,116.4],[39,75],[35,51],[41,29],[41.9,12.5]],
+ regions:[]},
+{id:'celtic-pre-roman',name:'Celtic Europe',yr:'~800–100 BCE',desc:'Celtic languages spread across Europe before Roman conquest, leaving substrate words in many languages.',color:'#26a69a',
+ langs:['Proto-Celtic','Old Irish','Irish','Welsh','Scottish Gaelic','Old French','French'],
+ regions:[[{lat:55,lng:-10},{lat:55,lng:15},{lat:42,lng:15},{lat:42,lng:-10}]]}
+];
+
+let histOverlayData=[];
+function drawHistOverlay(chain,cogs){
+    const hG=document.querySelector('#mH');
+    const badges=document.getElementById('histBadges');
+    if(!hG||!badges){return}
+    hG.innerHTML='';badges.innerHTML='';histOverlayData=[];
+    if(!chain||chain.length<2)return;
+    const allLangs=new Set(chain.map(c=>c.language));
+    if(cogs)cogs.forEach(c=>allLangs.add(c.language));
+    const matches=HIST_EVENTS.filter(ev=>{
+        const overlap=[...allLangs].filter(l=>ev.langs.includes(l));
+        return overlap.length>=2;
+    }).sort((a,b)=>{
+        const ao=[...allLangs].filter(l=>a.langs.includes(l)).length;
+        const bo=[...allLangs].filter(l=>b.langs.includes(l)).length;
+        return bo-ao;
+    }).slice(0,5);
+    if(matches.length===0)return;
+    // Pre-create all SVG elements (hidden), store geo data for updateOverlays
+    let gradIdx=0;
+    const svgDefs=document.querySelector('#map svg defs');
+    matches.forEach(ev=>{
+        const grp=document.createElementNS('http://www.w3.org/2000/svg','g');
+        grp.style.display='none';grp.style.transition='opacity .3s';grp.setAttribute('opacity','0');
+        const entry={grp,glows:[],routes:[],labelPt:null,color:ev.color,name:ev.name};
+        // Create a radial gradient for this event's color
+        const gId='hg'+gradIdx++;
+        const grad=document.createElementNS('http://www.w3.org/2000/svg','radialGradient');
+        grad.id=gId;grad.setAttribute('cx','50%');grad.setAttribute('cy','50%');grad.setAttribute('r','50%');
+        const s1=document.createElementNS('http://www.w3.org/2000/svg','stop');
+        s1.setAttribute('offset','0%');s1.setAttribute('stop-color',ev.color);s1.setAttribute('stop-opacity','.25');
+        const s2=document.createElementNS('http://www.w3.org/2000/svg','stop');
+        s2.setAttribute('offset','70%');s2.setAttribute('stop-color',ev.color);s2.setAttribute('stop-opacity','.08');
+        const s3=document.createElementNS('http://www.w3.org/2000/svg','stop');
+        s3.setAttribute('offset','100%');s3.setAttribute('stop-color',ev.color);s3.setAttribute('stop-opacity','0');
+        grad.appendChild(s1);grad.appendChild(s2);grad.appendChild(s3);
+        if(svgDefs)svgDefs.appendChild(grad);
+        // Regions → scatter soft glow circles at corners and center
+        if(ev.regions){
+            ev.regions.forEach(region=>{
+                if(region.length<3)return;
+                // Center glow (larger)
+                let cLat=0,cLng=0;
+                region.forEach(p=>{cLat+=p.lat;cLng+=p.lng});
+                cLat/=region.length;cLng/=region.length;
+                const cEl=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                cEl.setAttribute('fill','url(#'+gId+')');cEl.setAttribute('r','60');
+                grp.appendChild(cEl);
+                entry.glows.push({el:cEl,lat:cLat,lng:cLng,r:60});
+                // Corner glows (smaller)
+                region.forEach(p=>{
+                    const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                    el.setAttribute('fill','url(#'+gId+')');el.setAttribute('r','35');
+                    grp.appendChild(el);
+                    entry.glows.push({el,lat:p.lat,lng:p.lng,r:35});
+                });
+            });
+        }
+        // Route waypoint glows (small glows at each waypoint)
+        if(ev.route&&ev.route.length){
+            ev.route.forEach(pt=>{
+                const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+                el.setAttribute('fill','url(#'+gId+')');el.setAttribute('r','25');
+                grp.appendChild(el);
+                entry.glows.push({el,lat:pt[0],lng:pt[1],r:25});
+            });
+        }
+        // Routes (thin, elegant dashed lines)
+        if(ev.route&&ev.route.length>=2){
+            for(let i=1;i<ev.route.length;i++){
+                const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+                line.setAttribute('fill','none');line.setAttribute('stroke',ev.color);
+                line.setAttribute('stroke-width','1.2');line.setAttribute('stroke-dasharray','4,3');
+                line.setAttribute('opacity','.55');line.setAttribute('stroke-linecap','round');
+                grp.appendChild(line);
+                entry.routes.push({el:line,a:{lat:ev.route[i-1][0],lng:ev.route[i-1][1]},b:{lat:ev.route[i][0],lng:ev.route[i][1]}});
+            }
+        }
+        // Label
+        let labelGeo=null;
+        if(ev.route&&ev.route.length){
+            const mid=ev.route[Math.floor(ev.route.length/2)];
+            labelGeo={lat:mid[0],lng:mid[1]};
+        }else if(ev.regions&&ev.regions[0]&&ev.regions[0].length){
+            let lat=0,lng=0;
+            ev.regions[0].forEach(p=>{lat+=p.lat;lng+=p.lng});
+            labelGeo={lat:lat/ev.regions[0].length,lng:lng/ev.regions[0].length};
+        }
+        if(labelGeo){
+            const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+            txt.setAttribute('fill',ev.color);txt.setAttribute('font-size','5.5');
+            txt.setAttribute('font-family','Inter,system-ui,sans-serif');
+            txt.setAttribute('text-anchor','middle');txt.setAttribute('opacity','.6');
+            txt.setAttribute('font-style','italic');txt.setAttribute('letter-spacing','.5');
+            txt.textContent=ev.name;
+            grp.appendChild(txt);
+            entry.labelPt={el:txt,lat:labelGeo.lat,lng:labelGeo.lng};
+        }
+        hG.appendChild(grp);
+        histOverlayData.push(entry);
+    });
+    // Position everything correctly for current zoom
+    updateHistOverlays();
+    // Badges below map
+    let tip=document.getElementById('histTip');
+    if(!tip){tip=document.createElement('div');tip.id='histTip';tip.className='hist-badge-tip';document.body.appendChild(tip);}
+    matches.forEach((ev,idx)=>{
+        const overlap=[...allLangs].filter(l=>ev.langs.includes(l));
+        const badge=document.createElement('span');
+        badge.className='hist-badge';
+        badge.style.borderColor=ev.color;badge.style.color=ev.color;
+        badge.style.background=ev.color+'18';
+        badge.textContent=ev.name;
+        badge.addEventListener('mouseenter',e=>{
+            // Show overlay on map
+            const entry=histOverlayData[idx];
+            if(entry){entry.grp.style.display='';requestAnimationFrame(()=>entry.grp.setAttribute('opacity','1'));}
+            // Show tooltip
+            const r=badge.getBoundingClientRect();
+            tip.innerHTML=`<div style="font-weight:600;margin-bottom:.2rem;color:${ev.color}">${ev.name}</div><div style="font-size:.65rem;color:var(--tm);margin-bottom:.3rem">${ev.yr}</div><div style="margin-bottom:.3rem">${ev.desc}</div><div style="font-size:.65rem;color:var(--tm)">Matching languages: ${overlap.join(', ')}</div>`;
+            tip.classList.add('show');
+            tip.style.left=Math.max(8,Math.min(r.left,window.innerWidth-270))+'px';
+            if(r.top-tip.offsetHeight-8>0){tip.style.top=(r.top-tip.offsetHeight-8)+'px';}
+            else{tip.style.top=(r.bottom+8)+'px';}
+        });
+        badge.addEventListener('mouseleave',()=>{
+            const entry=histOverlayData[idx];
+            if(entry){entry.grp.setAttribute('opacity','0');setTimeout(()=>{if(entry.grp.getAttribute('opacity')==='0')entry.grp.style.display='none'},300);}
+            tip.classList.remove('show');
+        });
+        badges.appendChild(badge);
+    });
+}
+function updateHistOverlays(){
+    histOverlayData.forEach(entry=>{
+        entry.glows.forEach(g=>{
+            const p=w2s(g.lat,g.lng);
+            g.el.setAttribute('cx',p.x);g.el.setAttribute('cy',p.y);
+            g.el.setAttribute('r',g.r*mapScale);
+        });
+        entry.routes.forEach(r=>{
+            const a=w2s(r.a.lat,r.a.lng),b=w2s(r.b.lat,r.b.lng);
+            const mx=(a.x+b.x)/2,my=Math.min(a.y,b.y)-10-Math.abs(a.x-b.x)*.03;
+            r.el.setAttribute('d',`M${a.x} ${a.y}Q${mx} ${my} ${b.x} ${b.y}`);
+        });
+        if(entry.labelPt){
+            const p=w2s(entry.labelPt.lat,entry.labelPt.lng);
+            entry.labelPt.el.setAttribute('x',p.x);entry.labelPt.el.setAttribute('y',p.y);
+        }
+    });
+}
+
+// ============================================================
 // API + PARSER
 // ============================================================
 async function fetchWikitext(word){
@@ -1286,7 +1515,7 @@ async function parseEtymSection(etymSection,word){
 // MAIN FLOW
 // ============================================================
 window._cur=null;window._cog=null;
-function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window._cur,window._cog);setTimeout(()=>initTimeSlider(window._cur,window._cog),200)}}
+function replay(){if(window._cur){drawMap(window._cur,window._cog);drawTL(window._cur,window._cog);setTimeout(()=>{initTimeSlider(window._cur,window._cog);drawHistOverlay(window._cur,window._cog)},window._cur.length*800+500)}}
 
 async function go(word,forceSectionIdx){
     if(!word||!word.trim())return;
@@ -1345,6 +1574,8 @@ async function go(word,forceSectionIdx){
         document.getElementById('wc').innerHTML=`<div class="wd">${word}</div>${def?`<div class="wm">${def}</div>`:''}`;
         drawMap(result.chain,result.cognates);
         drawTL(result.chain,result.cognates);
+        // Historical overlay renders after map so SVG groups exist
+        setTimeout(()=>drawHistOverlay(result.chain,result.cognates),result.chain.length*800+500);
 
         const fc=document.getElementById('fc'),facts=[];
         if(result.chain.length>1)facts.push({l:'Languages',t:`Passed through ${result.chain.length} languages to reach modern English.`});
